@@ -1,4 +1,4 @@
-import ArticleFilter from "../../Components/ArticleFilter";
+import ArticleFilter from "../../Components/ArticleFilter/ArticleFilter";
 import {render, fireEvent, waitFor, screen, getByText, cleanup} from '@testing-library/react';
 
 const defaultContent = {
@@ -30,7 +30,7 @@ describe("Article filter has correct content", () => {
                 color="blue">
             </ArticleFilter>);
 
-        expect(articleFilter.getByTestId('with-backgroundColor')).toHaveStyle({backgroundColor: "blue"});
+        expect(articleFilter.getByTestId('with-background-color')).toHaveStyle({backgroundColor: "blue"});
     });
 });
 
@@ -44,7 +44,7 @@ describe("Article filter toggles when clicked", () => {
 
         fireEvent.click(articleFilter.getByText(defaultContent.textContent));
 
-        expect(articleFilter.getByTestId('with-backgroundColor').classList.contains("inactive-article-filter")).toBe(true);
+        expect(articleFilter.getByTestId('with-background-color').classList.contains("inactive-article-filter")).toBe(true);
     });
 
     test("Article filter reverts to no change in color when clicked twice", () => {
@@ -59,7 +59,7 @@ describe("Article filter toggles when clicked", () => {
 
         //The inactive-article-filter class was added when the element was clicked and is supposed to no longer be active now
         //that the event has been clicked again
-        expect(articleFilter.getByTestId('with-backgroundColor').classList.contains("inactive-article-filter")).toBe(false);
+        expect(articleFilter.getByTestId('with-background-color').classList.contains("inactive-article-filter")).toBe(false);
     });
 });
 
