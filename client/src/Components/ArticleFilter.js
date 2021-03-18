@@ -1,5 +1,7 @@
 import {Tag} from "antd";
 import {isValidCssColor} from "../Utilities/Validation/cssValidation";
+import React from "react";
+import style from "./ArticleFilter.module.css";
 
 export default function (props) {
     const { content, color } = props;
@@ -12,8 +14,19 @@ export default function (props) {
         throw new Error("Invalid color");
     }
 
+    const [isOn, toggleIsOn] = React.useState(true);
+    const classList = [style["article-filter"]];
+    if (!isOn) {
+        classList.push(style["inactive-article-filter"]);
+    }
+
     return (
-        <Tag.CheckableTag data-testId="with-backgroundColor" style={{backgroundColor: color}}>
+        <Tag.CheckableTag
+            className={classList}
+            data-testid="with-backgroundColor"
+            style={{backgroundColor: color}}
+            onClick={()=>toggleIsOn(!isOn)}
+        >
             {content}
         </Tag.CheckableTag>
     );

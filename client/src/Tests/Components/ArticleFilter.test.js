@@ -32,6 +32,35 @@ describe("Article filter has correct content", () => {
     });
 });
 
+describe("Article filter toggles when clicked", () => {
+    test("Article filter changes color when clicked once", () => {
+        const articleFilter = render(
+            <ArticleFilter
+                content={defaultContent.textContent}
+                color={defaultContent.color}>
+            </ArticleFilter>);
+
+        fireEvent.click(articleFilter.getByText(defaultContent.textContent));
+
+        expect(articleFilter.getByTestId('with-backgroundColor').classList.contains("inactive-article-filter")).toBe(true);
+    });
+
+    test("Article filter reverts to no change in color when clicked twice", () => {
+        const articleFilter = render(
+            <ArticleFilter
+                content={defaultContent.textContent}
+                color={defaultContent.color}>
+            </ArticleFilter>);
+
+        fireEvent.click(articleFilter.getByText(defaultContent.textContent));
+        fireEvent.click(articleFilter.getByText(defaultContent.textContent));
+
+        //The inactive-article-filter class was added when the element was clicked and is supposed to no longer be active now
+        //that the event has been clicked again
+        expect(articleFilter.getByTestId('with-backgroundColor').classList.contains("inactive-article-filter")).toBe(false);
+    });
+});
+
 describe("Article filter deals with invalid information correctly", () => {
     test("Article without content throws error", () => {
         const renderArticleFilter = () => render(<ArticleFilter color={defaultContent.color}></ArticleFilter>);

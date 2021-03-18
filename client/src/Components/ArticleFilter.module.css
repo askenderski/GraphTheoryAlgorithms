@@ -1,0 +1,7 @@
+.inactive-article-filter {
+    filter: brightness(50%);
+}
+
+.article-filter {
+    user-select: none;
+}
