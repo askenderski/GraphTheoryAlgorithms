@@ -1,4 +1,5 @@
 import {Tag} from "antd";
+import {isValidCssColor} from "../Utilities/Validation/cssValidation";
 
 export default function (props) {
     const { content, color } = props;
@@ -7,7 +8,7 @@ export default function (props) {
         throw new Error("Invalid text content");
     }
 
-    if (typeof color !== "string") {
+    if (typeof color !== "string" || !isValidCssColor(color)) {
         throw new Error("Invalid color");
     }
 
