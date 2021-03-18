@@ -2,7 +2,7 @@ import {Tag} from "antd";
 import {isValidCssColor} from "../Utilities/Validation/cssValidation";
 import React from "react";
 import style from "./ArticleFilter.module.css";
-import {useToggle} from "../Hooks/useToggle";
+import useToggle from "../Hooks/useToggle";
 
 export default function (props) {
     const { content, color } = props;

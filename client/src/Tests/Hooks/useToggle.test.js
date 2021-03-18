@@ -1,5 +1,5 @@
 import useToggle from "../../Hooks/useToggle";
-import {renderHook, cleanup} from "@testing-library/react-hooks";
+import {renderHook, cleanup, act} from "@testing-library/react-hooks";
 
 afterEach(cleanup);
 
@@ -18,7 +18,9 @@ test("Hook can be defaulted to false", () => {
 test("Hook toggles to other state when clicked once", () => {
     const { result } = renderHook(() => useToggle());
 
-    result.current[1]();
+    act(()=>{
+        result.current[1]();
+    });
 
     expect(result.current[0]).toBe(false);
 });
@@ -26,8 +28,12 @@ test("Hook toggles to other state when clicked once", () => {
 test("Hook toggles back to same state when clicked twice", () => {
     const { result } = renderHook(() => useToggle());
 
-    result.current[1]();
-    result.current[1]();
+    act(()=> {
+        result.current[1]();
+    });
+    act(()=> {
+        result.current[1]();
+    });
 
     expect(result.current[0]).toBe(true);
 });
