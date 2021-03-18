@@ -26,7 +26,7 @@ export default function (props) {
             className={classList}
             data-testid="with-backgroundColor"
             style={{backgroundColor: color}}
-            onClick={()=>toggleIsOn()}
+            onClick={toggleIsOn}
         >
             {content}
         </Tag.CheckableTag>
