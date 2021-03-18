@@ -1,4 +1,4 @@
-import ArticleFilter from "../Components/ArticleFilter";
+import ArticleFilter from "../../Components/ArticleFilter";
 import {render, fireEvent, waitFor, screen, getByText, cleanup} from '@testing-library/react';
 
 const defaultContent = {
