@@ -6,6 +6,8 @@ const defaultContent = {
     color: "blue"
 };
 
+jest.spyOn(console, "error").mockImplementation(()=>{});
+
 afterEach(cleanup);
 
 describe("Article filter has correct content", () => {
