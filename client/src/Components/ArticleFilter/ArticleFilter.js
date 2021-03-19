@@ -17,7 +17,7 @@ function validateProps({content, color}) {
 export default function (props) {
     validateProps(props);
 
-    const { content, color } = props;
+    const {content, color} = props;
 
     const [isOn, toggleIsOn] = useToggle();
 
@@ -29,7 +29,6 @@ export default function (props) {
     return (
         <Tag.CheckableTag
             className={classList}
-            data-testid="with-background-color"
             style={{backgroundColor: color}}
             onClick={toggleIsOn}
         >
