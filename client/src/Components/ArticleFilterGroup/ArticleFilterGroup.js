@@ -1,7 +1,7 @@
 import React from "react";
 import HorizontalList from "../HorizontalList/HorizontalList";
 import ArticleFilter from "../ArticleFilter/ArticleFilter";
-import {articleTypesIterable, articleColorsMap} from "../../Data/ArticleTypes";
+import {articleTypesIterable, articleColorsMap} from "../../Data/articleTypes";
 
 export default function (props) {
     return (

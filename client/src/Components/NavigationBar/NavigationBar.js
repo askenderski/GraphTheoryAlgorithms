@@ -1,4 +1,4 @@
-import navigationBarItems from "../../Data/NavigationBarItems";
+import navigationBarItems from "../../Data/navigationBarItems";
 import {Menu} from "antd";
 
 export default function () {

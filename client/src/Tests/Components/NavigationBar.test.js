@@ -1,6 +1,6 @@
 import {render, fireEvent, waitFor, screen, getByText, cleanup} from '@testing-library/react';
 import NavigationBar from "../../Components/NavigationBar/NavigationBar";
-import navigationBarItems from "../../Data/NavigationBarItems";
+import navigationBarItems from "../../Data/navigationBarItems";
 
 afterEach(cleanup);
 

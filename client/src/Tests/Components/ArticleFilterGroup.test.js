@@ -1,6 +1,6 @@
 import {render, fireEvent, waitFor, screen, getByText, cleanup} from '@testing-library/react';
 import ArticleFilterGroup from "../../Components/ArticleFilterGroup/ArticleFilterGroup";
-import {articleTypesIterable, articleColorsMap} from "../../Data/ArticleTypes";
+import {articleTypesIterable, articleColorsMap} from "../../Data/articleTypes";
 
 afterEach(cleanup);
 
