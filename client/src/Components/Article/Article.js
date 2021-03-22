@@ -1,5 +1,6 @@
 import React from "react";
 import {articleColorsMap, articleTextMap, ArticleTypes, articleTypesSet} from "../../Data/articleTypes";
+import {validateArticleType} from "../../Utilities/Validation/articleTypeValidation";
 
 function validateProps({title, description, type}) {
     if (typeof title !== "string" || title === "") {
@@ -10,9 +11,7 @@ function validateProps({title, description, type}) {
         throw new Error("Invalid description");
     }
 
-    if (!articleTypesSet.has(type)) {
-        throw new Error("Invalid type");
-    }
+    validateArticleType(type);
 }
 
 export default function (props) {

@@ -3,15 +3,14 @@ import React from "react";
 import style from "./ArticleFilter.module.css";
 import useToggle from "../../Hooks/useToggle";
 import {articleColorsMap, articleTypesSet} from "../../Data/articleTypes";
+import {validateArticleType} from "../../Utilities/Validation/articleTypeValidation";
 
 function validateProps({content, type}) {
     if (typeof content !== "string" || content === "") {
         throw new Error("Invalid text content");
     }
 
-    if (!articleTypesSet.has(type)) {
-        throw new Error("Invalid type");
-    }
+    validateArticleType(type);
 }
 
 export default function (props) {

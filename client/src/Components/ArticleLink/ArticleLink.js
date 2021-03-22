@@ -1,5 +1,6 @@
 import {getWordsCutOffAtLength} from "../../Utilities/string";
 import {articleColorsMap, articleTypesSet} from "../../Data/articleTypes";
+import {validateArticleType} from "../../Utilities/Validation/articleTypeValidation";
 
 function getDescriptionFormatted(description) {
     return getWordsCutOffAtLength(description, {minLength: 20, maxLength: 100});
@@ -10,9 +11,7 @@ function validateProps({type, description}) {
         throw new Error("Invalid description");
     }
 
-    if (!articleTypesSet.has(type)) {
-        throw new Error("Invalid type");
-    }
+    validateArticleType(type);
 }
 
 export default function (props) {
