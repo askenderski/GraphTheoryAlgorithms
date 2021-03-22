@@ -1,9 +1,10 @@
 import ArticleFilter from "../../Components/ArticleFilter/ArticleFilter";
 import {render, fireEvent, waitFor, screen, getByText, cleanup} from '@testing-library/react';
+import {articleColorsMap, ArticleTypes} from "../../Data/articleTypes";
 
 const defaultContent = {
     textContent: "Some content",
-    color: "blue"
+    type: ArticleTypes.General
 };
 
 jest.spyOn(console, "error").mockImplementation(()=>{});
@@ -17,7 +18,7 @@ describe("Article filter has correct content", () => {
         const articleFilter = render(
             <ArticleFilter
                 content={articleFilterTextContent}
-                color={defaultContent.color}>
+                type={defaultContent.type}>
             </ArticleFilter>);
 
         expect(articleFilter.getByText(articleFilterTextContent)).toBeInTheDocument();
@@ -27,10 +28,10 @@ describe("Article filter has correct content", () => {
         const articleFilter = render(
             <ArticleFilter
                 content={defaultContent.textContent}
-                color="blue">
+                type={defaultContent.type}>
             </ArticleFilter>);
 
-        expect(articleFilter.getByText(defaultContent.textContent)).toHaveStyle({backgroundColor: "blue"});
+        expect(articleFilter.getByText(defaultContent.textContent)).toHaveStyle({backgroundColor: articleColorsMap.get(defaultContent.type)});
     });
 });
 
@@ -39,7 +40,7 @@ describe("Article filter toggles when clicked", () => {
         const articleFilter = render(
             <ArticleFilter
                 content={defaultContent.textContent}
-                color={defaultContent.color}>
+                type={defaultContent.type}>
             </ArticleFilter>);
 
         fireEvent.click(articleFilter.getByText(defaultContent.textContent));
@@ -51,7 +52,7 @@ describe("Article filter toggles when clicked", () => {
         const articleFilter = render(
             <ArticleFilter
                 content={defaultContent.textContent}
-                color={defaultContent.color}>
+                type={defaultContent.type}>
             </ArticleFilter>);
 
         fireEvent.click(articleFilter.getByText(defaultContent.textContent));
@@ -82,21 +83,13 @@ describe("Article filter deals with invalid information correctly", () => {
         expect(renderArticleFilter).toThrowError("Invalid text content");
     });
 
-    test("Article without color throws error", () => {
-        const renderArticleFilter = () => render(<ArticleFilter content={defaultContent.textContent}></ArticleFilter>);
+    test("Article with invalid type throws error", () => {
+        const invalidType = {};
 
-        expect(renderArticleFilter).toThrowError("Invalid color");
-    });
+        const renderArticleFilter = () => render(
+            <ArticleFilter content={defaultContent.textContent} type={invalidType}></ArticleFilter>
+        );
 
-    test("Article with color of type different than string throws error", () => {
-        const renderArticleFilter = () => render(<ArticleFilter content={defaultContent.color} color={1}></ArticleFilter>);
-
-        expect(renderArticleFilter).toThrowError("Invalid color");
-    });
-
-    test("Article with invalid string color throws error", () => {
-        const renderArticleFilter = () => render(<ArticleFilter content={defaultContent.color} color="foo"></ArticleFilter>);
-
-        expect(renderArticleFilter).toThrowError("Invalid color");
+        expect(renderArticleFilter).toThrowError("Invalid type");
     });
 });
