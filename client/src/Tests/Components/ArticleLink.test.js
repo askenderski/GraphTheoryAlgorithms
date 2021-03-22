@@ -1,11 +1,12 @@
 import ArticleLink from "../../Components/ArticleLink/ArticleLink";
 import {render, fireEvent, waitFor, screen, getByText, cleanup} from '@testing-library/react';
 import _ from "lodash";
+import {articleColorsMap, ArticleTypes} from "../../Data/articleTypes";
 
 const defaultProps = {
     name: "Default Article Name",
     description: "Default Article Description",
-    color: "blue"
+    type: ArticleTypes.General
 };
 
 jest.spyOn(console, "error").mockImplementation(()=>{});
@@ -55,34 +56,26 @@ describe("ArticleLink visualizes correctly", () => {
     });
 
     test("ArticleLink applies color", () => {
-        const color = "red";
+        const type = ArticleTypes.ShortestPath;
 
         const props = _.clone(defaultProps);
-        props.color = color;
+        props.type = type;
 
         const articleFilter = render(<ArticleLink {...props}></ArticleLink>);
 
-        expect(articleFilter.getByTestId("article-link")).toHaveStyle({backgroundColor: color});
+        expect(articleFilter.getByTestId("article-link"))
+            .toHaveStyle({backgroundColor: articleColorsMap.get(type)});
     });
 });
 
 describe("ArticleLink props are validated correctly", () => {
-    test("Color of type other than string throws error", () => {
-        const color = 3;
+    test("Invalid type throws error", () => {
+        const invalidType = {};
 
         const props = _.clone(defaultProps);
-        props.color = color;
+        props.type = invalidType;
 
-        expect(() => render(<ArticleLink {...props}></ArticleLink>)).toThrow("Invalid color");
-    });
-
-    test("Invalid color of type string throws error", () => {
-        const color = "abc";
-
-        const props = _.clone(defaultProps);
-        props.color = color;
-
-        expect(() => render(<ArticleLink {...props}></ArticleLink>)).toThrow("Invalid color");
+        expect(() => render(<ArticleLink {...props}></ArticleLink>)).toThrow("Invalid type");
     });
 
     test("Description of type other than string throws error", () => {
