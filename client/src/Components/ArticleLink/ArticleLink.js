@@ -1,5 +1,4 @@
 import {getWordsCutOffAtLength} from "../../Utilities/string";
-import {isValidCssColor} from "../../Utilities/Validation/cssValidation";
 import {articleColorsMap, articleTypesSet} from "../../Data/articleTypes";
 
 function getDescriptionFormatted(description) {
@@ -8,7 +7,6 @@ function getDescriptionFormatted(description) {
 
 function validateProps({type, description}) {
     if (typeof description !== "string") {
-
         throw new Error("Invalid description");
     }
 
