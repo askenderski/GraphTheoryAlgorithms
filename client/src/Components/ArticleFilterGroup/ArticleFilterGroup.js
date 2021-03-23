@@ -1,6 +1,6 @@
 import React from "react";
 import HorizontalList from "../HorizontalList/HorizontalList";
-import ArticleFilter from "../ArticleFilter/ArticleFilter";
+import ArticleFilter from "./ArticleFilter/ArticleFilter";
 import {articleTypesIterable} from "../../Data/articleTypes";
 
 export default function (props) {
