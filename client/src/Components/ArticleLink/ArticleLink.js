@@ -1,4 +1,4 @@
-import {getWordsCutOffAtLength} from "../../Utilities/string";
+import {getWordsCutOffAtLength} from "../../Utilities/String/getWordsCutOffAtLength";
 import {articleColorsMap, articleTypesSet} from "../../Data/articleTypes";
 import {validateArticleType} from "../../Utilities/Validation/articleTypeValidation";
 

@@ -1,4 +1,5 @@
-import {getWordsCutOffAtLength} from "../../Utilities/string";
+import {getWordsCutOffAtLength} from "../../Utilities/String/getWordsCutOffAtLength";
+import {getIndexOrLength} from "../../Utilities/String/generalUtilities";
 
 //Word formation means succession of words and separators
 
@@ -90,5 +91,43 @@ describe("getWordsCutOffAtLength", () => {
         expect(getWordsCutOffAtLength("aa aaa", {minLength: 5, maxLength: 5})).toEqual("aa...");
         expect(getWordsCutOffAtLength("aa aaaa", {maxLength: 6})).toEqual("aa ...");
         expect(getWordsCutOffAtLength("aa aaaaa", {maxLength: 7})).toEqual("aa ...");
+    });
+});
+
+describe("getIndexOrLength", () => {
+    test("Index smaller than 0 returns string length", () => {
+        const length = 1;
+        const stringToTest = "a".repeat(length);
+
+        expect(getIndexOrLength(stringToTest, -1)).toBe(length);
+    });
+
+    test("Index equal to 0 returns 0", () => {
+        const length = 1;
+        const stringToTest = "a".repeat(length);
+
+        expect(getIndexOrLength(stringToTest, 0)).toBe(0);
+    });
+
+    test("Index smaller than string length is returned", () => {
+        const length = 2;
+        const stringToTest = "a".repeat(length);
+        const index = 1;
+
+        expect(getIndexOrLength(stringToTest, index)).toBe(index);
+    });
+
+    test("Index equal to string length returns string length", () => {
+        const length = 1;
+        const stringToTest = "a".repeat(length);
+
+        expect(getIndexOrLength(stringToTest, length)).toBe(length);
+    });
+
+    test("Index bigger than string length returns string length", () => {
+        const length = 1;
+        const stringToTest = "a".repeat(length);
+
+        expect(getIndexOrLength(stringToTest, length + 1)).toBe(length);
     });
 });
