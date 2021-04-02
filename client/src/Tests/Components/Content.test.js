@@ -3,8 +3,9 @@ import Content from "../../Components/Content/Content";
 import {withRouter} from "react-router-dom";
 import {mount} from "enzyme";
 import {MemoryRouter} from "react-router";
-import {Routes} from "../../Data/routes";
 import {addFullPaths, addFullRedirects, addSubRoutes} from "../../Utilities/routes";
+import * as _ from "lodash";
+import {RoutesData} from "../../Data/Routes/routesData";
 
 afterEach(()=>{
     curLocation = undefined;
@@ -53,9 +54,9 @@ function testRoutes(route, topLevelRoute = route) {
     });
 }
 
-describe("Test routing extensively", () => {
-    const getNewComponent = () => (() => <></>);
+const getNewComponent = () => (() => <></>);
 
+describe("Test routing extensively", () => {
     const RoutesToTest = {
         root: "",
 
@@ -97,5 +98,23 @@ describe("Test routing extensively", () => {
 });
 
 describe("Test routes used in application", () => {
-    testRoutes(Routes);
+    //Some components have complex behaviour (or even call API-s) when we only need to test that they're rendered and so we
+    //replace them here
+    function replaceRouteComponents(route) {
+        if (route.component !== undefined) {
+            route.component = getNewComponent();
+        }
+
+        // route.subRoutes.forEach(subRoute=>replaceRouteComponents(subRoute));
+    }
+
+    const RoutesCloned = _.cloneDeep(RoutesData);
+
+    addSubRoutes(RoutesCloned);
+    addFullPaths(RoutesCloned);
+    addFullRedirects(RoutesCloned);
+
+    replaceRouteComponents(RoutesCloned);
+
+    testRoutes(RoutesCloned);
 });
