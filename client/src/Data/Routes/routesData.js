@@ -1,4 +1,5 @@
 import About from "../../Components/About/About";
+import ArticleRouting from "../../Components/ArticleRouting/ArticleRouting";
 
 export const RoutesData = {
     root: "",
@@ -8,7 +9,12 @@ export const RoutesData = {
         redirect: ["articles"]
     },
     articles: {
-        root: "/articles"
+        root: "/articles",
+
+        article: {
+            root: "/:articleId",
+            component: ArticleRouting
+        }
     },
     about: {
         root: "/about",
