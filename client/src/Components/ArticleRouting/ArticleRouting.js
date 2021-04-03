@@ -8,14 +8,22 @@ function getArticleComponent(article) {
 }
 
 export default function ArticleRouting({match}) {
+    const [articleExists, setArticleExists] = useState(true);
     const [article, setArticle] = useState(undefined);
 
     useEffect(() => {
         getOne(match.params.articleId)
-            .then(articleResponse => setArticle(articleResponse));
+            .then(articleResponse => setArticle(articleResponse))
+            .catch(err => setArticleExists(false));
     }, []);
 
-    return (
-        article !== undefined ? getArticleComponent(article) : <Loading />
-    );
+    if (articleExists) {
+        if (article !== undefined) {
+            return getArticleComponent(article);
+        } else {
+            return <Loading/>;
+        }
+    } else {
+        return <div>Invalid article</div>;
+    }
 }

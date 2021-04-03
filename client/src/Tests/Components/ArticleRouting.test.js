@@ -6,7 +6,7 @@ import {MemoryRouter} from "react-router";
 import {Routes} from "../../Data/Routes/routes";
 import {Route} from "react-router-dom";
 import Article from "../../Components/Article/Article";
-import {act, waitFor} from "@testing-library/react";
+import {act, waitFor, render} from "@testing-library/react";
 import Loading from "../../Components/Loading/Loading";
 
 jest.mock("../../Services/articleService", () => {
@@ -14,6 +14,20 @@ jest.mock("../../Services/articleService", () => {
         getOne: jest.fn()
     };
 });
+
+function getArticleRouting(wrapper) {
+    return wrapper.find(ArticleRouting).at(0);
+}
+
+function getRoutedArticleRouting(id) {
+    const articleRoute = Routes.articles.article.fullPath;
+
+    return (
+        <MemoryRouter initialEntries={[articleRoute.replace(":articleId", id)]}>
+            <Route path={articleRoute} exact component={ArticleRouting}/>
+        </MemoryRouter>
+    );
+}
 
 test("Valid article link renders loading component before article appears", async () => {
     const mockedGetOne = async () => {
@@ -23,17 +37,10 @@ test("Valid article link renders loading component before article appears", asyn
     getOne.mockImplementation(mockedGetOne);
 
     const id = "article1";
-    const articleRoute = Routes.articles.article.fullPath;
 
-    const wrapper = mount(
-        <MemoryRouter initialEntries={[articleRoute.replace(":articleId", id)]}>
-            <Route path={Routes.articles.article.fullPath} exact component={ArticleRouting}/>
-        </MemoryRouter>
-    );
+    const wrapper = mount(getRoutedArticleRouting(id));
 
-    const articleRouting = wrapper.find(ArticleRouting).at(0);
-
-    expect(articleRouting.find(Loading)).toHaveLength(1);
+    expect(getArticleRouting(wrapper).find(Loading)).toHaveLength(1);
 });
 
 test("Valid article link routes to Article component with valid props", async () => {
@@ -53,27 +60,34 @@ test("Valid article link routes to Article component with valid props", async ()
 
     const id = "article1";
     const article = await getOne(id);
-    const articleRoute = Routes.articles.article.fullPath;
 
-    const wrapper = mount(
-        <MemoryRouter initialEntries={[articleRoute.replace(":articleId", id)]}>
-            <Route path={Routes.articles.article.fullPath} exact component={ArticleRouting}/>
-        </MemoryRouter>
-    );
-
-    const getArticleRouting = () => wrapper.find(ArticleRouting).at(0);
+    const wrapper = mount(getRoutedArticleRouting(id));
 
     await waitFor(() => {
         act(()=>{
             wrapper.update();
         });
 
-        expect(getArticleRouting().find(Article)).toHaveLength(1);
+        expect(getArticleRouting(wrapper).find(Article)).toHaveLength(1);
     });
 
-    const isProp = (prop, val) => expect(getArticleRouting().find(Article).at(0).prop(prop)).toBe(val);
+    const isProp = (prop, val) => expect(getArticleRouting(wrapper).find(Article).at(0).prop(prop)).toBe(val);
 
     isProp("title", article.title);
     isProp("description", article.description);
     isProp("type", article.type);
-});
+})
+
+test("Invalid article link renders error", async () => {
+    const mockedGetOne = () => Promise.reject();
+
+    getOne.mockImplementation(mockedGetOne);
+
+    const id = "someId";
+
+    const wrapper = render(getRoutedArticleRouting(id));
+
+    await waitFor(() => {
+        expect(wrapper.getByText("Invalid article")).toBeInTheDocument();
+    });
+})
