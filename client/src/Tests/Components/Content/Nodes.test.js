@@ -34,15 +34,21 @@ function getNodes() {
     return nodes;
 }
 
-function getNodesWrapper(nodes = getNodes()) {
-    const nodesWrapper = render(<Nodes nodes={nodes}/>);
+function getNodesWrapper(
+    {
+        nodes = getNodes(),
+        isDeletingNode = false,
+        handlers: {setNode = () => {}, deleteNode = () => {}} = {}
+    } = {}) {
+
+    const nodesWrapper = render(<Nodes nodes={nodes} handlers={{setNode, deleteNode}} isDeletingNode={isDeletingNode} />);
 
     return nodesWrapper;
 }
 
 test("Nodes renders correct table cells", () => {
     const nodes = getNodes();
-    const nodesWrapper = getNodesWrapper(nodes);
+    const nodesWrapper = getNodesWrapper({nodes});
 
     const tableRowHTMLElements = Array.from(
         nodesWrapper.container.getElementsByTagName("tr")
@@ -122,4 +128,29 @@ test("Nodes correctly changes cell value multiple times", () => {
     fireEvent.change(cellInput, {target: { value: "2000" } });
 
     expect(Number(cellInput.value)).toBe(2000);
+});
+
+test("Nodes doesn't render X buttons on node headers by default", () => {
+    const nodesWrapper = getNodesWrapper();
+
+    const headers = Array.from(
+        nodesWrapper.container.getElementsByTagName("th")
+    );
+
+    headers.forEach(header=>{
+        expect(header.textContent.toLowerCase()).not.toContain("x");
+    });
+});
+
+test("Nodes component deletes node when in delete mode and node header X is clicked on", () => {
+    const deleteNode = jest.fn();
+    const nodesWrapper = getNodesWrapper({
+        handlers: {deleteNode},
+        isDeletingNode: true
+    });
+
+    const headerDelete = nodesWrapper.getByTestId("delete-0");
+
+    fireEvent.click(headerDelete);
+    expect(deleteNode.mock.calls[0]).toEqual([0]);
 });

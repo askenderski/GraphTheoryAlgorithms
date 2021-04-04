@@ -1,14 +1,33 @@
-export default function Nodes({nodes, handlers: {setNode} = {}}) {
+export default function Nodes({nodes, handlers: {setNode, deleteNode} = {}, isDeletingNode}) {
     const {nodeCount} = nodes;
 
-    const horizontalHeaders = new Array(nodeCount).fill(false).map((_,i)=>getHeaderByIndex(i));
+    const horizontalHeaders = new Array(nodeCount).fill(false).map((_,i)=>getHorizontalHeaderByIndex(i));
     const horizontalHeaderRow = <tr>{horizontalHeaders}</tr>;
 
     const rows = new Array(nodeCount).fill(false).map((_, rowIndex)=> getRowByRowIndex(rowIndex));
 
-    function getHeaderByIndex(rowIndex) {
-        return <th key={rowIndex}>{rowIndex}</th>;
+    function getHeaderByIndex(index, {children}={}) {
+        return (
+            <th key={index}>
+                {index}
+                {children}
+            </th>
+        );
+    }
 
+    function getVerticalHeaderByIndex(index) {
+        return getHeaderByIndex(index);
+    }
+
+    function getHorizontalHeaderByIndex(index) {
+        return getHeaderByIndex(
+            index,
+            {children:
+                    isDeletingNode
+                        ? <button data-testid={`delete-${index}`} onClick={() => deleteNode(index)}>X</button>
+                        : null
+            }
+        );
     }
 
     function getCellByRowAndColIndex(rowIndex, colIndex) {
@@ -25,7 +44,7 @@ export default function Nodes({nodes, handlers: {setNode} = {}}) {
     function getRowElementsByRowIndex(rowIndex) {
         return (
             <>
-                {getHeaderByIndex(rowIndex)}
+                {getVerticalHeaderByIndex(rowIndex)}
                 {
                     new Array(nodes.nodeCount).fill(false)
                         .map((_, colIndex) => getCellByRowAndColIndex(rowIndex, colIndex))
@@ -36,7 +55,6 @@ export default function Nodes({nodes, handlers: {setNode} = {}}) {
 
     function getRowByRowIndex(rowIndex) {
         return <tr key={rowIndex}>{getRowElementsByRowIndex(rowIndex)}</tr>;
-
     }
 
     return (
