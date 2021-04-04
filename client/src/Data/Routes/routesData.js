@@ -1,5 +1,5 @@
-import About from "../../Components/About/About";
-import ArticleRouting from "../../Components/ArticleRouting/ArticleRouting";
+import About from "../../Components/Content/About/About";
+import ArticleRouting from "../../Components/Content/ArticleRouting/ArticleRouting";
 
 export const RoutesData = {
     root: "",

@@ -1,5 +1,5 @@
 import {Layout} from "antd";
-import NavigationBar from "../NavigationBar/NavigationBar";
+import NavigationBar from "./NavigationBar/NavigationBar";
 
 export default function () {
     return (
