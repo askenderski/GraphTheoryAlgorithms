@@ -10,7 +10,7 @@ const defaultProps = {
 };
 const defaultChildren = [];
 
-test("Article renders correct title according to type", () => {
+test("ArticleLinkGroup renders correct title according to type", () => {
     const props = _.cloneDeep(defaultProps);
     const type = ArticleTypes.ShortestPath;
     props.type = type;
@@ -20,7 +20,7 @@ test("Article renders correct title according to type", () => {
     expect(articleLinkGroup.getByText(articleTextMap.get(type))).toBeInTheDocument();
 });
 
-test("Article renders children", () => {
+test("ArticleLinkGroup renders children", () => {
     const children = [
         <ArticleLink type={ArticleTypes.General} name="Name 1" description="Lorem ipsum" key="0"/>,
         <ArticleLink type={ArticleTypes.ShortestPath} name="Name 2" description="Lorem ipsum1" key="1"/>
@@ -33,7 +33,7 @@ test("Article renders children", () => {
     });
 });
 
-test("Article title is correct color according to type", () => {
+test("ArticleLinkGroup title is correct color according to type", () => {
     const props = _.cloneDeep(defaultProps);
     const type = ArticleTypes.ShortestPath;
     props.type = type;
