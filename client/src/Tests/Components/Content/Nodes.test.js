@@ -119,8 +119,6 @@ test("Nodes correctly changes cell value multiple times", () => {
 
     fireEvent.change(cellInput, {target: { value: "1000" } });
 
-    expect(Number(cellInput.value)).toBe(1000);
-
     fireEvent.change(cellInput, {target: { value: "2000" } });
 
     expect(Number(cellInput.value)).toBe(2000);
