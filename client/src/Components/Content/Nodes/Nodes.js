@@ -1,4 +1,4 @@
-export default function Nodes({nodes}) {
+export default function Nodes({nodes, handlers: {setNode} = {}}) {
     const {nodeCount} = nodes;
 
     const horizontalHeaders = new Array(nodeCount).fill(false).map((_,i)=>getHeaderByIndex(i));
@@ -14,9 +14,9 @@ export default function Nodes({nodes}) {
     function getCellByRowAndColIndex(rowIndex, colIndex) {
         return (
             <td key={colIndex}>
-                <input type="text" value={nodes.get({i: rowIndex, j: colIndex})}
+                <input type="text" value={nodes.getNode({i: rowIndex, j: colIndex})}
                 onChange={e=>{
-                    nodes.set({i: rowIndex, j: colIndex}, e.target.value);
+                    setNode({i: rowIndex, j: colIndex}, e.target.value);
                 }}/>
             </td>
         );
