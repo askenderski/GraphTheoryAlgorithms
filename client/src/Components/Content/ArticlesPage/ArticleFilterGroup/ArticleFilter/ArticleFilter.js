@@ -1,9 +1,9 @@
 import {Tag} from "antd";
 import React from "react";
 import style from "./ArticleFilter.module.css";
-import useToggle from "../../../../Hooks/useToggle";
-import {articleColorsMap, articleTypesSet} from "../../../../Data/articleTypes";
-import {validateArticleType} from "../../../../Utilities/Validation/articleTypeValidation";
+import useToggle from "../../../../../Hooks/useToggle";
+import {articleColorsMap, articleTypesSet} from "../../../../../Data/articleTypes";
+import {validateArticleType} from "../../../../../Utilities/Validation/articleTypeValidation";
 
 function validateProps({content, type}) {
     if (typeof content !== "string" || content === "") {

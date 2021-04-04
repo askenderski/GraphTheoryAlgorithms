@@ -1,8 +1,8 @@
-import Articles from "../../../Components/Content/Articles/Articles";
-import ArticleLink from "../../../Components/Content/ArticleLink/ArticleLink";
+import Articles from "../../../../Components/Content/ArticlesPage/Articles/Articles";
+import ArticleLink from "../../../../Components/Content/ArticlesPage/ArticleLink/ArticleLink";
 import {mount} from "enzyme";
-import ArticleLinkGroup from "../../../Components/Content/ArticleLinkGroup/ArticleLinkGroup";
-import {ArticleTypes} from "../../../Data/articleTypes";
+import ArticleLinkGroup from "../../../../Components/Content/ArticlesPage/ArticleLinkGroup/ArticleLinkGroup";
+import {ArticleTypes} from "../../../../Data/articleTypes";
 
 function isArticleLinkFromArticle(articleLink, article) {
     const typeIsSame = articleLink.prop("type") === article.type;

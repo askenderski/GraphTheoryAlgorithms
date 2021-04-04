@@ -1,7 +1,7 @@
-import ArticleLink from "../../../Components/Content/ArticleLink/ArticleLink";
+import ArticleLink from "../../../../Components/Content/ArticlesPage/ArticleLink/ArticleLink";
 import {render, fireEvent, waitFor, screen, getByText, cleanup} from '@testing-library/react';
 import _ from "lodash";
-import {articleColorsMap, ArticleTypes} from "../../../Data/articleTypes";
+import {articleColorsMap, ArticleTypes} from "../../../../Data/articleTypes";
 
 const defaultProps = {
     name: "Default Article Name",

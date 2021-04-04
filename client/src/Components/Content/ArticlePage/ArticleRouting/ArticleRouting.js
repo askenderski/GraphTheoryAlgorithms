@@ -1,7 +1,7 @@
-import {getOne} from "../../../Services/articleService";
+import {getOne} from "../../../../Services/articleService";
 import Article from "../Article/Article";
 import {useEffect, useState} from "react";
-import Loading from "../../Common/Loading/Loading";
+import Loading from "../../../Common/Loading/Loading";
 
 function getArticleComponent(article) {
     return <Article title={article.title} description={article.description} type={article.type}/>;

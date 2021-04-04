@@ -1,6 +1,6 @@
-import ArticleFilter from "../../../../Components/Content/ArticleFilterGroup/ArticleFilter/ArticleFilter";
+import ArticleFilter from "../../../../../Components/Content/ArticlesPage/ArticleFilterGroup/ArticleFilter/ArticleFilter";
 import {render, fireEvent, waitFor, screen, getByText, cleanup} from '@testing-library/react';
-import {articleColorsMap, ArticleTypes} from "../../../../Data/articleTypes";
+import {articleColorsMap, ArticleTypes} from "../../../../../Data/articleTypes";
 
 const defaultContent = {
     textContent: "Some content",

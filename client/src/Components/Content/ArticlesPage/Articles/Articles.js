@@ -1,4 +1,4 @@
-import {articleTypesIterable} from "../../../Data/articleTypes";
+import {articleTypesIterable} from "../../../../Data/articleTypes";
 import ArticleLinkGroup from "../ArticleLinkGroup/ArticleLinkGroup";
 import ArticleLink from "../ArticleLink/ArticleLink";
 

@@ -1,15 +1,15 @@
-import ArticleRouting from "../../../Components/Content/ArticleRouting/ArticleRouting";
-import {ArticleTypes} from "../../../Data/articleTypes";
-import {getOne} from "../../../Services/articleService";
+import ArticleRouting from "../../../../Components/Content/ArticlePage/ArticleRouting/ArticleRouting";
+import {ArticleTypes} from "../../../../Data/articleTypes";
+import {getOne} from "../../../../Services/articleService";
 import {mount} from "enzyme";
 import {MemoryRouter} from "react-router";
-import {Routes} from "../../../Data/Routes/routes";
+import {Routes} from "../../../../Data/Routes/routes";
 import {Route} from "react-router-dom";
-import Article from "../../../Components/Content/Article/Article";
+import Article from "../../../../Components/Content/ArticlePage/Article/Article";
 import {act, waitFor, render} from "@testing-library/react";
-import Loading from "../../../Components/Common/Loading/Loading";
+import Loading from "../../../../Components/Common/Loading/Loading";
 
-jest.mock("../../../Services/articleService", () => {
+jest.mock("../../../../Services/articleService", () => {
     return {
         getOne: jest.fn()
     };

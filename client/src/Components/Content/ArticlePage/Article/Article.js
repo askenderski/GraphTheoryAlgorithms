@@ -1,6 +1,6 @@
 import React from "react";
-import {articleColorsMap, articleTextMap, ArticleTypes, articleTypesSet} from "../../../Data/articleTypes";
-import {validateArticleType} from "../../../Utilities/Validation/articleTypeValidation";
+import {articleColorsMap, articleTextMap, ArticleTypes, articleTypesSet} from "../../../../Data/articleTypes";
+import {validateArticleType} from "../../../../Utilities/Validation/articleTypeValidation";
 
 function validateProps({title, description, type}) {
     if (typeof title !== "string" || title === "") {

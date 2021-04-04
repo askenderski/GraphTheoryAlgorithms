@@ -1,6 +1,6 @@
-import {getWordsCutOffAtLength} from "../../../Utilities/String/getWordsCutOffAtLength";
-import {articleColorsMap, articleTypesSet} from "../../../Data/articleTypes";
-import {validateArticleType} from "../../../Utilities/Validation/articleTypeValidation";
+import {getWordsCutOffAtLength} from "../../../../Utilities/String/getWordsCutOffAtLength";
+import {articleColorsMap, articleTypesSet} from "../../../../Data/articleTypes";
+import {validateArticleType} from "../../../../Utilities/Validation/articleTypeValidation";
 
 function getDescriptionFormatted(description) {
     return getWordsCutOffAtLength(description, {minLength: 20, maxLength: 100});

@@ -1,8 +1,8 @@
-import Article from "../../../Components/Content/Article/Article";
+import Article from "../../../../Components/Content/ArticlePage/Article/Article";
 import {render, fireEvent, waitFor, screen, getByText, cleanup} from '@testing-library/react';
 import _ from "lodash";
-import {articleColorsMap, articleTextMap, ArticleTypes} from "../../../Data/articleTypes";
-import ArticleFilter from "../../../Components/Content/ArticleFilterGroup/ArticleFilter/ArticleFilter";
+import {articleColorsMap, articleTextMap, ArticleTypes} from "../../../../Data/articleTypes";
+import ArticleFilter from "../../../../Components/Content/ArticlesPage/ArticleFilterGroup/ArticleFilter/ArticleFilter";
 
 const defaultProps = {
     title: "Default title",

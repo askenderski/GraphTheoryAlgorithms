@@ -1,8 +1,8 @@
-import ArticleLinkGroup from "../../../Components/Content/ArticleLinkGroup/ArticleLinkGroup";
-import {articleColorsMap, articleTextMap, ArticleTypes} from "../../../Data/articleTypes";
+import ArticleLinkGroup from "../../../../Components/Content/ArticlesPage/ArticleLinkGroup/ArticleLinkGroup";
+import {articleColorsMap, articleTextMap, ArticleTypes} from "../../../../Data/articleTypes";
 import {render} from "@testing-library/react";
 import * as _ from "lodash";
-import ArticleLink from "../../../Components/Content/ArticleLink/ArticleLink";
+import ArticleLink from "../../../../Components/Content/ArticlesPage/ArticleLink/ArticleLink";
 import {mount} from "enzyme";
 
 const defaultProps = {
