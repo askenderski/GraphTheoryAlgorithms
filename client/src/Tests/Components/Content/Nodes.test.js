@@ -92,15 +92,15 @@ test("Nodes renders correct vertical headers", () => {
     });
 });
 
+function Component() {
+    const [nodes, setNodes] = useState(getNodesByCellValueFunction((i,j)=>i+j));
+
+    return <Nodes nodes={nodes} handlers={{setNode: ({i, j}, val) => {
+            setNodes(oldNodes=> oldNodes.setIn(["nodeMatrix", i, j], val));
+        }}}/>;
+}
+
 test("Nodes correctly changes cell value", () => {
-    function Component() {
-        const [nodes, setNodes] = useState(getNodesByCellValueFunction((i,j)=>i+j));
-
-        return <Nodes nodes={nodes} handlers={{setNode: ({i, j}, val) => {
-                setNodes(oldNodes=> oldNodes.setIn(["nodeMatrix", i, j], val));
-            }}}/>;
-    }
-
     const wrapper = render(<Component />);
 
     //There are 5 nodes, so there is just one node with value of maxInd + maxInd = 4 + 4
