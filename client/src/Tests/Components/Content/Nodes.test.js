@@ -142,7 +142,7 @@ test("Nodes doesn't render X buttons on node headers by default", () => {
     });
 });
 
-test("Nodes component deletes node when in delete mode and node header X is clicked on", () => {
+test("Nodes component deletes one node when in delete mode and node header X is clicked on", () => {
     const deleteNode = jest.fn();
     const nodesWrapper = getNodesWrapper({
         handlers: {deleteNode},
@@ -153,4 +153,5 @@ test("Nodes component deletes node when in delete mode and node header X is clic
 
     fireEvent.click(headerDelete);
     expect(deleteNode.mock.calls[0]).toEqual([0]);
+    expect(deleteNode.mock.calls).toHaveLength(1);
 });
