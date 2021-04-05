@@ -6,7 +6,7 @@ import {act, fireEvent, render} from "@testing-library/react";
 const defaultHandlers = { setNode: () => {}, addNode: () => {}, deleteNode: () => {} };
 
 //useToggle is presumed to be working and so it is not mocked
-jest.mock("../../../Components/Content/Nodes/Nodes", () => jest.fn());
+jest.mock("../../../../Components/Content/NodesCard/Nodes/Nodes", () => jest.fn());
 
 beforeEach(()=>{
     Nodes.mockImplementation(()=>null);
