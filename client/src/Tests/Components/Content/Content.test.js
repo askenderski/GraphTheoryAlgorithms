@@ -105,7 +105,7 @@ describe("Test routes used in application", () => {
             route.component = getNewComponent();
         }
 
-        // route.subRoutes.forEach(subRoute=>replaceRouteComponents(subRoute));
+        route.subRoutes.forEach(subRoute=>replaceRouteComponents(subRoute));
     }
 
     const RoutesCloned = _.cloneDeep(RoutesData);

@@ -1,3 +1,5 @@
+import {createElement} from "react";
+
 export const addSubRoutes = function (route) {
     const subRoutes = Object.values(route).filter(prop=>typeof prop === "object" && prop.root !== undefined);
 
@@ -20,25 +22,40 @@ function addFullRedirect(route, rootRoute = route) {
         return curRoute[curElementToAdd];
     }, rootRoute);
 
-    // if (routeToRedirectTo.fullPath !== undefined) {
-        route.fullRedirect = routeToRedirectTo.fullPath;
-    // }
+    route.fullRedirect = routeToRedirectTo.fullPath;
+}
 
-    // if (routeToRedirectTo.redirect !== undefined) {
-    //     if (routeToRedirectTo.fullRedirect !== undefined) {
-    //         addFullRedirect(route);
-    //     }
-    //
-    //     route.fullRedirect = routeToRedirectTo.fullRedirect;
-    // }
+function addFullRedirectWithParams(route, rootRoute = route) {
+    const routeToRedirectTo = route.redirectWithParams.reduce((curRoute, curElementToAdd) => {
+        return curRoute[curElementToAdd];
+    }, rootRoute);
+
+    route.fullRedirectWithParams = routeToRedirectTo.fullPath;
 }
 
 export const addFullRedirects = function (route, rootRoute = route) {
-    if (route.redirect !== undefined
-        // && route.fullRedirect === undefined
-    ) {
+    if (route.redirect !== undefined) {
         addFullRedirect(route, rootRoute);
+    }
+    if (route.redirectWithParams !== undefined) {
+        addFullRedirectWithParams(route, rootRoute);
     }
 
     route.subRoutes.forEach(subRoute=>addFullRedirects(subRoute, rootRoute));
 }
+
+function addRouteToRedirectToToComponentWithRedirectWithParams(route) {
+    const originalComponent = route.component;
+
+    route.component = props => {
+        return createElement(originalComponent, {...props, routeToRedirectTo: route.fullRedirectWithParams});
+    }
+}
+
+export const addRouteToRedirectToToComponentsWithRedirectWithParams = function (route, rootRoute = route) {
+    if (route.redirectWithParams !== undefined) {
+        addRouteToRedirectToToComponentWithRedirectWithParams(route);
+    }
+
+    route.subRoutes.forEach(subRoute=>addRouteToRedirectToToComponentsWithRedirectWithParams(subRoute, rootRoute));
+};

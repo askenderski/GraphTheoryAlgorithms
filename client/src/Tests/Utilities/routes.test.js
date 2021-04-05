@@ -1,4 +1,11 @@
-import {addSubRoutes, addFullPaths, addFullRedirects} from "../../Utilities/routes";
+import {
+    addSubRoutes,
+    addFullPaths,
+    addFullRedirects,
+    addRouteToRedirectToToComponentsWithRedirectWithParams
+} from "../../Utilities/routes";
+import {createElement} from "react";
+import {mount} from "enzyme";
 
 describe("addSubRoutes", () => {
     test("Adds first-level subroutes", () => {
@@ -265,5 +272,153 @@ describe("addFullRedirects", () => {
 
         const fullRedirect = routesToTest.subRoute1.fullRedirect;
         expect(fullRedirect).toBeUndefined();
+    });
+});
+
+describe("addRouteToRedirectToToComponentsWithRedirectWithParams", () => {
+    test("Adds routeToRedirectTo to component correctly to first-level subroutes", () => {
+        const root = "/a";
+        const subRoute1Root = "/b1";
+        const subRoute2Root = "/b2";
+
+        const originalComponent = () => null;
+
+        const routesToTest = {
+            root,
+
+            subRoute1: {
+                root: subRoute1Root,
+
+                redirectWithParams: ["subRoute2"],
+                component: originalComponent
+            },
+            subRoute2: {
+                root: subRoute2Root
+            }
+        };
+
+        addSubRoutes(routesToTest);
+        addFullPaths(routesToTest);
+        addFullRedirects(routesToTest);
+        addRouteToRedirectToToComponentsWithRedirectWithParams(routesToTest);
+
+        const {component} = routesToTest.subRoute1;
+        const wrapper = mount(createElement(component));
+
+        expect(wrapper.find(component).find(originalComponent).prop("routeToRedirectTo"))
+            .toBe(routesToTest.subRoute1.fullRedirectWithParams);
+    });
+
+    test("Passes props to component correctly", () => {
+        const root = "/a";
+        const subRoute1Root = "/b1";
+        const subRoute2Root = "/b2";
+
+        const originalComponent = () => null;
+        const props = {a: 1, b: 2};
+
+        const routesToTest = {
+            root,
+
+            subRoute1: {
+                root: subRoute1Root,
+
+                redirectWithParams: ["subRoute2"],
+                component: originalComponent
+            },
+            subRoute2: {
+                root: subRoute2Root
+            }
+        };
+        addSubRoutes(routesToTest);
+        addFullPaths(routesToTest);
+        addFullRedirects(routesToTest);
+
+        addRouteToRedirectToToComponentsWithRedirectWithParams(routesToTest);
+
+        addSubRoutes(routesToTest);
+        addFullPaths(routesToTest);
+        addFullRedirects(routesToTest);
+        addRouteToRedirectToToComponentsWithRedirectWithParams(routesToTest);
+
+        const {component} = routesToTest.subRoute1;
+        const wrapper = mount(createElement(component, props));
+
+        for (const key in props) {
+            expect(wrapper.find(component).find(originalComponent).prop(key))
+                .toBe(props[key]);
+        }
+    });
+
+    test("Adds routeToRedirectTo to component correctly to all-level subroutes", () => {
+        const root = "/a";
+        const subRouteRoot = "/b";
+        const subSubRoute1Root = "/c1";
+        const subSubRoute2Root = "/c2";
+
+        const originalComponent = () => null;
+
+        const routesToTest = {
+            root,
+
+            subRoute: {
+                root: subRouteRoot,
+
+                subSubRoute1: {
+                    root: subSubRoute1Root
+                },
+                subSubRoute2: {
+                    root: subSubRoute2Root,
+
+                    redirectWithParams: ["subRoute", "subSubRoute1"],
+                    component: originalComponent
+                }
+            }
+        };
+
+        addSubRoutes(routesToTest);
+        addFullPaths(routesToTest);
+        addFullRedirects(routesToTest);
+        addRouteToRedirectToToComponentsWithRedirectWithParams(routesToTest);
+
+        const {component} = routesToTest.subRoute.subSubRoute2;
+        const wrapper = mount(createElement(component));
+
+        expect(wrapper.find(component).find(originalComponent).prop("routeToRedirectTo"))
+            .toBe(routesToTest.subRoute.subSubRoute2.fullRedirectWithParams);
+    });
+
+    test("Adds routeToRedirectTo only to subroutes with redirectWithParams", () => {
+        const root = "/a";
+        const subRouteRoot = "/b";
+        const subSubRoute1Root = "/c1";
+        const subSubRoute2Root = "/c2";
+
+        const originalComponent = () => null;
+
+        const routesToTest = {
+            root,
+
+            subRoute: {
+                root: subRouteRoot,
+
+                subSubRoute1: {
+                    root: subSubRoute1Root
+                },
+                subSubRoute2: {
+                    root: subSubRoute2Root,
+
+                    redirectWithParams: ["subRoute", "subSubRoute1"],
+                    component: originalComponent
+                }
+            }
+        };
+
+        addSubRoutes(routesToTest);
+        addFullPaths(routesToTest);
+        addFullRedirects(routesToTest);
+        addRouteToRedirectToToComponentsWithRedirectWithParams(routesToTest);
+
+        expect(routesToTest.subRoute.subSubRoute1.fullRedirectWithParams).toBeUndefined();
     });
 });
