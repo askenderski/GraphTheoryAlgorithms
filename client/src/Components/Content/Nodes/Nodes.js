@@ -1,7 +1,11 @@
 export default function Nodes({nodes, handlers: {setNode, deleteNode} = {}, isDeletingNode}) {
     const {nodeCount} = nodes;
 
-    const horizontalHeaders = new Array(nodeCount).fill(false).map((_,i)=>getHorizontalHeaderByIndex(i));
+    const horizontalHeaders = [
+        <th key="top-left"></th>,
+        ...new Array(nodeCount).fill(false).map((_,i)=>getHorizontalHeaderByIndex(i))
+    ];
+
     const horizontalHeaderRow = <tr>{horizontalHeaders}</tr>;
 
     const rows = new Array(nodeCount).fill(false).map((_, rowIndex)=> getRowByRowIndex(rowIndex));

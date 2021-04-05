@@ -76,7 +76,9 @@ test("Nodes renders correct horizontal headers", () => {
     const headers = Array.from(
         nodesWrapper.container.querySelector("tr")
             .getElementsByTagName("th")
-    );
+    )
+        //first header is empty and so is skipped
+        .slice(1);
 
     headers.forEach((header, nodeIndex)=>{
         expect(header.textContent).toContain(nodeIndex);
