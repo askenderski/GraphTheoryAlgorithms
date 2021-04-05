@@ -1,6 +1,6 @@
-import NodesCard from "../../../Components/Content/NodesCard/NodesCard";
+import NodesCard from "../../../../Components/Content/NodesCard/NodesCard";
 import {mount} from "enzyme";
-import Nodes from "../../../Components/Content/Nodes/Nodes";
+import Nodes from "../../../../Components/Content/NodesCard/Nodes/Nodes";
 import {act, fireEvent, render} from "@testing-library/react";
 
 const defaultHandlers = { setNode: () => {}, addNode: () => {}, deleteNode: () => {} };

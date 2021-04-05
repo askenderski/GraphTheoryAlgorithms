@@ -1,4 +1,4 @@
-import Nodes from "../Nodes/Nodes";
+import Nodes from "./Nodes/Nodes";
 import useToggle from "../../../Hooks/useToggle";
 
 export default function NodesCard({nodes, handlers}) {
