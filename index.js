@@ -11,8 +11,21 @@ const app = express();
 
 app.use(cors());
 app.use(cookieParser());
+app.use(express.json());
 
 app.use("/", router);
+
+//If express.json body is invalid
+app.use((err, req, res, next) => {
+    if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+        return res.status(400).send({ message: "Invalid body" });
+    }
+
+    next();
+});
+app.use((err, req, res, next) => {
+    return res.status(500).send({ message: err.message || "Unknown error" });
+});
 
 process.env;
 app.listen(process.env.PORT, function () {
