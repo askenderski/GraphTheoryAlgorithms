@@ -23,15 +23,19 @@ router.get("/:algorithmType/:algorithmTitle", async (req, res, next) => {
     res.status(200).json(graph);
 });
 
-router.get("/:graphId", async (req, res) => {
+router.get("/:graphId", async (req, res, next) => {
     const {graphId} = req.params;
 
-    const graph = await GraphModel.findOne({_id: graphId});
-    if (graph === null) {
+    try {
+        const graph = await GraphModel.findOne({_id: graphId});
+        if (graph === null) {
+            throw new Error();
+        }
+
+        res.status(200).json(graph);
+    } catch (err) {
         return next({status: 404, message: "Graph does not exist"});
     }
-
-    res.status(200).json(graph);
 });
 
 router.post("/:algorithmType/:algorithmTitle", async (req, res, next) => {
