@@ -1,113 +1,76 @@
-const passport = require("passport");
-const localStrategy = require('passport-local').Strategy;
 const jwt = require('jsonwebtoken');
-const JWTStrategy = require('passport-jwt').Strategy;
-const ExtractJWT = require('passport-jwt').ExtractJwt;
 
 const UserModel = require('../models/user');
 
-passport.use(
-    'register',
-    new localStrategy(
-        {
-            usernameField: 'email',
-            passwordField: 'password'
-        },
-        async (email, password, done) => {
-            try {
-                const user = await UserModel.create({ email, password });
+const register = async (email, password) => {
+    try {
+        const user = await UserModel.create({ email, password });
 
-                return done(null, user);
-            } catch (error) {
-                done(error);
-            }
+        return user;
+    } catch (error) {
+        return {error};
+    }
+};
+
+const login = async (email, password) => {
+    try {
+        const user = await UserModel.findOne({email});
+
+        if (!user) {
+            return {error: {message: 'User not found'}};
         }
-    )
-);
 
-passport.use(
-    'login',
-    new localStrategy(
-        {
-            usernameField: 'email',
-            passwordField: 'password'
-        },
-        async (email, password, done) => {
-            try {
-                const user = await UserModel.findOne({ email });
+        const validate = await user.isValidPassword(password);
 
-                if (!user) {
-                    return done(null, false, { message: 'User not found' });
-                }
-
-                const validate = await user.isValidPassword(password);
-
-                if (!validate) {
-                    return done(null, false, { message: 'Wrong Password' });
-                }
-
-                return done(null, user, { message: 'Logged in Successfully' });
-            } catch (error) {
-                return done(error);
-            }
+        if (!validate) {
+            return {error: {message: 'Wrong Password'}};
         }
-    )
-);
 
-passport.use(
-    'jwt',
-    new JWTStrategy(
-        {
-            secretOrKey: process.env.JWT_SECRET_KEY,
-            jwtFromRequest: function(req) {
-                var token = null;
-                if (req && req.cookies) token = req.cookies['jwt'];
-                return token;
-            }
-        },
-        async (token, done) => {
-            try {
-                return done(null, token.user);
-            } catch (error) {
-                done(error);
-            }
-        }
-    )
-);
+        return user;
+    } catch (error) {
+        return {error};
+    }
+};
+
+        // {
+        //     secretOrKey: process.env.JWT_SECRET_KEY,
+        //     jwtFromRequest: function(req) {
+        //         var token = null;
+        //         if (req && req.cookies) token = req.cookies['jwt'];
+        //         return token;
+        //     }
+        // },
+        // async (token, done) => {
+        //     try {
+        //         return done(null, token.user);
+        //     } catch (error) {
+        //         done(error);
+        //     }
+        // }
 
 module.exports = {
-    register: passport.authenticate('register', { session: false }),
+    register: async (req, res, next) => {
+        const {email, password} = req.headers;
+        const result = await register(email, password);
+
+        next(result.error);
+    },
     login: async (req, res, next) => {
-        passport.authenticate(
-            'login',
-            async (err, user, info) => {
-                try {
-                    if (err || !user) {
-                        const error = new Error('An error occurred.');
+        const {email, password} = req.headers.email;
+        const result = await login(email, password);
 
-                        return next(error);
-                    }
+        if (result.error !== undefined) next(result.error);
 
-                    req.login(
-                        user,
-                        { session: false },
-                        async (error) => {
-                            if (error) return next(error);
+        const {user} = result;
+        const body = {
+            _id: user._id
+        };
 
-                            const body = {
-                                _id: user._id
-                            };
-                            const token = jwt.sign({ user: body }, process.env.JWT_SECRET_KEY);
+        const token = jwt.sign({ user: body }, process.env.JWT_SECRET_KEY);
 
-                            req.user = {id: user._id, email: user.email};
-                            req.token = token;
-                            return next();
-                        }
-                    );
-                } catch (error) {
-                    return next(error);
-                }
-            }
-        )(req, res, next);
+        req.user = {id: user._id, email: user.email};
+        req.token = token;
+
+        return next();
     },
 };

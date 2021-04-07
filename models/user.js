@@ -9,7 +9,7 @@ const UserSchema = new Schema({
         type: String,
         required: true,
         unique: true,
-        match: [isEmail, "Invalid email"]
+        validate: [isEmail, "Invalid email"]
     },
     password: {
         type: String,
@@ -21,7 +21,12 @@ UserSchema.pre(
     'save',
     async function(next) {
         const user = this;
-        const hash = await bcrypt.hash(user.password, process.env.SALT_ROUNDS);
+
+        if (user.password.length <= 7) {
+            throw {status: 400, message: "Password must be at least 8 characters long"};
+        }
+
+        const hash = await bcrypt.hash(user.password, Number(process.env.SALT_ROUNDS));
 
         user.password = hash;
         next();
@@ -30,7 +35,7 @@ UserSchema.pre(
 
 UserSchema.post('save', function(error, doc, next) {
     if (error.name === 'MongoError' && error.code === 11000) {
-        next(new Error('email must be unique'));
+        next({status: 409, message: 'Email already exists'});
     } else {
         next(error);
     }
