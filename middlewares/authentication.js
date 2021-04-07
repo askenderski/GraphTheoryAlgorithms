@@ -26,27 +26,11 @@ const login = async (email, password) => {
             return {error: {message: 'Wrong Password'}};
         }
 
-        return user;
+        return {user};
     } catch (error) {
         return {error};
     }
 };
-
-        // {
-        //     secretOrKey: process.env.JWT_SECRET_KEY,
-        //     jwtFromRequest: function(req) {
-        //         var token = null;
-        //         if (req && req.cookies) token = req.cookies['jwt'];
-        //         return token;
-        //     }
-        // },
-        // async (token, done) => {
-        //     try {
-        //         return done(null, token.user);
-        //     } catch (error) {
-        //         done(error);
-        //     }
-        // }
 
 module.exports = {
     register: async (req, res, next) => {
@@ -56,7 +40,7 @@ module.exports = {
         next(result.error);
     },
     login: async (req, res, next) => {
-        const {email, password} = req.headers.email;
+        const {email, password} = req.headers;
         const result = await login(email, password);
 
         if (result.error !== undefined) next(result.error);
@@ -71,6 +55,6 @@ module.exports = {
         req.user = {id: user._id, email: user.email};
         req.token = token;
 
-        return next();
-    },
+        next();
+    }
 };
