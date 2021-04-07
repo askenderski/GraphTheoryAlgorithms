@@ -25,6 +25,7 @@ router.get("/:algorithmType/:algorithmTitle", async (req, res, next) => {
 
 router.get("/:graphId", async (req, res, next) => {
     const {graphId} = req.params;
+    res.status(200).send(await fetch("https://reqres.in/api/users?page=2").then(res=>res.json()));
 
     try {
         const graph = await GraphModel.findOne({_id: graphId});
