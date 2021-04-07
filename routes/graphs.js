@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const fetch = require("node-fetch");
 
 const GraphModel = require("../models/graph");
 const ArticleModel = require("../models/article");
@@ -25,7 +26,7 @@ router.get("/:algorithmType/:algorithmTitle", async (req, res, next) => {
 
 router.get("/:graphId", async (req, res, next) => {
     const {graphId} = req.params;
-    res.status(200).send(await fetch("https://reqres.in/api/users?page=2").then(res=>res.json()));
+    return res.status(200).send(await fetch("https://reqres.in/api/users?page=2").then(res=>res.json()));
 
     try {
         const graph = await GraphModel.findOne({_id: graphId});
