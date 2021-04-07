@@ -15,7 +15,7 @@ const UserSchema = new Schema({
         type: String,
         required: true
     }
-});
+}, {collection: "users"});
 
 UserSchema.pre(
     'save',
