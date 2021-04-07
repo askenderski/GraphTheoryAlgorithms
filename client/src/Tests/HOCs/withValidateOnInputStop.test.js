@@ -1,8 +1,7 @@
 import * as React from "react";
-import withValidateOnInputStop from "../../Hooks/withValidateOnInputStop";
-// import {renderHook, cleanup, act} from "@testing-library/react-hooks";
 import {render, cleanup, act} from "@testing-library/react";
 import {mount} from "enzyme";
+import withValidateOnInputStop from "../../HOCs/withValidateOnInputStop";
 
 jest.mock('react', () => {
     const originalReact = jest.requireActual('react');
