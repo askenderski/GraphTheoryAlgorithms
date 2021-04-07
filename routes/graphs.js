@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const fetch = require("node-fetch");
+const mongoose = require("mongoose");
 
 const GraphModel = require("../models/graph");
 const ArticleModel = require("../models/article");
@@ -35,7 +36,8 @@ router.get("/:graphId", async (req, res, next) => {
 
         res.status(200).json(graph);
     } catch (err) {
-        return next({status: 404, message: "Graph does not exist"});
+        return next({status: 404, message: "Graph does not exist " + mongoose.connection.client.s.url +
+                process.env.CONNECTION_STRING});
     }
 });
 
