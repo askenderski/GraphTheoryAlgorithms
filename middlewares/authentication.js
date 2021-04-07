@@ -55,10 +55,15 @@ passport.use(
 );
 
 passport.use(
+    'jwt',
     new JWTStrategy(
         {
             secretOrKey: process.env.JWT_SECRET_KEY,
-            jwtFromRequest: ExtractJWT.fromUrlQueryParameter('secret_token')
+            jwtFromRequest: function(req) {
+                var token = null;
+                if (req && req.cookies) token = req.cookies['jwt'];
+                return token;
+            }
         },
         async (token, done) => {
             try {
@@ -90,12 +95,12 @@ module.exports = {
                             if (error) return next(error);
 
                             const body = {
-                                _id: user._id,
-                                // email: user.email
+                                _id: user._id
                             };
                             const token = jwt.sign({ user: body }, process.env.JWT_SECRET_KEY);
 
-                            req.user = {token};
+                            req.user = {id: user._id, email: user.email};
+                            req.token = token;
                             return next();
                         }
                     );
