@@ -3,6 +3,8 @@ import {Menu} from "antd";
 
 import UserContext from "../../../Contexts/User";
 import {useContext} from "react";
+import {Link} from "react-router-dom";
+import {Routes} from "../../../Data/Routes/routes";
 
 export default function () {
     const { user } = useContext(UserContext);
@@ -10,11 +12,16 @@ export default function () {
     const userNavigation = user === undefined
         ? (
             <>
+
                 <Menu.Item style={{float: "right"}}>
-                    Register
+                    <Link to={Routes.authentication.registration.fullPath}>
+                        Register
+                    </Link>
                 </Menu.Item>
                 <Menu.Item style={{float: "right"}}>
-                    Login
+                    <Link to={Routes.authentication.login.fullPath}>
+                        Login
+                    </Link>
                 </Menu.Item>
             </>
         )
@@ -28,7 +35,14 @@ export default function () {
 
     return (
         <Menu mode="horizontal">
-            {navigationBarItems.map(item=><Menu.Item key={item.text}>{item.text}</Menu.Item>)}
+            {navigationBarItems.map(item=>(
+                <Menu.Item key={item.text}>
+                    <Link to={item.redirectPath}>
+                        {item.text}
+                    </Link>
+                </Menu.Item>
+                )
+            )}
             {userNavigation}
         </Menu>
     );

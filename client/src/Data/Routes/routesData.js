@@ -15,6 +15,9 @@ export const RoutesData = {
     articles: {
         root: "/articles",
 
+        allArticles: {
+            root: "/",
+        },
         article: {
             root: "/:articleId",
             component: ArticleRouting
