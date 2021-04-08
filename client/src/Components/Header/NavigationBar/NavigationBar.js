@@ -5,7 +5,7 @@ import UserContext from "../../../Contexts/User";
 import {useContext} from "react";
 
 export default function () {
-    const user = useContext(UserContext);
+    const { user } = useContext(UserContext);
 
     const userNavigation = user === undefined
         ? (
