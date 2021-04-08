@@ -1,4 +1,10 @@
-import {addFullPaths, addFullRedirects, addSubRoutes, addRouteToRedirectToToComponentsWithRedirectWithParams} from "../../Utilities/routes";
+import {
+    addFullPaths,
+    addFullRedirects,
+    addSubRoutes,
+    addRouteToRedirectToToComponentsWithRedirectWithParams,
+    addGuards
+} from "../../Utilities/routes";
 import {RoutesData} from "./routesData";
 import * as _ from "lodash";
 
@@ -8,6 +14,7 @@ addSubRoutes(RoutesToExport);
 addFullPaths(RoutesToExport);
 addFullRedirects(RoutesToExport);
 addRouteToRedirectToToComponentsWithRedirectWithParams(RoutesToExport);
+addGuards(RoutesToExport);
 
 export const Routes = RoutesToExport;
 

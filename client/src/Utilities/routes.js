@@ -59,3 +59,19 @@ export const addRouteToRedirectToToComponentsWithRedirectWithParams = function (
 
     route.subRoutes.forEach(subRoute=>addRouteToRedirectToToComponentsWithRedirectWithParams(subRoute, rootRoute));
 };
+
+export const addGuard = function (route) {
+    if (route.component !== undefined) {
+        const originalComponent = route.component;
+
+        route.component = route.guard(originalComponent);
+    }
+};
+
+export const addGuards = function (route, rootRoute = route) {
+    if (route.guard !== undefined) {
+        addGuard(route);
+    }
+
+    route.subRoutes.forEach(subRoute=>addGuards(subRoute, rootRoute));
+};

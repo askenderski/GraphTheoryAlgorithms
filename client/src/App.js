@@ -7,7 +7,7 @@ import {BrowserRouter} from "react-router-dom";
 import UserContext from "./Contexts/User";
 
 function App() {
-    const [user, setUser] = useState(undefined);
+    const [user, setUser] = useState();
 
     return (
         <BrowserRouter>

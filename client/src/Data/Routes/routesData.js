@@ -3,6 +3,7 @@ import ArticleRouting from "../../Components/Content/ArticlePage/ArticleRouting/
 import DefaultAlgorithmRouting from "../../Components/Content/AlgorithmPage/DefaultAlgorithmRouting";
 import RegistrationForm from "../../Components/Content/RegistrationForm/RegistrationForm";
 import LoginForm from "../../Components/Content/LoginForm/LoginForm";
+import {IsNotLoggedIn} from "../../Guards/authGuards";
 
 export const RoutesData = {
     root: "",
@@ -50,12 +51,14 @@ export const RoutesData = {
         registration: {
             root: "/registration",
 
+            guard: IsNotLoggedIn,
             component: RegistrationForm
         },
 
         login: {
             root: "/login",
 
+            guard: IsNotLoggedIn,
             component: LoginForm
         }
     }
