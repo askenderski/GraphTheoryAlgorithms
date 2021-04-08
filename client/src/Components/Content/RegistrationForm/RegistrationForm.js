@@ -1,5 +1,3 @@
-import ControlledTextInputWithValidation
-    from "../../Common/ControlledTextInputWithValidation/ControlledTextInputWithValidation";
 import {useEffect, useState} from "react";
 import useValidateOnInputStop from "../../../Hooks/useValidateOnInputStop";
 import {
@@ -9,17 +7,9 @@ import {
     usernameValidator,
     validateToHaveNoErrors
 } from "../../../Utilities/validators";
-
-function inputTuple([value, setValue, validator, displayName, rest]) {
-    return <ControlledTextInputWithValidation
-        key={displayName}
-        displayName={displayName}
-        value={value}
-        setValue={setValue}
-        validate={validator}
-        {...rest}
-    />;
-}
+import {register} from "../../../Services/authenticationService";
+import {Routes} from "../../../Data/Routes/routes";
+import Form from "../../Common/Form/Form";
 
 export default function RegistrationForm() {
     const [email, setEmail] = useState("");
@@ -36,20 +26,29 @@ export default function RegistrationForm() {
     }, [password, passwordRepeated]);
 
     return (
-        <form>
-            {
-                [
-                    [email, setEmail, emailValidator, "Email"],
-                    [username, setUsername, usernameValidator, "Username"],
-                    [password, setPassword, passwordValidator, "Password"],
-                    [
-                        passwordRepeated, setPasswordRepeated,
-                        validateToHaveNoErrors, "Repeat Password",
-                        {errors: passwordRepeatedErrors}
-                    ]
-                ]
-                    .map(inputTuple)
+        <Form
+            service={{
+                service: register,
+                serviceArguments: {email, username, password},
+                redirectPath: Routes.authentication.login.fullPath
+            }}
+
+            input={
+                {
+                    inputTuples: [
+                        [email, setEmail, emailValidator, "Email"],
+                        [username, setUsername, usernameValidator, "Username"],
+                        [password, setPassword, passwordValidator, "Password"],
+                        [
+                            passwordRepeated, setPasswordRepeated,
+                            validateToHaveNoErrors, "Repeat Password",
+                            {errors: passwordRepeatedErrors}
+                        ]
+                    ],
+                    submitValue: "Register"
+                }
             }
-        </form>
+        >
+        </Form>
     );
 };

@@ -3,25 +3,30 @@ import {Menu} from "antd";
 
 import UserContext from "../../../Contexts/User";
 import {useContext} from "react";
-import {Link} from "react-router-dom";
+import {NavLink, useLocation} from "react-router-dom";
 import {Routes} from "../../../Data/Routes/routes";
+
+function removeTrailingSlash(a) {
+    return a.substring(a.length-1) === "/" ? a.substring(0,a.length-1) : a;
+}
 
 export default function () {
     const { user } = useContext(UserContext);
+    const location = useLocation();
 
     const userNavigation = user === undefined
         ? (
             <>
 
-                <Menu.Item style={{float: "right"}}>
-                    <Link to={Routes.authentication.registration.fullPath}>
+                <Menu.Item style={{float: "right"}} key={Routes.authentication.registration.fullPath}>
+                    <NavLink to={Routes.authentication.registration.fullPath}>
                         Register
-                    </Link>
+                    </NavLink>
                 </Menu.Item>
-                <Menu.Item style={{float: "right"}}>
-                    <Link to={Routes.authentication.login.fullPath}>
+                <Menu.Item style={{float: "right"}} key={Routes.authentication.login.fullPath}>
+                    <NavLink to={Routes.authentication.login.fullPath}>
                         Login
-                    </Link>
+                    </NavLink>
                 </Menu.Item>
             </>
         )
@@ -34,12 +39,12 @@ export default function () {
         );
 
     return (
-        <Menu mode="horizontal">
+        <Menu mode="horizontal" selectedKeys={[location.pathname]}>
             {navigationBarItems.map(item=>(
-                <Menu.Item key={item.text}>
-                    <Link to={item.redirectPath}>
+                <Menu.Item key={removeTrailingSlash(item.redirectPath)}>
+                    <NavLink to={item.redirectPath}>
                         {item.text}
-                    </Link>
+                    </NavLink>
                 </Menu.Item>
                 )
             )}
