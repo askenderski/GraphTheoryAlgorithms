@@ -22,9 +22,10 @@ router.post("/logout", (req, res) => {
 
 router.post("/register", register,
     async (req, res, next) => {
-    res.json({
-        message: 'Signup successful'
-    });
+        console.log(res);
+        res.status(201).json({
+            message: 'Signup successful'
+        });
 });
 
 module.exports = router;

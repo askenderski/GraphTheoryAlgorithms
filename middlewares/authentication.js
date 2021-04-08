@@ -35,8 +35,10 @@ const login = async (email, password) => {
 module.exports = {
     register: async (req, res, next) => {
         const {email, username, password} = req.body;
+        console.log(req.body);
         const result = await register(email, username, password);
 
+        console.log(result.error);
         next(result.error);
     },
     login: async (req, res, next) => {

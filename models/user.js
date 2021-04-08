@@ -14,7 +14,8 @@ const UserSchema = new Schema({
     username: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        validate: [val=>val.length > 0, "Username cannot be empty"]
     },
     password: {
         type: String,
@@ -27,8 +28,11 @@ UserSchema.pre(
     async function(next) {
         const user = this;
 
-        if (user.password.length <= 7) {
+        if (user.password.length < 8) {
             throw {status: 400, message: "Password must be at least 8 characters long"};
+        }
+        if (user.password.match(/[^0-9a-zA-Z]+/) !== null) {
+            throw {status: 400, message: "Password can only contain letters and numbers"};
         }
 
         const hash = await bcrypt.hash(user.password, Number(process.env.SALT_ROUNDS));
