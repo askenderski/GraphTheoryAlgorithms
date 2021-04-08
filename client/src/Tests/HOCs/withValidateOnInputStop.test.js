@@ -99,12 +99,20 @@ test("withValidateOnInputStop changes value multiple times when setValue is invo
     expect(wrapper.find(Component).prop("value")).toBe(value3);
 });
 
-test("withValidateOnInputStop validates default value immediately", () => {
+test("withValidateOnInputStop validates default value immediately when validateDefault is true", () => {
+    const defaultValue = 0;
+
+    const wrapper = mount(<Form defaultValue={defaultValue} validate={validateNumberIsPositive} validateDefault={true} />);
+
+    expect(wrapper.find(Component).prop("errors")).toEqual(["Value should be positive"]);
+});
+
+test("withValidateOnInputStop doesn't validate default value immediately by default", () => {
     const defaultValue = 0;
 
     const wrapper = mount(<Form defaultValue={defaultValue} validate={validateNumberIsPositive} />);
 
-    expect(wrapper.find(Component).prop("errors")).toEqual(["Value should be positive"]);
+    expect(wrapper.find(Component).prop("errors")).toEqual([]);
 });
 
 test("withValidateOnInputStop doesn't immediately set errors when invalid value is given", () => {

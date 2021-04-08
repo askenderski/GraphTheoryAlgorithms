@@ -2,6 +2,7 @@ import About from "../../Components/Content/About/About";
 import ArticleRouting from "../../Components/Content/ArticlePage/ArticleRouting/ArticleRouting";
 import DefaultAlgorithmRouting from "../../Components/Content/AlgorithmPage/DefaultAlgorithmRouting";
 import RegistrationForm from "../../Components/Content/RegistrationForm/RegistrationForm";
+import LoginForm from "../../Components/Content/LoginForm/LoginForm";
 
 export const RoutesData = {
     root: "",
@@ -50,6 +51,12 @@ export const RoutesData = {
             root: "/registration",
 
             component: RegistrationForm
+        },
+
+        login: {
+            root: "/login",
+
+            component: LoginForm
         }
     }
 };
