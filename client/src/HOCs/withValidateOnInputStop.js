@@ -1,31 +1,15 @@
-import {useEffect, useState} from "react";
+import useValidateOnInputStop from "../Hooks/useValidateOnInputStop";
 
 export default function withValidateOnInputStop(WrappedComponent) {
-    return function ({validate, value, setValue, ...restProps}) {
-        const [validationTimeout, setValidationTimeout] = useState();
-        const [errors, setErrors] = useState(validate(value));
-
-        useEffect(() => {
-            return () => {
-                clearTimeout(validationTimeout);
-            }
-        }, [validationTimeout]);
-
-        const stopTyping = () => {
-            setErrors(state => validate(state));
-            setValidationTimeout(undefined);
-        };
+    return function ({validate, value, setValue, time, errors: prevErrors = [], ...restProps}) {
+        const {setValue: setValidatorValue, errors} = useValidateOnInputStop(validate, {defaultValue: value, time});
 
         function changeValue(value) {
             setValue(value);
 
-            const newTimeout = setTimeout(() => {
-                stopTyping(newTimeout);
-            }, 1000);
-
-            setValidationTimeout(newTimeout);
+            setValidatorValue(value);
         }
 
-        return <WrappedComponent value={value} setValue={changeValue} errors={errors} {...restProps}/>;
+        return <WrappedComponent value={value} setValue={changeValue} errors={[...prevErrors, ...errors]} {...restProps}/>;
     };
 }

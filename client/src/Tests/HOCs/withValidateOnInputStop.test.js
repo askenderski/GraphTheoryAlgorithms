@@ -48,6 +48,9 @@ function Form({validate = () => [], defaultValue, ...restProps}) {
             validate={validate}
             value={value}
             setValue={setValue}
+            //During the writing of the tests the time was assumed to be 1000 and so here it is passed so the tests don't
+            // break (the default time has been changed from 1000)
+            time={1000}
             {...restProps}
         />
     );
