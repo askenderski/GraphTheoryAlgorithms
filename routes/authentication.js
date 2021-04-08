@@ -6,7 +6,7 @@ router.post("/login",
     (req, res) => {
     const {user} = req;
     res.cookie('jwt', req.token, { maxAge: 900000, httpOnly: true });
-    res.send({
+    res.status(200).send({
         message: "Login successful",
         user
     });
@@ -15,7 +15,7 @@ router.post("/login",
 
 router.post("/logout", (req, res) => {
     res.clearCookie('jwt');
-    res.send({
+    res.status(205).send({
         message: "Logout successful"
     });
 });
