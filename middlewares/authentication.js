@@ -2,9 +2,9 @@ const jwt = require('jsonwebtoken');
 
 const UserModel = require('../models/user');
 
-const register = async (email, password) => {
+const register = async (email, username, password) => {
     try {
-        const user = await UserModel.create({ email, password });
+        const user = await UserModel.create({ email, username, password });
 
         return user;
     } catch (error) {
@@ -34,13 +34,13 @@ const login = async (email, password) => {
 
 module.exports = {
     register: async (req, res, next) => {
-        const {email, password} = req.headers;
-        const result = await register(email, password);
+        const {email, username, password} = req.body;
+        const result = await register(email, username, password);
 
         next(result.error);
     },
     login: async (req, res, next) => {
-        const {email, password} = req.headers;
+        const {email, password} = req.body;
         const result = await login(email, password);
 
         if (result.error !== undefined) next(result.error);
@@ -52,7 +52,7 @@ module.exports = {
 
         const token = jwt.sign({ user: body }, process.env.JWT_SECRET_KEY);
 
-        req.user = {id: user._id, email: user.email};
+        req.user = {id: user._id, username: user.username};
         req.token = token;
 
         next();
