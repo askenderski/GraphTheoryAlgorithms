@@ -9,13 +9,29 @@ const UserSchema = new Schema({
         type: String,
         required: true,
         unique: true,
-        validate: [isEmail, "Invalid email"]
+        validate: {
+            validator: val=>{
+                if (!isEmail(val)) {
+                    throw {status: 400, message: "Invalid email"};
+                }
+                return true;
+            },
+            message: props => props
+        }
     },
     username: {
         type: String,
         required: true,
         unique: true,
-        validate: [val=>val.length > 0, "Username cannot be empty"]
+        validate: {
+            validator: val=>{
+                if (val.length === 0) {
+                    throw {status: 400, message: "Username cannot be empty"};
+                }
+                return true;
+            },
+            message: props => props
+        }
     },
     password: {
         type: String,

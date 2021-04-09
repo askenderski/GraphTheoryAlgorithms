@@ -12,4 +12,13 @@ router.get("/:algorithmType/:articleTitle", async (req, res, next) => {
     res.status(200).json(article);
 });
 
+router.get("/", async (req, res, next) => {
+    console.log(req.headers);
+
+    const articles = await ArticleModel.find();
+    console.log(articles);
+
+    res.status(200).json(articles);
+});
+
 module.exports = router;

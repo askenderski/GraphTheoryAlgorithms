@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 const UserModel = require('../models/user');
+const {promisify} = require("util");
 
 const register = async (email, username, password) => {
     try {
@@ -52,11 +53,29 @@ module.exports = {
             _id: user._id
         };
 
-        const token = jwt.sign({ user: body }, process.env.JWT_SECRET_KEY);
+        const token = jwt.sign({user: body}, process.env.JWT_SECRET_KEY);
 
         req.user = {id: user._id, username: user.username};
         req.token = token;
 
         next();
+    },
+    getUser: async (req, res, next) => {
+        const token = req.cookies.jwt;
+        console.log(token)
+
+        if (!token) {
+            next();
+        }
+
+        promisify(jwt.verify)(token, process.env.JWT_SECRET_KEY)
+            .then(tokenDecoded=>{
+                const newToken = jwt.sign({user: tokenDecoded.user}, process.env.JWT_SECRET_KEY);
+                res.cookie('jwt', newToken, { maxAge: 900000, httpOnly: true });
+                req.user = tokenDecoded.user;
+
+                next();
+            })
+            .catch(err => next({status: 401, message: "Invalid token"}));
     }
 };
