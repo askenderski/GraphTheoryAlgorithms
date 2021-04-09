@@ -28,7 +28,7 @@ export default function LoginForm() {
                 {
                     inputTuples: [
                         [email, setEmail, emailValidator, "Email"],
-                        [password, setPassword, passwordValidator, "Password"]
+                        [password, setPassword, passwordValidator, "Password", {type: "password"}]
                     ],
                     submitValue: "Login"
                 }

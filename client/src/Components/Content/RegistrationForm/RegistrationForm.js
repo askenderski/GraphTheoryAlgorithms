@@ -38,11 +38,11 @@ export default function RegistrationForm() {
                     inputTuples: [
                         [email, setEmail, emailValidator, "Email"],
                         [username, setUsername, usernameValidator, "Username"],
-                        [password, setPassword, passwordValidator, "Password"],
+                        [password, setPassword, passwordValidator, "Password", {type: "password"}],
                         [
                             passwordRepeated, setPasswordRepeated,
                             validateToHaveNoErrors, "Repeat Password",
-                            {errors: passwordRepeatedErrors}
+                            {errors: passwordRepeatedErrors, type: "password"}
                         ]
                     ],
                     submitValue: "Register"
