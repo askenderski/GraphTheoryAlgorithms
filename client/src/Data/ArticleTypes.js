@@ -9,6 +9,7 @@ export const ArticleTypes = {
 addNameProperties(ArticleTypes);
 
 export const articleTypesIterable = Object.values(ArticleTypes);
+export const articleTypeNamesIterable = articleTypesIterable.map(articleType => articleType.name);
 export const articleTypesSet = new Set(articleTypesIterable);
 
 const ArticleColorsMapToExport = new Map();

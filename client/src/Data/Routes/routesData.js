@@ -4,6 +4,7 @@ import DefaultAlgorithmRouting from "../../Components/Content/AlgorithmPage/Defa
 import RegistrationForm from "../../Components/Content/RegistrationForm/RegistrationForm";
 import LoginForm from "../../Components/Content/LoginForm/LoginForm";
 import {IsNotLoggedIn} from "../../Guards/authGuards";
+import ArticlesPage from "../../Components/Content/ArticlesPage/ArticlesPage";
 
 export const RoutesData = {
     root: "",
@@ -17,6 +18,7 @@ export const RoutesData = {
 
         allArticles: {
             root: "/",
+            component: ArticlesPage
         },
         article: {
             root: "/:articleId",
