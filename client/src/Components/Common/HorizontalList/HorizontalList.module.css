@@ -1,4 +1,8 @@
 .horizontal-list {
     overflow: auto;
     white-space: nowrap;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
