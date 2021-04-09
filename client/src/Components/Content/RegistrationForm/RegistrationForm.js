@@ -22,6 +22,7 @@ export default function RegistrationForm() {
     );
 
     useEffect(() => {
+        console.log(passwordRepeatedErrors)
         setPasswordAndPasswordRepeated({password, passwordRepeated});
     }, [password, passwordRepeated]);
 
@@ -30,7 +31,8 @@ export default function RegistrationForm() {
             service={{
                 service: register,
                 serviceArguments: {email, username, password},
-                redirectPath: Routes.authentication.login.fullPath
+                redirectPath: Routes.authentication.login.fullPath,
+                errors: passwordRepeatedErrors
             }}
 
             input={
