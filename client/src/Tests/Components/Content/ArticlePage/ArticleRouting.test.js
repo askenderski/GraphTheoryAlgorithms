@@ -19,11 +19,15 @@ function getArticleRouting(wrapper) {
     return wrapper.find(ArticleRouting).at(0);
 }
 
-function getRoutedArticleRouting(id) {
+function getRoutedArticleRouting(type=ArticleTypes.General, title="TopSort") {
     const articleRoute = Routes.articles.article.fullPath;
 
     return (
-        <MemoryRouter initialEntries={[articleRoute.replace(":articleId", id)]}>
+        <MemoryRouter initialEntries={[
+            articleRoute
+                .replace(":articleType", type.name)
+                .replace(":articleTitle", title)
+        ]}>
             <Route path={articleRoute} exact component={ArticleRouting}/>
         </MemoryRouter>
     );
@@ -44,24 +48,19 @@ test("Valid article link renders loading component before article appears", asyn
 });
 
 test("Valid article link routes to Article component with valid props", async () => {
-    const mockedGetOne = async (id) => {
-        const articles = {
-            article1: {
-                title: "Some valid title",
-                description: "Some valid description",
-                type: ArticleTypes.General
-            }
-        };
-
-        return Promise.resolve(articles[id]);
+    const mockedGetOne = async () => {
+        return Promise.resolve({
+            title: "Some valid title",
+            description: "Some valid description",
+            type: ArticleTypes.General
+        });
     };
 
     getOne.mockImplementation(mockedGetOne);
 
-    const id = "article1";
-    const article = await getOne(id);
+    const article = await getOne();
 
-    const wrapper = mount(getRoutedArticleRouting(id));
+    const wrapper = mount(getRoutedArticleRouting());
 
     await waitFor(() => {
         act(()=>{
@@ -83,9 +82,7 @@ test("Invalid article link renders error", async () => {
 
     getOne.mockImplementation(mockedGetOne);
 
-    const id = "someId";
-
-    const wrapper = render(getRoutedArticleRouting(id));
+    const wrapper = render(getRoutedArticleRouting());
 
     await waitFor(() => {
         expect(wrapper.getByText("Invalid article")).toBeInTheDocument();

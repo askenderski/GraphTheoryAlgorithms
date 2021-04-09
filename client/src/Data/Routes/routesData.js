@@ -34,7 +34,7 @@ export const RoutesData = {
             component: ArticlesPageModule
         },
         article: {
-            root: "/:articleId",
+            root: "/:articleType/:articleTitle",
             component: ArticleRoutingModule
         }
     },
