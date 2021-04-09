@@ -24,3 +24,8 @@ export const getMakeSureIsOkWithStream = function ({streamType = "json", allowed
         return res[streamType]();
     };
 };
+
+export const defaultOptions = {
+    mode: "cors",
+    credentials: "include",
+};
