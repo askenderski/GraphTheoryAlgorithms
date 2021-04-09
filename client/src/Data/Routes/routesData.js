@@ -1,10 +1,23 @@
-import About from "../../Components/Content/About/About";
-import ArticleRouting from "../../Components/Content/ArticlePage/ArticleRouting/ArticleRouting";
-import DefaultAlgorithmRouting from "../../Components/Content/AlgorithmPage/DefaultAlgorithmRouting";
-import RegistrationForm from "../../Components/Content/RegistrationForm/RegistrationForm";
-import LoginForm from "../../Components/Content/LoginForm/LoginForm";
 import {IsNotLoggedIn} from "../../Guards/authGuards";
-import ArticlesPage from "../../Components/Content/ArticlesPage/ArticlesPage";
+import React, {createElement, lazy, Suspense} from "react";
+import Loading from "../../Components/Common/Loading/Loading";
+
+function moduleLocationToComponent(moduleLocation) {
+    return function (props) {
+        return (
+            <Suspense fallback={<Loading />}>
+                {createElement(lazy(() => import("../../Components/Content/"+moduleLocation)), props)}
+            </Suspense>
+        );
+    };
+}
+
+const AboutModule = moduleLocationToComponent("About/About");
+const ArticleRoutingModule = moduleLocationToComponent("ArticlePage/ArticleRouting/ArticleRouting");
+const DefaultAlgorithmRoutingModule = moduleLocationToComponent("AlgorithmPage/DefaultAlgorithmRouting");
+const RegistrationFormModule = moduleLocationToComponent("RegistrationForm/RegistrationForm");
+const LoginFormModule = moduleLocationToComponent("LoginForm/LoginForm");
+const ArticlesPageModule = moduleLocationToComponent("ArticlesPage/ArticlesPage");
 
 export const RoutesData = {
     root: "",
@@ -18,16 +31,16 @@ export const RoutesData = {
 
         allArticles: {
             root: "/",
-            component: ArticlesPage
+            component: ArticlesPageModule
         },
         article: {
             root: "/:articleId",
-            component: ArticleRouting
+            component: ArticleRoutingModule
         }
     },
     about: {
         root: "/about",
-        component: About
+        component: AboutModule
     },
     algorithms: {
         root: "/algorithms",
@@ -42,7 +55,7 @@ export const RoutesData = {
                     root: "/",
 
                     redirectWithParams: ["algorithms", "algorithmType", "algorithm", "algorithmGraph"],
-                    component: DefaultAlgorithmRouting
+                    component: DefaultAlgorithmRoutingModule
                 },
                 algorithmGraph: {
                     root: "/graphs/:graphId",
@@ -57,14 +70,14 @@ export const RoutesData = {
             root: "/registration",
 
             guard: IsNotLoggedIn,
-            component: RegistrationForm
+            component: RegistrationFormModule
         },
 
         login: {
             root: "/login",
 
             guard: IsNotLoggedIn,
-            component: LoginForm
+            component: LoginFormModule
         }
     }
 };

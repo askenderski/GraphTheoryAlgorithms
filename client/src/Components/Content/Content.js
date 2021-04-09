@@ -1,6 +1,8 @@
 import {Layout} from "antd";
 import {Redirect, Route, Switch} from "react-router-dom";
 import InvalidRoute from "../Common/InvalidRoute/InvalidRoute";
+import Loading from "../Common/Loading/Loading";
+import {createElement, useEffect, useState} from "react";
 
 function getRoutes(route) {
     return [...route.subRoutes.map(subRoute=> {
@@ -11,6 +13,7 @@ function getRoutes(route) {
 
         if (subRoute.component !== undefined) {
             routeProps.component = subRoute.component;
+
             routeProps.exact = true;
 
             return <Route  {...routeProps}/>;
@@ -22,7 +25,7 @@ function getRoutes(route) {
             return <Route {...routeProps}/>;
         }
 
-        routeProps.render = () => getRoutes(subRoute);
+        routeProps.render = () => <Switch>{getRoutes(subRoute)}</Switch>;
 
         return <Route {...routeProps}/>;
     }), <Route path="/" key="InvalidRoute" component={InvalidRoute}/>];

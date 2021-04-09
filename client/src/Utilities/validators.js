@@ -1,4 +1,4 @@
-import isEmail from "validator/es/lib/isEmail";
+import {isEmail} from "validator";
 
 export const emailValidator = email => {
     const errors = [];

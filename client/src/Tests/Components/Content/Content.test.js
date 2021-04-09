@@ -1,4 +1,4 @@
-import {render, fireEvent, waitFor, screen, getByText, cleanup} from '@testing-library/react';
+import {render, fireEvent, waitFor, screen, getByText, cleanup, act} from '@testing-library/react';
 import Content from "../../../Components/Content/Content";
 import {withRouter} from "react-router-dom";
 import {mount} from "enzyme";
@@ -23,6 +23,7 @@ const ContentLocationProxy = withRouter(props => {
 function testRouteWithComponent(route, topLevelRoute) {
     test(`${route.fullPath} renders correct component`, () => {
         const wrapper = mount(<MemoryRouter initialEntries={[route.fullPath]}><Content routes={topLevelRoute}/></MemoryRouter>);
+        wrapper.update();
 
         expect(wrapper.find(route.component)).toHaveLength(1);
     });

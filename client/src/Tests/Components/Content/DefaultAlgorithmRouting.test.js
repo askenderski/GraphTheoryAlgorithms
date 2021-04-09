@@ -1,13 +1,13 @@
 import {Routes} from "../../../Data/Routes/routes";
 import {MemoryRouter} from "react-router";
-import {Redirect} from "react-router-dom";
+import {Redirect, Route} from "react-router-dom";
 import DefaultAlgorithmRouting from "../../../Components/Content/AlgorithmPage/DefaultAlgorithmRouting";
 import {AlgorithmTypes} from "../../../Data/Algorithms/algorithms";
 import {mount} from "enzyme";
-import Content from "../../../Components/Content/Content";
 import {getOne} from "../../../Services/algorithmService";
 import Loading from "../../../Components/Common/Loading/Loading";
 import {act, waitFor, render} from "@testing-library/react";
+import * as React from "react";
 
 jest.mock("../../../Services/algorithmService", () => {
     return {
@@ -26,18 +26,37 @@ jest.mock('react-router-dom', () => {
     };
 });
 
-//Here Content is being used as it is assumed that it has been fully tested
+jest.mock('react', () => {
+    // Require the original module to not be mocked...
+    const originalModule = jest.requireActual('react');
+
+    return {
+        __esModule: true,
+        ...originalModule,
+        Suspense: jest.fn()
+    };
+});
 
 const defaultAlgorithmRoute = Routes.algorithms.algorithmType.algorithm.defaultGraph.fullPath;
 const algorithmRoute = Routes.algorithms.algorithmType.algorithm.algorithmGraph.fullPath;
 
-function getRoutedDefaultAlgorithmRouting(algorithmTypeId, algorithmId) {return (
+function getRoutedDefaultAlgorithmRouting(algorithmTypeId, algorithmId) {
+    return (
         <MemoryRouter initialEntries={[
             defaultAlgorithmRoute
                 .replace(":algorithmTypeId", algorithmTypeId)
                 .replace(":algorithmId", algorithmId)
         ]}>
-            <Content routes={Routes}/>
+            <Route
+                path={defaultAlgorithmRoute}
+                render={props=>(
+                    <DefaultAlgorithmRouting
+                        {...props}
+                        routeToRedirectTo=
+                            {Routes.algorithms.algorithmType.algorithm.defaultGraph.fullRedirectWithParams}
+                    />
+                    )
+                } />
         </MemoryRouter>
     );
 }
@@ -53,8 +72,15 @@ test("Algorithm shows Loading before graph has loaded", async () => {
     const algorithmId = algorithm.name;
     const routedDefaultAlgorithmRouting = mount(getRoutedDefaultAlgorithmRouting(algorithmTypeId, algorithmId));
 
+    await act(async () => {
+        await Promise.resolve();
+        routedDefaultAlgorithmRouting.update();
+    });
+
     expect(routedDefaultAlgorithmRouting.find(DefaultAlgorithmRouting)).toHaveLength(1);
     expect(routedDefaultAlgorithmRouting.find(DefaultAlgorithmRouting).find(Loading)).toHaveLength(1);
+
+    routedDefaultAlgorithmRouting.unmount();
 });
 
 test("Valid algorithm routes to Algorithm routing with its correct default graph", async () => {
@@ -87,6 +113,7 @@ test("Valid algorithm routes to Algorithm routing with its correct default graph
         await Promise.resolve();
         routedDefaultAlgorithmRouting.update();
     });
+    routedDefaultAlgorithmRouting.debug();
 
     expect(locationToRedirectTo).toBe(
         algorithmRoute
@@ -94,6 +121,8 @@ test("Valid algorithm routes to Algorithm routing with its correct default graph
             .replace(":algorithmId", algorithmId)
             .replace(":graphId", graphId)
     );
+
+    routedDefaultAlgorithmRouting.unmount();
 });
 
 test("Invalid algorithm renders error", async () => {
