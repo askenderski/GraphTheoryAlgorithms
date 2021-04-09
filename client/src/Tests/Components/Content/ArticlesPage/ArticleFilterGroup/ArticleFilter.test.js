@@ -40,7 +40,10 @@ describe("Article filter toggles when clicked", () => {
         const articleFilter = render(
             <ArticleFilter
                 content={defaultContent.textContent}
-                type={defaultContent.type}>
+                type={defaultContent.type}
+                addFilter={()=>{}}
+                removeFilter={()=>{}}
+            >
             </ArticleFilter>);
 
         fireEvent.click(articleFilter.getByText(defaultContent.textContent));
@@ -52,7 +55,10 @@ describe("Article filter toggles when clicked", () => {
         const articleFilter = render(
             <ArticleFilter
                 content={defaultContent.textContent}
-                type={defaultContent.type}>
+                type={defaultContent.type}
+                addFilter={()=>{}}
+                removeFilter={()=>{}}
+            >
             </ArticleFilter>);
 
         fireEvent.click(articleFilter.getByText(defaultContent.textContent));

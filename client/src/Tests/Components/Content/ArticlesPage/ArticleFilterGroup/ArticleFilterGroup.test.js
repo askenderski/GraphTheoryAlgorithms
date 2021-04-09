@@ -6,7 +6,7 @@ afterEach(cleanup);
 
 test("All elements appear in Article Filter Group", () => {
     const articleFilterGroup = render(
-        <ArticleFilterGroup />
+        <ArticleFilterGroup addFilter={()=>{}} removeFilter={()=>{}} />
     );
 
     articleTypesIterable.forEach(articleType=>{
@@ -16,7 +16,7 @@ test("All elements appear in Article Filter Group", () => {
 
 test("All elements appear in Article Filter Group with correct color", () => {
     const articleFilterGroup = render(
-        <ArticleFilterGroup />
+        <ArticleFilterGroup addFilter={()=>{}} removeFilter={()=>{}}/>
     );
 
     articleTypesIterable.forEach(articleType=>{
