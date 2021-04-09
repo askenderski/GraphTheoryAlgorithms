@@ -1,10 +1,5 @@
-import {useEffect, useState} from "react";
-
-const useStateWithShallowMerge = defaultValue => {
-    const [state, setState] = useState(defaultValue);
-
-    return [state, val => setState(prevState => ({...prevState, ...val}))];
-}
+import {useEffect} from "react";
+import {useStateWithShallowMerge} from "./useStateWithShallowMerge";
 
 export const useFilter = function ({defaultFilters, elements, setElements, filterElementsOfType, makeRequest}) {
     const [filters, setFilters] = useStateWithShallowMerge(defaultFilters);
