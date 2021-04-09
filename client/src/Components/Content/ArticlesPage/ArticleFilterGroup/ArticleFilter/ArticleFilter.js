@@ -16,7 +16,17 @@ function validateProps({content, type}) {
 export default function (props) {
     validateProps(props);
 
-    const {content, type} = props;
+    function handleOnClick() {
+        if (isOn) {
+            removeFilter();
+        } else {
+            addFilter();
+        }
+
+        toggleIsOn();
+    }
+
+    const {content, type, addFilter, removeFilter} = props;
 
     const [isOn, toggleIsOn] = useToggle();
 
@@ -29,7 +39,7 @@ export default function (props) {
         <Tag.CheckableTag
             className={classList}
             style={{backgroundColor: articleColorsMap.get(type)}}
-            onClick={toggleIsOn}
+            onClick={handleOnClick}
         >
             {content}
         </Tag.CheckableTag>
