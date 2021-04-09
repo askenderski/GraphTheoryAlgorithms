@@ -1,8 +1,12 @@
 import {ArticleTypes} from "../Data/articleTypes";
 import {articles, getMakeSureIsOkWithStream} from "./common";
 
-export const getOne = async function (id) {
-    return {title: "asdsa", description: "adsaddsdas sas dsa", type: ArticleTypes.General};
+export const getOne = async function ({title, type}) {
+    return fetch(`${articles.base}/${type}/${title}`)
+        .then(getMakeSureIsOkWithStream({allowedStatuses: [200]}))
+        .then(article => {
+            return {...article, type: ArticleTypes[article.type]};
+        });
 };
 
 export const getAll = function ({filters}) {
@@ -12,6 +16,8 @@ export const getAll = function ({filters}) {
     
     return fetch(`${articles.base}`, {
         method: 'GET',
+        mode: "cors",
+        credentials: "include",
         headers: {
             filters: filterParams
         }
