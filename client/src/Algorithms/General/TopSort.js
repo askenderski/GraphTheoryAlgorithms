@@ -1,22 +1,30 @@
-export default function TopSort(edgeList) {
-    const nodesTopSorted = [];
-    const visited = [];
+export default async function GetTopSorter({consider}) {
+    return async function (edgeList) {
+        async function dfs(node) {
+            await consider(node, "current");
+            if (visited[node]) {
+                return;
+            }
 
-    for (let i = 0; i < edgeList.length; i++) {
-        dfs(i, edgeList, nodesTopSorted, visited);
-    }
+            visited[node] = true;
 
-    return nodesTopSorted;
-};
+            for (const toNode of edgeList[node]) {
+                await consider(node, "passed");
+                await dfs(toNode.to);
+                await consider(node, "current");
+            }
 
-function dfs(node, edgeList, nodesTopSorted, visited) {
-    if (visited[node]) return;
-    visited[node] = true;
+            await consider(node, "done");
+            nodesTopSorted.unshift(node);
+        }
 
-    edgeList[node]
-        .forEach(edge=>{
-            dfs(edge.to, edgeList, nodesTopSorted, visited);
-        });
+        const nodesTopSorted = [];
+        const visited = [];
 
-    nodesTopSorted.unshift(node);
+        for (let i = 0; i < edgeList.length; i++) {
+            await dfs(i);
+        }
+
+        return nodesTopSorted;
+    };
 }

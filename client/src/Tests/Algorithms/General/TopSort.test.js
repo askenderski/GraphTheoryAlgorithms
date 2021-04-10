@@ -1,6 +1,6 @@
-import TopSort from "../../../Algorithms/General/TopSort";
+import GetTopSorter from "../../../Algorithms/General/TopSort";
 
-test("TopSort works on complicated graph", () => {
+test("TopSort works on complicated graph", async () => {
     const edgeList = [
         [{to:3}],
         [{to:0},{to:2},{to:3}],
@@ -8,7 +8,7 @@ test("TopSort works on complicated graph", () => {
         []
     ];
 
-    const res = TopSort(edgeList);
+    const res = await (await GetTopSorter({consider: () => {}}))(edgeList);
     expect(res).toEqual([1,2,0,3]);
 });
 
@@ -28,8 +28,8 @@ test("TopSort works on complicated graph", () => {
     ]
 ]
     .forEach((edgeList, i)=> {
-        test(`Programmatic test ${i + 1}`, () => {
-            const res = TopSort(edgeList);
+        test(`Programmatic test ${i + 1}`, async () => {
+            const res = await (await GetTopSorter({consider: () => {}}))(edgeList);
 
             res.forEach((node, i) => {
                 edgeList[node].forEach(({to}) => {
