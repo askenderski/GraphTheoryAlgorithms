@@ -1,13 +1,6 @@
 import useValidateOnInputStop from "../Hooks/useValidateOnInputStop";
 import {useEffect, useRef} from "react";
-
-function usePrevious(value) {
-    const ref = useRef();
-    useEffect(() => {
-        ref.current = value;
-    });
-    return ref.current;
-}
+import usePrevious from "../Hooks/usePrevious";
 
 export default function withValidateOnInputStop(WrappedComponent) {
     return function ({validate, value, setValue, time, errors = [], setErrors, validateDefault, ...restProps}) {
