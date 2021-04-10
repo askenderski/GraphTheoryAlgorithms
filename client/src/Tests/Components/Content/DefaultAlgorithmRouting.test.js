@@ -4,7 +4,7 @@ import {Redirect, Route} from "react-router-dom";
 import DefaultAlgorithmRouting from "../../../Components/Content/AlgorithmPage/DefaultAlgorithmRouting";
 import {AlgorithmTypes} from "../../../Data/Algorithms/algorithms";
 import {mount} from "enzyme";
-import {getOne} from "../../../Services/algorithmService";
+import {getOneByTypeAndTitle} from "../../../Services/algorithmService";
 import Loading from "../../../Components/Common/Loading/Loading";
 import {act, waitFor, render} from "@testing-library/react";
 import * as React from "react";
@@ -63,7 +63,7 @@ function getRoutedDefaultAlgorithmRouting(algorithmType, algorithmTitle) {
 }
 
 test("Algorithm shows Loading before graph has loaded", async () => {
-    getOne.mockImplementation(() => {
+    getOneByTypeAndTitle.mockImplementation(() => {
         return new Promise(()=>{});
     });
 
@@ -88,7 +88,7 @@ test("Valid algorithm routes to Algorithm routing with its correct default graph
     const graphId = "defaultGraphForAlgorithmId'sId";
     let locationToRedirectTo;
 
-    getOne.mockImplementation((algorithmTypeId, algorithmId) => {
+    getOneByTypeAndTitle.mockImplementation((algorithmTypeId, algorithmId) => {
         const graphs = {
             General: {
                 TopSort: {
@@ -126,7 +126,7 @@ test("Valid algorithm routes to Algorithm routing with its correct default graph
 });
 
 test("Invalid algorithm renders error", async () => {
-    getOne.mockImplementation(() => {
+    getOneByTypeAndTitle.mockImplementation(() => {
         return Promise.reject();
     });
 
