@@ -1,0 +1,7 @@
+.card {
+    border-color: black;
+    border-width: medium;
+    border-style: solid;
+    overflow: scroll;
+    resize: none;
+}
