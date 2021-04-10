@@ -11,6 +11,10 @@ export default function AlgorithmRouting({match: {params}}) {
     const [doesGraphExist, setDoesGraphExist] = useState(true);
     const [nodesCardSize, setNodesCardSize] = useState({width: 200, height: 150});
     const [nodesCardPosition, setNodesCardPosition] = useState({x: 100, y: 100});
+    const [startButtonSize, setStartButtonSize] = useState({width: 50, height: 50});
+    const [startButtonPosition, setStartButtonPosition] = useState({x: 50, y: 50});
+
+    const [startAlgorithm] = useState();
 
     const [isScrolling, setIsScrolling] = useState(false);
 
@@ -52,12 +56,8 @@ export default function AlgorithmRouting({match: {params}}) {
     }
 
     function undirectedToDirectedNodeMatrix(undirectedNodeMatrix) {
-        console.log(undirectedNodeMatrix)
-
         return undirectedNodeMatrix
             .reduce((curMatrix, row, rowIndex) => {
-                console.log(curMatrix)
-
                 return row.slice(rowIndex)
                     .reduce(
                         (newFinalMatrix, curCell, cellIndex) =>
@@ -114,47 +114,58 @@ export default function AlgorithmRouting({match: {params}}) {
 
     if (doesGraphExist) {
         return (
-            <Rnd
-                size={{ width: nodesCardSize.width,  height: nodesCardSize.height }}
-                position={{ x: nodesCardPosition.x, y: nodesCardPosition.y }}
-                onDragStop={(e, d) => {
-                    if (isScrolling) {
-                        setIsScrolling(false);
-                        return;
-                    }
-
-                    setNodesCardPosition({ x: d.x, y: d.y });
-                }}
-                // onResizeStop={
-                //     (e, direction, ref, delta, position) => {
-                //         setNodesCardSize({
-                //             width: ref.style.width,
-                //             hei/>ght: ref.style.height,
-                //             ...position,
-                //         });
-                //     }
-                // }
-                onResize={
-                    (e, direction, ref, delta, position) => {
-                        setNodesCardSize({
-                            width: ref.style.width,
-                            height: ref.style.height,
-                            ...position,
-                        });
-                    }
-                }
-            >
-                <NodesCard
-                    size={nodesCardSize}
-                    nodes={nodes}
-                    handlers={{
-                        addNode, setNode, deleteNode, toggleIsDirected,
-                        toggleIsWeighted, onScrollCapture: () => {
-                            setIsScrolling(true);
+            <>
+                <Rnd
+                    size={{ width: nodesCardSize.width,  height: nodesCardSize.height }}
+                    position={{ x: nodesCardPosition.x, y: nodesCardPosition.y }}
+                    onDragStop={(e, d) => {
+                        if (isScrolling) {
+                            setIsScrolling(false);
+                            return;
                         }
+
+                        setNodesCardPosition({ x: d.x, y: d.y });
                     }}
-                />
-            </Rnd>
+                    onResize={
+                        (e, direction, ref, delta, position) => {
+                            setNodesCardSize({
+                                width: ref.style.width,
+                                height: ref.style.height,
+                                ...position,
+                            });
+                        }
+                    }
+                >
+                    <NodesCard
+                        size={nodesCardSize}
+                        nodes={nodes}
+                        handlers={{
+                            addNode, setNode, deleteNode, toggleIsDirected,
+                            toggleIsWeighted, onScrollCapture: () => {
+                                setIsScrolling(true);
+                            }
+                        }}
+                    />
+                </Rnd>
+                <Rnd
+                    size={{ width: startButtonSize.width,  height: startButtonSize.height }}
+                    position={{ x: startButtonPosition.x, y: startButtonPosition.y }}
+                    onDragStop={(e, d) => {
+                        setStartButtonPosition({ x: d.x, y: d.y });
+                    }}
+                    onResize={
+                        (e, direction, ref, delta, position) => {
+                            setStartButtonSize({
+                                width: ref.style.width,
+                                height: ref.style.height,
+                                ...position,
+                            });
+                        }
+                    }
+                >
+                    <button onClick={startAlgorithm}>Start</button>
+                </Rnd>
+            </>
         );
     }
 

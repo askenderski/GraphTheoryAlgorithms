@@ -1,7 +1,7 @@
 import Nodes from "./Nodes/Nodes";
 import useToggle from "../../../../Hooks/useToggle";
 import ToggleableComponent from "../../../Common/ToggleableComponent/ToggleableComponent";
-import style from "./AlgorithmRouting.module.css";
+import style from "./NodesCard.module.css";
 
 export default function NodesCard({nodes, handlers, size}) {
     const [isDeleting, toggleIsDeleting] = useToggle(false);
