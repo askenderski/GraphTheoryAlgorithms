@@ -15,7 +15,7 @@ export const getAll = function ({filters}) {
         .reduce((a, [filterName, isToBeIncluded]) => ({...a, [filterName]: isToBeIncluded}), {});
     
     return fetch(`${articles.base}`, {
-        ...{defaultOptions},
+        ...defaultOptions,
         method: 'GET',
         headers: {
             filters: filterParams
