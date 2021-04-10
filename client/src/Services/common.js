@@ -5,6 +5,10 @@ export const articles = {
     base: `${baseUrl}/articles`
 };
 
+export const graphs = {
+    base: `${baseUrl}/graphs`
+};
+
 export const auth = (function(){
     let auth = {base: `${baseUrl}/auth`};
 

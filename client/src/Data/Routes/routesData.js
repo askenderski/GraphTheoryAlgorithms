@@ -15,6 +15,7 @@ function moduleLocationToComponent(moduleLocation) {
 const AboutModule = moduleLocationToComponent("About/About");
 const ArticleRoutingModule = moduleLocationToComponent("ArticlePage/ArticleRouting/ArticleRouting");
 const DefaultAlgorithmRoutingModule = moduleLocationToComponent("AlgorithmPage/DefaultAlgorithmRouting");
+const AlgorithmRoutingModule = moduleLocationToComponent("AlgorithmPage/AlgorithmRouting");
 const RegistrationFormModule = moduleLocationToComponent("RegistrationForm/RegistrationForm");
 const LoginFormModule = moduleLocationToComponent("LoginForm/LoginForm");
 const ArticlesPageModule = moduleLocationToComponent("ArticlesPage/ArticlesPage");
@@ -46,10 +47,10 @@ export const RoutesData = {
         root: "/algorithms",
 
         algorithmType: {
-            root: "/:algorithmTypeId",
+            root: "/:algorithmType",
 
             algorithm: {
-                root: "/:algorithmId",
+                root: "/:algorithmTitle",
 
                 defaultGraph: {
                     root: "/",
@@ -59,6 +60,7 @@ export const RoutesData = {
                 },
                 algorithmGraph: {
                     root: "/graphs/:graphId",
+                    component: AlgorithmRoutingModule
                 }
             }
         }

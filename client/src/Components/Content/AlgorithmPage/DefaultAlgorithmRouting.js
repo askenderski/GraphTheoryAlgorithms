@@ -8,9 +8,9 @@ export default function DefaultAlgorithmRouting({routeToRedirectTo, match: {para
     const [doesArticleExist, setDoesArticleExist] = useState(true);
 
     useEffect(()=>{
-        getOne(params.algorithmTypeId, params.algorithmId)
+        getOne(params.algorithmType, params.algorithmTitle)
             .then(graph=>{
-                setGraphId(graph.id);
+                setGraphId(graph._id);
             })
             .catch(err=>setDoesArticleExist(false));
     }, []);
@@ -22,8 +22,8 @@ export default function DefaultAlgorithmRouting({routeToRedirectTo, match: {para
     if (graphId !== undefined) {
         return <Redirect to={
             routeToRedirectTo
-                .replace(":algorithmTypeId", params.algorithmTypeId)
-                .replace(":algorithmId", params.algorithmId)
+                .replace(":algorithmType", params.algorithmType)
+                .replace(":algorithmTitle", params.algorithmTitle)
                 .replace(":graphId", graphId)
         }/>;
     } else {
