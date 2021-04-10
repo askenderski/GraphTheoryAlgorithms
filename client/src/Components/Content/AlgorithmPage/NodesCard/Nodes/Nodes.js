@@ -37,10 +37,19 @@ export default function Nodes({nodes, handlers: {setNode, deleteNode} = {}, isDe
     function getCellByRowAndColIndex(rowIndex, colIndex) {
         return (
             <td key={colIndex}>
-                <input type="text" value={nodes.getNode({i: rowIndex, j: colIndex})}
-                onChange={e=>{
-                    setNode({i: rowIndex, j: colIndex}, e.target.value);
-                }}/>
+                {
+                    nodes.get("isWeighted") ?
+                        <input type="number" value={nodes.getNode({i: rowIndex, j: colIndex})}
+                               onChange={e => {
+                                   setNode({i: rowIndex, j: colIndex}, e.target.value);
+                               }}
+                        /> :
+                        <input type="checkbox" checked={nodes.getNode({i: rowIndex, j: colIndex})}
+                               onChange={e => {
+                                   setNode({i: rowIndex, j: colIndex}, !nodes.getNode({i: rowIndex, j: colIndex}));
+                               }}
+                        />
+                }
             </td>
         );
     }
