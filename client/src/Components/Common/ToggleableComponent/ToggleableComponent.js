@@ -5,7 +5,7 @@ export default function ToggleableComponent({isOn, toggleIsOn, values}) {
         <div>
             <span>{values.off}</span>
             <label className={style.switch}>
-                <input type="checkbox" checked={isOn} onClick={toggleIsOn} />
+                <input type="checkbox" checked={isOn} onChange={toggleIsOn} />
                 <span className={style.slider} />
             </label>
             <span>{values.on}</span>
