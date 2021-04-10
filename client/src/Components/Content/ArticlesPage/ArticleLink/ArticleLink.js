@@ -18,11 +18,11 @@ function validateProps({type, description}) {
 export default function (props) {
     validateProps(props);
 
-    const {name, description, type, to} = props;
+    const {title, description, type, to} = props;
 
     return (
         <Link to={to} style={{textDecoration: 'none', color: "inherit"}}>
-            <span data-testid="article-link" style={{backgroundColor: articleColorsMap.get(type)}}>{name}</span>
+            <p data-testid="article-link" style={{backgroundColor: articleColorsMap.get(type)}}>{title}</p>
             <p data-testid="article-description">
                 {getDescriptionFormatted(description)}
             </p>

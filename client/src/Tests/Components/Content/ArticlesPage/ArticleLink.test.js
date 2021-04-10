@@ -5,7 +5,7 @@ import {articleColorsMap, ArticleTypes} from "../../../../Data/articleTypes";
 import {MemoryRouter} from "react-router";
 
 const defaultProps = {
-    name: "Default Article Name",
+    title: "Default Article Name",
     description: "Default Article Description",
     type: ArticleTypes.General
 };
@@ -20,16 +20,16 @@ function ArticleLinkInRouter(props) {
 
 describe("ArticleLink visualizes correctly", () => {
     test("Article name is in ArticleLink", () => {
-        const name = "Name of the Article";
+        const title = "Name of the Article";
 
         const props = _.clone(defaultProps);
-        props.name = name;
+        props.title = title;
 
         const article = render(
             <ArticleLinkInRouter {...props}></ArticleLinkInRouter>
         );
 
-        expect(article.getByText(name)).toBeInTheDocument();
+        expect(article.getByText(title)).toBeInTheDocument();
     });
 
     test("Article description beginning is in ArticleLink", () => {
