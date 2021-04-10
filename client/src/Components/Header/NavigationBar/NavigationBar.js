@@ -5,13 +5,14 @@ import UserContext from "../../../Contexts/User";
 import {useContext} from "react";
 import {NavLink, useLocation} from "react-router-dom";
 import {Routes} from "../../../Data/Routes/routes";
+import {logout} from "../../../Services/authenticationService";
 
 function removeTrailingSlash(a) {
     return a.substring(a.length-1) === "/" ? a.substring(0,a.length-1) : a;
 }
 
 export default function () {
-    const { user } = useContext(UserContext);
+    const { user, setUser } = useContext(UserContext);
     const location = useLocation();
 
     const userNavigation = user === undefined
@@ -34,6 +35,18 @@ export default function () {
             <>
                 <Menu.Item style={{float: "right"}}>
                     {user.username}
+                </Menu.Item>
+                <Menu.Item
+                    style={{float: "right"}} key={Routes.authentication.login.fullPath}
+                    onClick={()=>{
+                        console.log("sadsad");
+                        logout()
+                            .then(()=> {
+                                setUser();
+                            });
+                    }}
+                >
+                    Logout
                 </Menu.Item>
             </>
         );

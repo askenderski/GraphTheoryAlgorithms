@@ -8,10 +8,21 @@ export const articles = {
 export const auth = (function(){
     let auth = {base: `${baseUrl}/auth`};
 
-    auth = {...auth, login: `${auth.base}/login`, register: `${auth.base}/register`};
+    auth = {...auth, login: `${auth.base}/login`, logout: `${auth.base}/logout`,
+        register: `${auth.base}/register`, user: `${auth.base}/user`};
 
     return auth;
 }());
+
+export const getMakeSureIsOk = function ({invalidStatusMessage, allowedStatuses}) {
+    return function (res) {
+        if (!allowedStatuses.includes(res.status)) {
+            return {message: invalidStatusMessage};
+        }
+
+        return res;
+    };
+};
 
 export const getMakeSureIsOkWithStream = function ({streamType = "json", allowedStatuses}) {
     return function (res) {
