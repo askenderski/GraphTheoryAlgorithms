@@ -1,5 +1,5 @@
 import Nodes from "./Nodes/Nodes";
-import useToggle from "../../../Hooks/useToggle";
+import useToggle from "../../../../Hooks/useToggle";
 
 export default function NodesCard({nodes, handlers}) {
     const [isDeleting, toggleIsDeleting] = useToggle(false);

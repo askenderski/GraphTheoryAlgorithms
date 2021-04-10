@@ -3,6 +3,7 @@ import ArticleLink from "../../../../Components/Content/ArticlesPage/ArticleLink
 import {mount} from "enzyme";
 import ArticleLinkGroup from "../../../../Components/Content/ArticlesPage/ArticleLinkGroup/ArticleLinkGroup";
 import {ArticleTypes} from "../../../../Data/articleTypes";
+import {MemoryRouter} from "react-router";
 
 function isArticleLinkFromArticle(articleLink, article) {
     const typeIsSame = articleLink.prop("type") === article.type;
@@ -19,6 +20,10 @@ function getArticleObjectFromArticleLink(articleLink, articles) {
         .find(article=> isArticleLinkFromArticle(articleLink, article));
 }
 
+function ArticlesInRouter(props) {
+    return <MemoryRouter><Articles {...props} /></MemoryRouter>;
+}
+
 test("Articles renders correct ArticleGroup when an article object is passed", () => {
     const article = {
         type: ArticleTypes.General,
@@ -26,7 +31,7 @@ test("Articles renders correct ArticleGroup when an article object is passed", (
         description: "Description"
     };
 
-    const articles = mount(<Articles articles={[article]}/>);
+    const articles = mount(<ArticlesInRouter articles={[article]}/>);
 
     expect(articles.find(ArticleLinkGroup)).toHaveLength(1);
     const articleLinkGroup = articles.find(ArticleLinkGroup).at(0);
@@ -52,7 +57,7 @@ test("Articles renders correct single ArticleGroup when multiple article objects
         description: "Description 2"
     };
 
-    const articles = mount(<Articles articles={[article1, article2]}/>);
+    const articles = mount(<ArticlesInRouter articles={[article1, article2]}/>);
 
     expect(articles.find(ArticleLinkGroup)).toHaveLength(1);
     const articleLinkGroup = articles.find(ArticleLinkGroup).at(0);
@@ -84,7 +89,7 @@ test("Articles renders correct multiple ArticleGroups when article objects are p
         description: "Description 2"
     };
 
-    const articles = mount(<Articles articles={[article1, article2]}/>);
+    const articles = mount(<ArticlesInRouter articles={[article1, article2]}/>);
 
     const articleLinkGroups = articles.find(ArticleLinkGroup);
 

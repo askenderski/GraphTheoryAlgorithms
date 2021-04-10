@@ -42,9 +42,12 @@ const ComponentWithValidateOnInputStop = withValidateOnInputStop(Component);
 
 function Form({validate = () => [], defaultValue, ...restProps}) {
     const [value, setValue] = React.useState(defaultValue);
+    const [errors, setErrors] = React.useState([]);
 
     return (
         <ComponentWithValidateOnInputStop
+            setErrors={setErrors}
+            errors={errors}
             validate={validate}
             value={value}
             setValue={setValue}

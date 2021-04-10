@@ -40,22 +40,23 @@ jest.mock('react', () => {
 const defaultAlgorithmRoute = Routes.algorithms.algorithmType.algorithm.defaultGraph.fullPath;
 const algorithmRoute = Routes.algorithms.algorithmType.algorithm.algorithmGraph.fullPath;
 
-function getRoutedDefaultAlgorithmRouting(algorithmTypeId, algorithmId) {
+function getRoutedDefaultAlgorithmRouting(algorithmType, algorithmTitle) {
     return (
         <MemoryRouter initialEntries={[
             defaultAlgorithmRoute
-                .replace(":algorithmTypeId", algorithmTypeId)
-                .replace(":algorithmId", algorithmId)
+                .replace(":algorithmType", algorithmType)
+                .replace(":algorithmTitle", algorithmTitle)
         ]}>
             <Route
                 path={defaultAlgorithmRoute}
-                render={props=>(
+                render={props=>{
+                    return (
                     <DefaultAlgorithmRouting
                         {...props}
                         routeToRedirectTo=
                             {Routes.algorithms.algorithmType.algorithm.defaultGraph.fullRedirectWithParams}
                     />
-                    )
+                    )}
                 } />
         </MemoryRouter>
     );
@@ -91,7 +92,7 @@ test("Valid algorithm routes to Algorithm routing with its correct default graph
         const graphs = {
             General: {
                 TopSort: {
-                    id: graphId
+                    _id: graphId
                 }
             }
         };
@@ -113,12 +114,11 @@ test("Valid algorithm routes to Algorithm routing with its correct default graph
         await Promise.resolve();
         routedDefaultAlgorithmRouting.update();
     });
-    routedDefaultAlgorithmRouting.debug();
 
     expect(locationToRedirectTo).toBe(
         algorithmRoute
-            .replace(":algorithmTypeId", algorithmTypeId)
-            .replace(":algorithmId", algorithmId)
+            .replace(":algorithmType", algorithmTypeId)
+            .replace(":algorithmTitle", algorithmId)
             .replace(":graphId", graphId)
     );
 

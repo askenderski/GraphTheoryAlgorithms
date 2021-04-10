@@ -1,5 +1,5 @@
 import {fireEvent, render} from "@testing-library/react";
-import Nodes from "../../../../Components/Content/NodesCard/Nodes/Nodes";
+import Nodes from "../../../../Components/Content/AlgorithmPage/NodesCard/Nodes/Nodes";
 import {useState} from "react";
 import {Record, List} from "immutable";
 

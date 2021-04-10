@@ -1,12 +1,12 @@
-import NodesCard from "../../../../Components/Content/NodesCard/NodesCard";
+import NodesCard from "../../../../Components/Content/AlgorithmPage/NodesCard/NodesCard";
 import {mount} from "enzyme";
-import Nodes from "../../../../Components/Content/NodesCard/Nodes/Nodes";
+import Nodes from "../../../../Components/Content/AlgorithmPage/NodesCard/Nodes/Nodes";
 import {act, fireEvent, render} from "@testing-library/react";
 
 const defaultHandlers = { setNode: () => {}, addNode: () => {}, deleteNode: () => {} };
 
 //useToggle is presumed to be working and so it is not mocked
-jest.mock("../../../../Components/Content/NodesCard/Nodes/Nodes", () => jest.fn());
+jest.mock("../../../../Components/Content/AlgorithmPage/NodesCard/Nodes/Nodes", () => jest.fn());
 
 beforeEach(()=>{
     Nodes.mockImplementation(()=>null);

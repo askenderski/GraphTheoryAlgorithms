@@ -5,6 +5,8 @@ import * as _ from "lodash";
 import ArticleLink from "../../../../Components/Content/ArticlesPage/ArticleLink/ArticleLink";
 import {mount} from "enzyme";
 
+jest.mock("../../../../Components/Content/ArticlesPage/ArticleLink/ArticleLink", () => jest.fn());
+
 const defaultProps = {
     type: ArticleTypes.General
 };
@@ -21,6 +23,7 @@ test("ArticleLinkGroup renders correct title according to type", () => {
 });
 
 test("ArticleLinkGroup renders children", () => {
+    ArticleLink.mockImplementation(()=>null);
     const children = [
         <ArticleLink type={ArticleTypes.General} name="Name 1" description="Lorem ipsum" key="0"/>,
         <ArticleLink type={ArticleTypes.ShortestPath} name="Name 2" description="Lorem ipsum1" key="1"/>

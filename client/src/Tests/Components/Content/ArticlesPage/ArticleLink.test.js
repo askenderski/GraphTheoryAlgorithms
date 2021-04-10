@@ -2,6 +2,7 @@ import ArticleLink from "../../../../Components/Content/ArticlesPage/ArticleLink
 import {render, fireEvent, waitFor, screen, getByText, cleanup} from '@testing-library/react';
 import _ from "lodash";
 import {articleColorsMap, ArticleTypes} from "../../../../Data/articleTypes";
+import {MemoryRouter} from "react-router";
 
 const defaultProps = {
     name: "Default Article Name",
@@ -13,6 +14,10 @@ jest.spyOn(console, "error").mockImplementation(()=>{});
 
 afterEach(cleanup);
 
+function ArticleLinkInRouter(props) {
+    return <MemoryRouter><ArticleLink {...props} /></MemoryRouter>;
+}
+
 describe("ArticleLink visualizes correctly", () => {
     test("Article name is in ArticleLink", () => {
         const name = "Name of the Article";
@@ -21,7 +26,7 @@ describe("ArticleLink visualizes correctly", () => {
         props.name = name;
 
         const article = render(
-            <ArticleLink {...props}></ArticleLink>
+            <ArticleLinkInRouter {...props}></ArticleLinkInRouter>
         );
 
         expect(article.getByText(name)).toBeInTheDocument();
@@ -34,7 +39,7 @@ describe("ArticleLink visualizes correctly", () => {
         props.description = description;
 
         const article = render(
-            <ArticleLink {...props}></ArticleLink>
+            <ArticleLinkInRouter {...props}></ArticleLinkInRouter>
         );
 
         //Only the beginning of the description is guaranteed to be in the Article and so it tests for the first 10 characters
@@ -49,7 +54,7 @@ describe("ArticleLink visualizes correctly", () => {
         props.description = description;
 
         const article = render(
-            <ArticleLink {...props}></ArticleLink>
+            <ArticleLinkInRouter {...props}></ArticleLinkInRouter>
         );
 
         expect(article.getByTestId("article-description").textContent).not.toContain(textNotToBeVisualized);
@@ -61,7 +66,7 @@ describe("ArticleLink visualizes correctly", () => {
         const props = _.clone(defaultProps);
         props.type = type;
 
-        const articleFilter = render(<ArticleLink {...props}></ArticleLink>);
+        const articleFilter = render(<ArticleLinkInRouter {...props}></ArticleLinkInRouter>);
 
         expect(articleFilter.getByTestId("article-link"))
             .toHaveStyle({backgroundColor: articleColorsMap.get(type)});
@@ -75,7 +80,7 @@ describe("ArticleLink props are validated correctly", () => {
         const props = _.clone(defaultProps);
         props.type = invalidType;
 
-        expect(() => render(<ArticleLink {...props}></ArticleLink>)).toThrow("Invalid type");
+        expect(() => render(<ArticleLinkInRouter {...props}></ArticleLinkInRouter>)).toThrow("Invalid type");
     });
 
     test("Description of type other than string throws error", () => {
@@ -84,6 +89,6 @@ describe("ArticleLink props are validated correctly", () => {
         const props = _.clone(defaultProps);
         props.description = description;
 
-        expect(() => render(<ArticleLink {...props}></ArticleLink>)).toThrow("Invalid description");
+        expect(() => render(<ArticleLinkInRouter {...props}></ArticleLinkInRouter>)).toThrow("Invalid description");
     });
 });

@@ -21,9 +21,9 @@ export default function (props) {
     const {name, description, type, to} = props;
 
     return (
-        <Link to={to} data-testid="article-link" style={{textDecoration: 'none', color: "inherit"}}>
-            <span>{name}</span>
-            <p data-testid="article-description" style={{backgroundColor: articleColorsMap.get(type)}}>
+        <Link to={to} style={{textDecoration: 'none', color: "inherit"}}>
+            <span data-testid="article-link" style={{backgroundColor: articleColorsMap.get(type)}}>{name}</span>
+            <p data-testid="article-description">
                 {getDescriptionFormatted(description)}
             </p>
         </Link>
