@@ -1,19 +1,38 @@
 import {useEffect, useState} from "react";
 import {NodesRecord, NodesRecordFromGraphObject} from "../../../Records/NodesRecord";
 import {getOneById} from "../../../Services/algorithmService";
-import {Rnd} from "react-rnd";
-import NodesCard from "./NodesCard/NodesCard";
-import {getHandlers} from "../../../Tests/Utilities/algorithmHandlers";
 import RndOfNodesCard from "./RndOfNodesCard/RndOfNodesCard";
+import RndOfStartAlgorithmButton from "./RndOfStartAlgorithmButton/RndOfStartAlgorithmButton";
+import {nodeMatrixToGraphRepresentation} from "../../../Utilities/graphs";
 
 export default function AlgorithmRouting({match: {params}}) {
     const { algorithmType, algorithmTitle, graphId } = params;
     const [nodes, setNodes] = useState(NodesRecord());
     const [doesGraphExist, setDoesGraphExist] = useState(true);
-    const [startButtonSize, setStartButtonSize] = useState({width: 50, height: 50});
-    const [startButtonPosition, setStartButtonPosition] = useState({x: 50, y: 50});
+    const [doesAlgorithmExist, setDoesAlgorithmExist] = useState(true);
+    const [isAlgorithmRunning, setIsAlgorithmRunning] = useState(false);
 
-    const [startAlgorithm] = useState();
+    const algorithmGetterPromise = import(`../../../Algorithms/${algorithmType}/${algorithmTitle}`)
+            .catch(err=>{
+                setDoesAlgorithmExist(false);
+                return null;
+            })
+    const [algorithmController, setAlgorithmController] = useState();
+
+    useEffect(async () => {
+        algorithmGetterPromise
+            .then(algorithmGetter=>algorithmGetter(algorithmController))
+            .then(({algorithm, graphRepresentation})=>
+                algorithm(nodeMatrixToGraphRepresentation(nodes.nodeMatrix, graphRepresentation))
+            );
+
+        return () => algorithmController.invalidate();
+    }, [algorithmController]);
+
+    function startAlgorithm() {
+        setIsAlgorithmRunning(true);
+        setAlgorithmController({setIsDone: () => setIsAlgorithmRunning(false)});
+    }
 
     useEffect(() => {
         getOneById(graphId)
@@ -25,28 +44,11 @@ export default function AlgorithmRouting({match: {params}}) {
             });
     }, [graphId]);
 
-    if (doesGraphExist) {
+    if (doesGraphExist && doesAlgorithmExist) {
         return (
             <>
-                <RndOfNodesCard nodes={nodes} setNodes={setNodes} />
-                <Rnd
-                    size={{width: startButtonSize.width, height: startButtonSize.height}}
-                    position={{x: startButtonPosition.x, y: startButtonPosition.y}}
-                    onDragStop={(e, d) => {
-                        setStartButtonPosition({x: d.x, y: d.y});
-                    }}
-                    onResize={
-                        (e, direction, ref, delta, position) => {
-                            setStartButtonSize({
-                                width: ref.style.width,
-                                height: ref.style.height,
-                                ...position,
-                            });
-                        }
-                    }
-                >
-                    <button onClick={startAlgorithm}>Start</button>
-                </Rnd>
+                <RndOfNodesCard nodes={nodes} setNodes={setNodes}/>
+                <RndOfStartAlgorithmButton startAlgorithm={startAlgorithm}/>
             </>
         );
     }
