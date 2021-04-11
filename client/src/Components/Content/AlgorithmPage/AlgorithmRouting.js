@@ -12,16 +12,25 @@ export default function AlgorithmRouting({match: {params}}) {
     const [doesAlgorithmExist, setDoesAlgorithmExist] = useState(true);
     const [isAlgorithmRunning, setIsAlgorithmRunning] = useState(false);
 
-    const algorithmGetterPromise = import(`../../../Algorithms/${algorithmType}/${algorithmTitle}`)
-            .catch(err=>{
-                setDoesAlgorithmExist(false);
-                return null;
-            })
+    const algorithmGetterPromise = import(`../../../Algorithms/${algorithmType}/${algorithmTitle}/${algorithmTitle}`)
+        .catch(err=>{
+            setDoesAlgorithmExist(false);
+            return null;
+        });
+
+    const controllerPromise = import(`../../../Algorithms/${algorithmType}/${algorithmTitle}/Controller`)
+        .catch(err=>{
+            setDoesAlgorithmExist(false);
+            return null;
+        });
+
     const [algorithmController, setAlgorithmController] = useState();
 
     useEffect(async () => {
+        if (algorithmController === undefined) return;
+
         algorithmGetterPromise
-            .then(algorithmGetter=>algorithmGetter(algorithmController))
+            .then(({default: algorithmGetter})=>algorithmGetter(algorithmController))
             .then(({algorithm, graphRepresentation})=>
                 algorithm(nodeMatrixToGraphRepresentation(nodes.nodeMatrix, graphRepresentation))
             );
@@ -29,9 +38,19 @@ export default function AlgorithmRouting({match: {params}}) {
         return () => algorithmController.invalidate();
     }, [algorithmController]);
 
-    function startAlgorithm() {
+    async function startAlgorithm() {
         setIsAlgorithmRunning(true);
-        setAlgorithmController({setIsDone: () => setIsAlgorithmRunning(false)});
+
+        const controller = (await controllerPromise);
+
+        setAlgorithmController(controller.default({
+            setOutputValue: () => {},
+            setIsDone: () => setIsAlgorithmRunning(false),
+            setNodeStyle: (node, style) => {
+                console.log(node)
+                console.log(style)
+            }
+        }));
     }
 
     useEffect(() => {

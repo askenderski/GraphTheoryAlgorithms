@@ -1,4 +1,4 @@
-import GetTopSorter from "../../../Algorithms/General/TopSort";
+import GetTopSorter from "../../../Algorithms/General/TopSort/TopSort";
 import {List} from "immutable";
 import {waitFor} from "@testing-library/react";
 

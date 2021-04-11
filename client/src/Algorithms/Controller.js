@@ -2,7 +2,7 @@ import {promisify} from "util";
 
 export default function Controller({setResult, setIsDone, time = 1500, setNodeStyle}) {
     const handlers = {
-        getWait: promisify(setTimeout)
+        waitToConsider: async (time) => new Promise((resolve) => setTimeout(() => resolve(), time))
     };
 
     async function consider(node, type) {
@@ -15,7 +15,8 @@ export default function Controller({setResult, setIsDone, time = 1500, setNodeSt
 
         setNodeStyle(node, types[type]);
 
-        return handlers.getWait(time);
+        console.log(handlers.waitToConsider)
+        return handlers.waitToConsider(time);
     }
 
     function invalidate() {

@@ -4,6 +4,7 @@ export default function GetTopSorter({consider, setIsDone, setResult}) {
         algorithm: async function(edgeList) {
             async function runAlgorithm() {
                 async function dfs(node) {
+                    console.log(consider)
                     await consider(node, "current");
                     if (visited[node]) {
                         return;
@@ -25,7 +26,9 @@ export default function GetTopSorter({consider, setIsDone, setResult}) {
                 const nodesTopSorted = [];
                 const visited = [];
 
+                console.log("sad")
                 for (let i = 0; i < edgeList.size; i++) {
+                    console.log(consider)
                     await dfs(i);
                 }
 
