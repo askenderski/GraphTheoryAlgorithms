@@ -1,39 +1,57 @@
 import GetTopSorter from "../../../Algorithms/General/TopSort";
+import {List} from "immutable";
+import {waitFor} from "@testing-library/react";
 
 test("TopSort works on complicated graph", async () => {
-    const edgeList = [
-        [{to:3}],
-        [{to:0},{to:2},{to:3}],
-        [{to:0},{to:3}],
-        []
-    ];
+    const edgeList = List.of(
+        List.of({to:3}),
+        List.of({to:0},{to:2},{to:3}),
+        List.of({to:0},{to:3}),
+        List.of()
+    );
 
-    const res = await (await GetTopSorter({consider: () => {}}))(edgeList);
-    expect(res).toEqual([1,2,0,3]);
+    let isDone = false;
+    let result;
+
+    const res = await GetTopSorter({consider: () => {},
+        setIsDone: () => isDone = true,
+        setResult: newResult => result = newResult
+    }).algorithm(edgeList);
+
+    await waitFor(() => expect(isDone).toBe(true));
+    expect(result).toEqual([1,2,0,3]);
 });
 
-[
-    [
-        [{to: 1}, {to: 2}],
-        [],
-        [{to: 1}]
-    ],
-    [
-        [{to: 1}, {to: 2}],
-        [],
-        [{to: 1}],
-        [{to: 0}, {to: 4}, {to: 5}],
-        [{to: 1}],
-        []
-    ]
-]
+List.of(
+    List.of(
+        List.of({to: 1}, {to: 2}),
+        List.of(),
+        List.of({to: 1})
+    ),
+    List.of(
+        List.of({to: 1}, {to: 2}),
+        List.of(),
+        List.of({to: 1}),
+        List.of({to: 0}, {to: 4}, {to: 5}),
+        List.of({to: 1}),
+        List.of()
+    )
+)
     .forEach((edgeList, i)=> {
         test(`Programmatic test ${i + 1}`, async () => {
-            const res = await (await GetTopSorter({consider: () => {}}))(edgeList);
+            let isDone = false;
+            let result;
 
-            res.forEach((node, i) => {
-                edgeList[node].forEach(({to}) => {
-                    expect(res.indexOf(to) > i).toBe(true);
+            const res = await GetTopSorter({consider: () => {},
+                setIsDone: () => isDone = true,
+                setResult: newResult => result = newResult
+            }).algorithm(edgeList);
+
+            await waitFor(() => expect(isDone).toBe(true));
+
+            result.forEach((node, i) => {
+                edgeList.get(node).forEach(({to}) => {
+                    expect(result.indexOf(to) > i).toBe(true);
                 });
             });
         });

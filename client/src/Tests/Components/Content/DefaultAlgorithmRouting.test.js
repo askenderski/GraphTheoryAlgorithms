@@ -11,7 +11,7 @@ import * as React from "react";
 
 jest.mock("../../../Services/algorithmService", () => {
     return {
-        getOne: jest.fn()
+        getOneByTypeAndTitle: jest.fn()
     };
 });
 

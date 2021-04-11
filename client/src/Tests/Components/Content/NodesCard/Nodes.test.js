@@ -15,7 +15,7 @@ function getNodeMatrix(nodeCount, getCellValue) {
 }
 
 function getNodesByCellValueFunction(getCellValue) {
-    const nodesRecord = Record({nodeCount: 5, nodeMatrix: getNodeMatrix(5, getCellValue)});
+    const nodesRecord = Record({nodeCount: 5, nodeMatrix: getNodeMatrix(5, getCellValue), isWeighted: true});
 
     nodesRecord.prototype.getNode = function ({i, j}) {
         const matrix = this.get("nodeMatrix");
@@ -58,6 +58,7 @@ test("Nodes renders correct table cells", () => {
 
     const tableRows = tableRowHTMLElements
         .map(row=> Array.from(row.getElementsByTagName("td")));
+    console.log(nodesWrapper.debug())
 
     tableRows.forEach((tableRow, rowIndex)=>{
         tableRow.forEach((tableElement, colIndex)=>{

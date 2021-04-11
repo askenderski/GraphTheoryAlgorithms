@@ -16,7 +16,7 @@ test("NodesCard contains Nodes component with correct props", () => {
     const nodes = {};
     const handlers = defaultHandlers;
 
-    const wrapper = mount(<NodesCard nodes={nodes} handlers={handlers} />);
+    const wrapper = mount(<NodesCard nodes={nodes} handlers={handlers} size={{width: 100, heigh: 100}} />);
 
     const nodesComponent = wrapper.find(Nodes);
 
@@ -35,7 +35,7 @@ test("NodesCard adds node when Add Node button is clicked", () => {
     const nodes = {};
     const handlers = {...defaultHandlers, addNode: jest.fn()};
 
-    const wrapper = render(<NodesCard nodes={nodes} handlers={handlers} />);
+    const wrapper = render(<NodesCard nodes={nodes} handlers={handlers} size={{width: 100, heigh: 100}} />);
 
     fireEvent.click(wrapper.getByText("Add Node"));
 
@@ -46,7 +46,7 @@ test("NodesCard has delete button", () => {
     const nodes = {};
     const handlers = defaultHandlers;
 
-    const wrapper = render(<NodesCard nodes={nodes} handlers={handlers} />);
+    const wrapper = render(<NodesCard nodes={nodes} handlers={handlers} size={{width: 100, heigh: 100}} />);
 
     const deleteNodesButton = wrapper.getByText("Delete Node");
 
@@ -63,7 +63,7 @@ test("NodesCard puts Nodes component in delete mode when delete button is clicke
     const nodes = {};
     const handlers = defaultHandlers;
 
-    const wrapper = render(<NodesCard nodes={nodes} handlers={handlers} />);
+    const wrapper = render(<NodesCard nodes={nodes} handlers={handlers} size={{width: 100, heigh: 100}} />);
 
     const deleteNodesButton = wrapper.getByText("Delete Node");
 
@@ -82,7 +82,7 @@ test("NodesCard stops Nodes component from being in delete mode when delete butt
     const nodes = {};
     const handlers = defaultHandlers;
 
-    const wrapper = render(<NodesCard nodes={nodes} handlers={handlers} />);
+    const wrapper = render(<NodesCard nodes={nodes} handlers={handlers} size={{width: 100, heigh: 100}} />);
 
     const deleteNodesButton = wrapper.getByText("Delete Node");
 
@@ -104,7 +104,7 @@ test("NodesCard stops Nodes component from being in delete mode when node is del
     const nodes = {};
     const handlers = defaultHandlers;
 
-    const wrapper = render(<NodesCard nodes={nodes} handlers={handlers} />);
+    const wrapper = render(<NodesCard nodes={nodes} handlers={handlers} size={{width: 100, heigh: 100}} />);
 
     const deleteNodesButton = wrapper.getByText("Delete Node");
 
@@ -127,7 +127,7 @@ test("NodesCard passes deleteNode arguments successfully to parent handler when 
     const nodes = {};
     const handlers = {...defaultHandlers, deleteNode: (...props)=> deleteNodeArgs = props};
 
-    const wrapper = render(<NodesCard nodes={nodes} handlers={handlers} />);
+    const wrapper = render(<NodesCard nodes={nodes} handlers={handlers} size={{width: 100, heigh: 100}} />);
 
     const deleteNodesButton = wrapper.getByText("Delete Node");
 
