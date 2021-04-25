@@ -2,7 +2,7 @@ import ControlledTextInputWithValidation
     from "../../Common/ControlledTextInputWithValidation/ControlledTextInputWithValidation";
 import {useEffect, useState} from "react";
 import {useHistory} from "react-router";
-import {useStateWithShallowMerge} from "../../../Hooks/useStateWithShallowMerge";
+import useStateWithShallowMerge from "../../../Hooks/useStateWithShallowMerge";
 
 function inputTupleToControlledInput([value, setValue, validator, displayName, rest], {errors, setErrors}) {
     return <ControlledTextInputWithValidation

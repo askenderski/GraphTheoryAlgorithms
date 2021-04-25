@@ -1,5 +1,5 @@
 import {useEffect} from "react";
-import {useStateWithShallowMerge} from "./useStateWithShallowMerge";
+import useStateWithShallowMerge from "./useStateWithShallowMerge";
 
 export const useFilter = function ({defaultFilters, elements, setElements, filterElementsOfType, makeRequest}) {
     const [filters, setFilters] = useStateWithShallowMerge(defaultFilters);
