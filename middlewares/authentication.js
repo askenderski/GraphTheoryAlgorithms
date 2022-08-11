@@ -65,7 +65,7 @@ module.exports = {
         console.log(token)
 
         if (!token) {
-            next();
+            return next();
         }
 
         promisify(jwt.verify)(token, process.env.JWT_SECRET_KEY)
