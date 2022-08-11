@@ -28,9 +28,6 @@ app.use((err, req, res, next) => {
 
     next();
 });
-app.use((err, req, res, next) => {
-    return res.status(500).send({ message: err.message || "Unknown error" });
-});
 
 process.env;
 app.listen(process.env.PORT, function () {

@@ -9,7 +9,7 @@ router.all("/*", (req, res, next) => {
 });
 
 router.use((err, req, res, next) => {
-    res.status(err.status || 400).json({message: err.message});
+    res.status(err.status || 500).json({message: err.message || "Unknown error"});
 });
 
 module.exports = router;
