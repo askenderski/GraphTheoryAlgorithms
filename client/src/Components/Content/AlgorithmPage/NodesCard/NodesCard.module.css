@@ -2,6 +2,20 @@
     border-color: black;
     border-width: medium;
     border-style: solid;
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+
+.cardBody {
     overflow: scroll;
+    flex-grow: 1;
     resize: none;
+}
+
+.cardHeader {
+    border-color: black;
+    border-width: medium;
+    border-style: solid;
+    background-color: rgba(128, 128, 128, 15);
 }
