@@ -1,5 +1,5 @@
 import React from "react";
-import {articleColorsMap, articleTextMap, ArticleTypes, articleTypesSet} from "../../../../Data/articleTypes";
+import {articleColorsMap, articleTextMap, ArticleTypes, articleTypesSet} from "../../../../Data/ArticleTypes";
 import {validateArticleType} from "../../../../Utilities/Validation/articleTypeValidation";
 
 function validateProps({title, description, type}) {

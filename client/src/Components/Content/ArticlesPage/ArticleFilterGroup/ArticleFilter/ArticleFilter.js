@@ -2,7 +2,7 @@ import {Tag} from "antd";
 import React from "react";
 import style from "./ArticleFilter.module.css";
 import useToggle from "../../../../../Hooks/useToggle";
-import {articleColorsMap, articleTypesSet} from "../../../../../Data/articleTypes";
+import {articleColorsMap, articleTypesSet} from "../../../../../Data/ArticleTypes";
 import {validateArticleType} from "../../../../../Utilities/Validation/articleTypeValidation";
 
 function validateProps({content, type}) {

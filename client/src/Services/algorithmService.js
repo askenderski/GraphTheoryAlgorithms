@@ -1,5 +1,5 @@
 import {graphs, defaultOptions, getMakeSureIsOkWithStream} from "./common";
-import {ArticleTypes} from "../Data/articleTypes";
+import {ArticleTypes} from "../Data/ArticleTypes";
 
 export const getOneByTypeAndTitle = async function (algorithmType, algorithmTitle) {
     return fetch(`${graphs.base}/${algorithmType}/${algorithmTitle}`, defaultOptions)

@@ -1,5 +1,5 @@
 import {getWordsCutOffAtLength} from "../../../../Utilities/String/getWordsCutOffAtLength";
-import {articleColorsMap, articleTypesSet} from "../../../../Data/articleTypes";
+import {articleColorsMap, articleTypesSet} from "../../../../Data/ArticleTypes";
 import {validateArticleType} from "../../../../Utilities/Validation/articleTypeValidation";
 import {Link} from "react-router-dom";
 

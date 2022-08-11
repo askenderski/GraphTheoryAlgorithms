@@ -1,6 +1,6 @@
 import HorizontalList from "../../../Common/HorizontalList/HorizontalList";
 import ArticleFilter from "./ArticleFilter/ArticleFilter";
-import {articleTypesIterable} from "../../../../Data/articleTypes";
+import {articleTypesIterable} from "../../../../Data/ArticleTypes";
 
 export default function ({addFilter, removeFilter}) {
     return (

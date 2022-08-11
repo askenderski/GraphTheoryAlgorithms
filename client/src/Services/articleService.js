@@ -1,4 +1,4 @@
-import {ArticleTypes} from "../Data/articleTypes";
+import {ArticleTypes} from "../Data/ArticleTypes";
 import {articles, defaultOptions, getMakeSureIsOkWithStream} from "./common";
 
 export const getOne = async function ({title, type}) {

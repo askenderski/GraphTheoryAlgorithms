@@ -2,7 +2,7 @@ import ArticleFilterGroup from "./ArticleFilterGroup/ArticleFilterGroup";
 import Articles from "./Articles/Articles";
 import {useState} from "react";
 import {useFilter} from "../../../Hooks/useFilter";
-import {articleTypeNamesIterable} from "../../../Data/articleTypes";
+import {articleTypeNamesIterable} from "../../../Data/ArticleTypes";
 import * as articleService from "../../../Services/articleService";
 
 export default function ArticlesPage() {

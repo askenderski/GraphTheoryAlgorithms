@@ -1,4 +1,4 @@
-import {articleColorsMap, articleTextMap} from "../../../../Data/articleTypes";
+import {articleColorsMap, articleTextMap} from "../../../../Data/ArticleTypes";
 
 export default function ArticleLinkGroup(props) {
     return (
