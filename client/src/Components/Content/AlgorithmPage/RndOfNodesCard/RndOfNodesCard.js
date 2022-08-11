@@ -2,6 +2,7 @@ import {getHandlers} from "../../../../Tests/Utilities/algorithmHandlers";
 import {useEffect, useRef, useState} from "react";
 import {Rnd} from "react-rnd";
 import NodesCard from "../NodesCard/NodesCard";
+import nodesCardStyle from "../NodesCard/NodesCard.module.css";
 
 const defaultSize = {
     width: "300px", height: "300px"
@@ -20,11 +21,8 @@ export default function RndOfNodesCard({nodes, setNodes}) {
     const [nodesCardPosition, setNodesCardPosition] = useState(defaultNodesCardPosition);
 
     return <Rnd
-        size={{width: nodesCardSize.width, height: nodesCardSize.height}}
         position={{x: nodesCardPosition.x, y: nodesCardPosition.y}}
-        onDragStop={(e, d) => {
-            setNodesCardPosition({x: d.x, y: d.y});
-        }}
+        size={{width: nodesCardSize.width, height: nodesCardSize.height}}
         onResize={
             (e, direction, ref, delta, position) => {
                 setNodesCardSize({
@@ -33,11 +31,20 @@ export default function RndOfNodesCard({nodes, setNodes}) {
                 });
             }
         }
+        disableDragging={true}
     >
         <NodesCard
             size={nodesCardSize}
             nodes={nodes}
-            handlers={handlers}
+            handlers={
+                {
+                    ...handlers,
+                    setOffset: ({x, y}) => {
+                        console.log(x, y);
+                        setNodesCardPosition({x: nodesCardPosition.x+x, y: nodesCardPosition.y+y})
+                    }
+                }
+            }
         />
     </Rnd>;
 };
