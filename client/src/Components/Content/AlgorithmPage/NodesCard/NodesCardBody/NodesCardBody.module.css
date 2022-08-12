@@ -1,0 +1,5 @@
+.cardBody {
+    overflow: scroll;
+    flex-grow: 1;
+    resize: none;
+}

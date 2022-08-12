@@ -1,9 +1,10 @@
 import {useEffect, useState} from "react";
 import {NodesRecord, NodesRecordFromGraphObject} from "../../../Records/NodesRecord";
 import {getOneById} from "../../../Services/algorithmService";
-import RndOfNodesCard from "./RndOfNodesCard/RndOfNodesCard";
+import NodesCard from "./NodesCard/NodesCard";
 import RndOfStartAlgorithmButton from "./RndOfStartAlgorithmButton/RndOfStartAlgorithmButton";
 import {nodeMatrixToGraphRepresentation} from "../../../Utilities/graphs";
+import { getHandlers } from "../../../Tests/Utilities/algorithmHandlers";
 
 export default function AlgorithmRouting({match: {params}}) {
     const { algorithmType, algorithmTitle, graphId } = params;
@@ -63,10 +64,12 @@ export default function AlgorithmRouting({match: {params}}) {
             });
     }, [graphId]);
 
+    const nodesCardHandlers = getHandlers(nodes, setNodes);
+
     if (doesGraphExist && doesAlgorithmExist) {
         return (
             <>
-                <RndOfNodesCard nodes={nodes} setNodes={setNodes}/>
+                <NodesCard nodes={nodes} handlers={nodesCardHandlers}/>
                 <RndOfStartAlgorithmButton startAlgorithm={startAlgorithm}/>
             </>
         );

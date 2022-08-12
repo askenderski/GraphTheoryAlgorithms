@@ -3,7 +3,27 @@ import {mount} from "enzyme";
 import Nodes from "../../../../Components/Content/AlgorithmPage/NodesCard/Nodes/Nodes";
 import {act, fireEvent, render} from "@testing-library/react";
 
+global.ResizeObserver = class ResizeObserver {
+    observe() {
+        // do nothing
+    }
+    unobserve() {
+        // do nothing
+    }
+    disconnect() {
+        // do nothing
+    }
+};
+
 const defaultHandlers = { setNode: () => {}, addNode: () => {}, deleteNode: () => {} };
+
+//TODO:
+//Tests for adding, deleting, toggling weightedness and directedness should be in
+//NodesCardBody.test.js, not NodesCard.test.js
+//test if nodes are updated after adding/deleting,
+//test unweighted/weighted functionality,
+//test directed/undirected functionality,
+//test moving and resizing
 
 //useToggle is presumed to be working and so it is not mocked
 jest.mock("../../../../Components/Content/AlgorithmPage/NodesCard/Nodes/Nodes", () => jest.fn());

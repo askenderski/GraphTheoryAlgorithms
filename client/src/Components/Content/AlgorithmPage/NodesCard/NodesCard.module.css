@@ -5,17 +5,36 @@
     display: flex;
     flex-flow: column;
     height: 100%;
+    /* uses resize property to start movement,
+    then tracks it with onMouseMove added by useMover */
+    resize: both;
+    /* overflow cannot be any property for resize to work */
+    overflow: hidden;
+    /* needs fixed position to be moved */
+    position: fixed;
 }
 
-.cardBody {
-    overflow: scroll;
-    flex-grow: 1;
-    resize: none;
-}
+.unselectable {
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+ }
+
+ .unselectable * {
+    -moz-user-select: text;
+    -khtml-user-select: text;
+    -webkit-user-select: text;
+    -o-user-select: text;
+    user-select: text;
+ }
 
 .cardHeader {
     border-color: black;
     border-width: medium;
     border-style: solid;
     background-color: rgba(128, 128, 128, 15);
+    /* needs fixed position so it can be moved */
+    position: fixed;
 }

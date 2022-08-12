@@ -1,73 +1,31 @@
-import Nodes from "./Nodes/Nodes";
-import useToggle from "../../../../Hooks/useToggle";
-import ToggleableComponent from "../../../Common/ToggleableComponent/ToggleableComponent";
 import style from "./NodesCard.module.css";
-import { Rnd } from "react-rnd";
-import { useRef, useState } from "react";
+import useResizer from "../../../../Hooks/useResizer";
+import NodesCardBody from "./NodesCardBody/NodesCardBody";
+import { getCardStyle, getHeaderStyle } from "./Utilities/getStyles";
+import useMover from "../../../../Hooks/useMover";
 
-export default function NodesCard({nodes, handlers, size}) {
-    const [isDeleting, toggleIsDeleting] = useToggle(false);
+const defaultPosition = {x: 100, y: 100};
+const defaultSize = {width: "300px", height: "300px"};
 
-    const cardStyle = {width: size.width, height: size.height};
-    const headerStyle = getHeaderStyle({size});
+const headerClasses = `${style.cardHeader} ${style.unselectable}`;
 
-    const ref = useRef();
-    const [beginningOfDragHeaderPosition, setBeginningOfDragHeaderPosition] = useState({});
+export default function NodesCard({nodes, handlers}) {
+    const {position, onMouseDown} = useMover(defaultPosition);
+    const {size, ref: sizeRef} = useResizer(defaultSize);
+
+    const cardStyle = getCardStyle({size, position});
+    const headerStyle = getHeaderStyle({size, position});
 
     return (
-        <div className={style.card} style={cardStyle}>
-            <Rnd
-                onDragStart={(e, d)=>{
-                    setBeginningOfDragHeaderPosition(
-                        {x: ref.current.offsetLeft, y: ref.current.offsetTop}
-                    );
-                }}
-                onDrag={(e, d) => {
-                    handlers.setOffset({x: d.x-beginningOfDragHeaderPosition.x,
-                        y: d.y-beginningOfDragHeaderPosition.y});
-                }}
-                enableResizing={false}
-            >
-                <div
-                    ref={ref}
-                    className={style.cardHeader}
-                    style={headerStyle}
-                >
-                    Graph
-                </div>
-            </Rnd>
-            {/* invisible header that has relative position and thus affects the flow */}
-            <div style={headerStyle}></div>
-            <div className={style.cardBody}>
-                <button onClick={handlers.addNode}>Add Node</button>
-                <button onClick={toggleIsDeleting}>Delete Node</button>
-                <ToggleableComponent
-                    isOn={nodes.isDirected}
-                    toggleIsOn={handlers.toggleIsDirected}
-                    values={{on: "Directed", off: "Undirected"}}
-                />
-                <ToggleableComponent
-                    isOn={nodes.isWeighted}
-                    toggleIsOn={handlers.toggleIsWeighted}
-                    values={{on: "Weighted", off: "Unweighted"}}
-                />
-                <Nodes nodes={nodes} handlers={{setNode: handlers.setNode, deleteNode: (...props) => {
-                        toggleIsDeleting();
-                        handlers.deleteNode(...props);
-                    }}} isDeletingNode={isDeleting} />
+        // sizeRef is used for tracking card size and therefore changing the size of the header
+        <div className={style.card} ref={sizeRef} style={cardStyle}>
+            {/* onMouseDown is used for detecting when the header is being moved */}
+            <div onMouseDown={onMouseDown} className={headerClasses} style={headerStyle}>
+                Graph
             </div>
+            {/* invisible header that has relative position and thus affects the flow */}
+            <div style={headerStyle}/>
+            <NodesCardBody nodes={nodes} handlers={handlers}/>
         </div>
     );
 };
-
-function getHeaderStyle({size}) {
-    const {height} = size;
-    
-    const heightAsNum = Number(height.substring(0, height.length-2));
-    const headerHeight = Math.max(heightAsNum * 0.2, 20);
-
-    return {
-        height: headerHeight,
-        width: size.width
-    };
-}
