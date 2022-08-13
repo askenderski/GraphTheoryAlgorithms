@@ -4,7 +4,7 @@ export const nodeMatrixToGraphRepresentation = function (nodeMatrix, graphRepres
     switch (graphRepresentation) {
         case "adjacencyMatrix":
             return nodeMatrix;
-        case "edgeList":
+        case "adjacencyList":
             const emptyEdgeList = List.of(...new Array(nodeMatrix.size).fill().map(()=>List.of()));
 
             console.log(nodeMatrix)
@@ -34,7 +34,20 @@ export const nodeMatrixToGraphRepresentation = function (nodeMatrix, graphRepres
                         return curEdgeList2.set(cellFrom, curEdgeList2.get(cellFrom).push({to: cellTo, val: curCell}));
                     }, curEdgeList1);
                 }, emptyEdgeList);
+        case "edgeList":
+            const edgeList = [];
+
+            for (let i = 0; i < nodeMatrix.size; i++) {
+                const listOfNodesFromToNodeTo = nodeMatrix.get(i);
+
+                for (let j = 0; j < listOfNodesFromToNodeTo.size; j++) {
+                    if (listOfNodesFromToNodeTo.get(j)) edgeList.push({from: j, to: i});
+                }
+            }
+
+            return edgeList;
         default:
+            console.log("fucker")
             return;
     }
 };

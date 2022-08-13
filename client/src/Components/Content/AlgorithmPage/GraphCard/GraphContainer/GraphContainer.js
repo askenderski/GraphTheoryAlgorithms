@@ -1,4 +1,6 @@
 import Graph from "vis-react";
+import {nodeMatrixToGraphRepresentation} from "../../../../../Utilities/graphs";
+import { useEffect, useRef, useState } from "react";
 
 const graph = {
     nodes: [
@@ -16,8 +18,24 @@ const graph = {
     ]
 };
 
-export default function GraphContainer() {
+export default function GraphContainer({nodes}) {
+    const edgeList = nodeMatrixToGraphRepresentation(nodes.nodeMatrix, "edgeList");
+    const nodesForGraph = nodes.nodeMatrix.map((_,i)=>({
+        id: i,
+        label: i
+    })).toArray();
+
+    const resGraph = {edges: edgeList, nodes: nodesForGraph};
+
+    const [graph, setGraph] = useState(resGraph);
+
+    useEffect(()=>{
+        console.log(nodes)
+        console.log(resGraph)
+        setGraph(resGraph);
+    }, [nodes]);
+
     return (
-        <Graph graph={graph}/>
+        <div>{JSON.stringify(graph)}</div>
     );
 }

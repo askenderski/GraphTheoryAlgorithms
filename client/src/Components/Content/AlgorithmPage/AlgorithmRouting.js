@@ -72,7 +72,7 @@ export default function AlgorithmRouting({match: {params}}) {
             <>
                 <NodesCard nodes={nodes} handlers={nodesCardHandlers}/>
                 <RndOfStartAlgorithmButton startAlgorithm={startAlgorithm}/>
-                <GraphCard/>
+                <GraphCard nodes={nodes}/>
             </>
         );
     }
