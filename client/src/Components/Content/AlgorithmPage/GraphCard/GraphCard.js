@@ -19,7 +19,7 @@ export default function GraphCard(props) {
         <div ref={ref} className={`${style.card} ${cardStyleModule.card}`} style={cardStyle}>
             <div className={cardStyleModule.header} onMouseDown={onMouseDown} style={headerStyle}>Graph</div>
             <div style={{...headerStyle, flexShrink: 0}}/>
-            <div style={{height: "100%", width: "100%"}}><GraphContainer/></div>
+            <div style={{flexGrow: 1}}><GraphContainer/></div>
         </div>
     );
 }
