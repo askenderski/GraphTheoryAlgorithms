@@ -1,4 +1,5 @@
 import style from "./NodesCard.module.css";
+import cardStyleModule from "../../../Common/Card/Card.module.css";
 import useResizer from "../../../../Hooks/useResizer";
 import NodesCardBody from "./NodesCardBody/NodesCardBody";
 import { getCardStyle, getHeaderStyle } from "./Utilities/getStyles";
@@ -7,7 +8,7 @@ import useMover from "../../../../Hooks/useMover";
 const defaultPosition = {x: 100, y: 100};
 const defaultSize = {width: "300px", height: "300px"};
 
-const headerClasses = `${style.cardHeader} ${style.unselectable}`;
+const headerClasses = `${cardStyleModule.header} ${style.unselectable}`;
 
 export default function NodesCard({nodes, handlers}) {
     const {position, onMouseDown} = useMover(defaultPosition);
@@ -18,7 +19,7 @@ export default function NodesCard({nodes, handlers}) {
 
     return (
         // sizeRef is used for tracking card size and therefore changing the size of the header
-        <div className={style.card} ref={sizeRef} style={cardStyle}>
+        <div className={cardStyleModule.card} ref={sizeRef} style={cardStyle}>
             {/* onMouseDown is used for detecting when the header is being moved */}
             <div onMouseDown={onMouseDown} className={headerClasses} style={headerStyle}>
                 Graph
