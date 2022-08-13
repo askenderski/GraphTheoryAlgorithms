@@ -25,17 +25,19 @@ export default function GraphContainer({nodes}) {
         label: i
     })).toArray();
 
+    const [network, setNetwork] = useState({fit:()=>{}});
+
     const resGraph = {edges: edgeList, nodes: nodesForGraph};
 
     const [graph, setGraph] = useState(resGraph);
 
     useEffect(()=>{
-        console.log(nodes)
-        console.log(resGraph)
         setGraph(resGraph);
+
+        setTimeout(network.fit.bind(network), 1000);
     }, [nodes]);
 
     return (
-        <VisNetworkReactComponent data={graph}>{JSON.stringify(graph)}</VisNetworkReactComponent>
+        <VisNetworkReactComponent getNetwork={n=>setNetwork(n)} data={graph}></VisNetworkReactComponent>
     );
 }
