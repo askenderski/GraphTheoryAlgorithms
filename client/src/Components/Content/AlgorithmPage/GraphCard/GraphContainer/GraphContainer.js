@@ -1,4 +1,4 @@
-import Graph from "vis-react";
+import VisNetworkReactComponent from "vis-network-react";
 import {nodeMatrixToGraphRepresentation} from "../../../../../Utilities/graphs";
 import { useEffect, useRef, useState } from "react";
 
@@ -36,6 +36,6 @@ export default function GraphContainer({nodes}) {
     }, [nodes]);
 
     return (
-        <div>{JSON.stringify(graph)}</div>
+        <VisNetworkReactComponent data={graph}>{JSON.stringify(graph)}</VisNetworkReactComponent>
     );
 }
