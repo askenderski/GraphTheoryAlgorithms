@@ -5,6 +5,7 @@ import NodesCard from "./NodesCard/NodesCard";
 import RndOfStartAlgorithmButton from "./RndOfStartAlgorithmButton/RndOfStartAlgorithmButton";
 import {nodeMatrixToGraphRepresentation} from "../../../Utilities/graphs";
 import { getHandlers } from "../../../Tests/Utilities/algorithmHandlers";
+import GraphCard from "./GraphCard/GraphCard";
 
 export default function AlgorithmRouting({match: {params}}) {
     const { algorithmType, algorithmTitle, graphId } = params;
@@ -71,6 +72,7 @@ export default function AlgorithmRouting({match: {params}}) {
             <>
                 <NodesCard nodes={nodes} handlers={nodesCardHandlers}/>
                 <RndOfStartAlgorithmButton startAlgorithm={startAlgorithm}/>
+                <GraphCard/>
             </>
         );
     }
