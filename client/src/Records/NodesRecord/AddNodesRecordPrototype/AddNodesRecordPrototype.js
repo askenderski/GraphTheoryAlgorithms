@@ -23,11 +23,11 @@ export default function AddNodesRecordPrototype(NodesRecord) {
         return matrix.get(to).get(from);
     };
     
-    NodesRecord.prototype.addNode = function () {
+    NodesRecord.prototype.addNode = function (node) {
         const defaultEdge = this.get("isWeighted") ? 0 : false;
-        const edgesWithNewCount = this.set("nodeCount", this.nodeCount + 1);
+        const recordWithNewCount = this.set("nodeCount", this.nodeCount + 1);
     
-        let adjacencyMatrix = edgesWithNewCount.get("adjacencyMatrix");
+        let adjacencyMatrix = recordWithNewCount.get("adjacencyMatrix");
         //every column started by a to node with from nodes will add a new node at the end,
         //that being the newly added node, and it will have the default (0 or false) value
         let fromNodesMatrix = new List();
@@ -42,11 +42,13 @@ export default function AddNodesRecordPrototype(NodesRecord) {
         adjacencyMatrix = fromNodesMatrix;
     
         //the last column (the one where the destination is the new node) is empty as it isn't needed
-        const columnOfNodesFromToNodeTo = List.of(...new Array(edgesWithNewCount.nodeCount).fill(defaultEdge));
+        const columnOfNodesFromToNodeTo = List.of(...new Array(recordWithNewCount.nodeCount).fill(defaultEdge));
     
         adjacencyMatrix = adjacencyMatrix.push(columnOfNodesFromToNodeTo);
     
-        return edgesWithNewCount.set("adjacencyMatrix", adjacencyMatrix);
+        const recordWithNewCountAndEdges = recordWithNewCount.set("adjacencyMatrix", adjacencyMatrix);
+
+        return recordWithNewCountAndEdges.set("nodes", recordWithNewCountAndEdges.get("nodes").push(node));
     }
     
     NodesRecord.prototype.setEdge = function({to, from}, val) {
@@ -77,7 +79,7 @@ export default function AddNodesRecordPrototype(NodesRecord) {
         return nodesWithReversedWeight.set("adjacencyMatrix", adjacencyMatrixWithReversedWeight);
     }
     
-    NodesRecord.prototype.deleteNode = function (nodeIndex) {
+    NodesRecord.prototype.deleteNodeByIndex = function (nodeIndex) {
         if (this.nodeCount <= 0) return this;
     
         const nodesWithNewCount = this.set("nodeCount", this.nodeCount - 1);
@@ -91,7 +93,9 @@ export default function AddNodesRecordPrototype(NodesRecord) {
         const adjacencyMatrixWithoutFromCellsAndToCell = adjacencyMatrixWithoutFromCells.delete(nodeIndex);
         console.log(adjacencyMatrixWithoutFromCellsAndToCell)
     
-        return nodesWithNewCount.set("adjacencyMatrix", adjacencyMatrixWithoutFromCellsAndToCell);
+        const nodesWithNewCountAndEdges = nodesWithNewCount.set("adjacencyMatrix", adjacencyMatrixWithoutFromCellsAndToCell);
+
+        return nodesWithNewCountAndEdges.deleteIn(["nodes", nodeIndex]);
     }
     
     NodesRecord.prototype.toggleIsDirected = function () {

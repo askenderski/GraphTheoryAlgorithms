@@ -17,6 +17,7 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "uuid": "^8.3.2",
     "validator": "^13.5.2",
     "vis-data": "^7.1.4",
     "vis-network": "^9.1.2",
