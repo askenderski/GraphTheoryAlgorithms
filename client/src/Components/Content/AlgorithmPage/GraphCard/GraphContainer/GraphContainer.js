@@ -1,5 +1,5 @@
 import VisNetworkReactComponent from "vis-network-react";
-import {nodeMatrixToGraphRepresentation} from "../../../../../Utilities/graphs";
+import {adjacencyMatrixToGraphRepresentation} from "../../../../../Utilities/graphs";
 import { useEffect, useRef, useState } from "react";
 
 const graph = {
@@ -19,8 +19,8 @@ const graph = {
 };
 
 export default function GraphContainer({nodes}) {
-    const edgeList = nodeMatrixToGraphRepresentation(nodes.nodeMatrix, "edgeList");
-    const nodesForGraph = nodes.nodeMatrix.map((_,i)=>({
+    const edgeList = adjacencyMatrixToGraphRepresentation(nodes.get("adjacencyMatrix"), "edgeList");
+    const nodesForGraph = nodes.adjacencyMatrix.map((_,i)=>({
         id: i,
         label: i
     })).toArray();

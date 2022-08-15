@@ -1,13 +1,13 @@
 import {List} from "immutable";
 
-export const nodeMatrixToGraphRepresentation = function (nodeMatrix, graphRepresentation) {
+export const adjacencyMatrixToGraphRepresentation = function (adjacencyMatrix, graphRepresentation) {
     switch (graphRepresentation) {
         case "adjacencyMatrix":
-            return nodeMatrix;
+            return adjacencyMatrix;
         case "adjacencyList":
-            const emptyEdgeList = List.of(...new Array(nodeMatrix.size).fill().map(()=>List.of()));
+            const emptyEdgeList = List.of(...new Array(adjacencyMatrix.size).fill().map(()=>List.of()));
 
-            console.log(nodeMatrix)
+            console.log(adjacencyMatrix)
             console.log(graphRepresentation)
             // console.log(nodeMatrix
             //     .reduce((curEdgeList1, curRow, cellTo) => {
@@ -24,7 +24,7 @@ export const nodeMatrixToGraphRepresentation = function (nodeMatrix, graphRepres
             //         }, curEdgeList1);
             //     }, emptyEdgeList))
 
-            return nodeMatrix
+            return adjacencyMatrix
                 .reduce((curEdgeList1, curRow, cellTo) => {
                     return curRow.reduce((curEdgeList2, curCell, cellFrom) => {
                         if (curCell === 0 || curCell === false) {
@@ -37,8 +37,8 @@ export const nodeMatrixToGraphRepresentation = function (nodeMatrix, graphRepres
         case "edgeList":
             const edgeList = [];
 
-            for (let i = 0; i < nodeMatrix.size; i++) {
-                const listOfNodesFromToNodeTo = nodeMatrix.get(i);
+            for (let i = 0; i < adjacencyMatrix.size; i++) {
+                const listOfNodesFromToNodeTo = adjacencyMatrix.get(i);
 
                 for (let j = 0; j < listOfNodesFromToNodeTo.size; j++) {
                     if (listOfNodesFromToNodeTo.get(j)) edgeList.push({from: j, to: i});

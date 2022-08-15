@@ -1,10 +1,10 @@
 import {List, Record} from "immutable";
 
-function directedToUndirectedNodeMatrix(directedNodeMatrix) {
-    let matrix = directedNodeMatrix;
+function directedToUndirectedAdjacencyMatrix(directedAdjacencyMatrix) {
+    let matrix = directedAdjacencyMatrix;
 
-    for (let fromIndex = 0; fromIndex < directedNodeMatrix.size; fromIndex++) {
-        for (let toIndex = 0; toIndex < directedNodeMatrix.size; toIndex++) {
+    for (let fromIndex = 0; fromIndex < directedAdjacencyMatrix.size; fromIndex++) {
+        for (let toIndex = 0; toIndex < directedAdjacencyMatrix.size; toIndex++) {
             const cellValue = matrix.get(toIndex).get(fromIndex);
             console.log(cellValue, toIndex, fromIndex)
 
@@ -18,13 +18,13 @@ function directedToUndirectedNodeMatrix(directedNodeMatrix) {
 const nodesRecord = Record(
     {
         nodeCount: 1,
-        nodeMatrix: List.of(List.of(true)),
+        adjacencyMatrix: List.of(List.of(true)),
         isWeighted: false,
         isDirected: false
     });
 
 nodesRecord.prototype.getNode = function ({i, j}) {
-    const matrix = this.get("nodeMatrix");
+    const matrix = this.get("adjacencyMatrix");
 
     return matrix.get(i).get(j);
 };
@@ -33,32 +33,31 @@ nodesRecord.prototype.addNode = function () {
     const defaultNode = this.get("isWeighted") ? 0 : false;
     const nodesWithNewCount = this.set("nodeCount", this.nodeCount + 1);
 
-    let nodeMatrix = nodesWithNewCount.get("nodeMatrix");
+    let adjacencyMatrix = nodesWithNewCount.get("adjacencyMatrix");
     //every column started by a to node with from nodes will add a new node at the end,
     //that being the newly added node, and it will have the default (0 or false) value
     let fromNodesMatrix = new List();
 
-    for (let nodeColumn of nodeMatrix) {
+    for (let nodeColumn of adjacencyMatrix) {
         //the current node column will add the default node at the end
         const nodeColumnWithNewFromNode = nodeColumn.push(defaultNode);
 
         fromNodesMatrix = fromNodesMatrix.push(nodeColumnWithNewFromNode);
     }
 
-    nodeMatrix = fromNodesMatrix;
+    adjacencyMatrix = fromNodesMatrix;
 
     //the last column (the one where the destination is the new node) is empty as it isn't needed
     const columnOfNodesFromToNodeTo = List.of(...new Array(nodesWithNewCount.nodeCount).fill(defaultNode));
 
-    nodeMatrix = nodeMatrix.push(columnOfNodesFromToNodeTo);
+    adjacencyMatrix = adjacencyMatrix.push(columnOfNodesFromToNodeTo);
 
-    return nodesWithNewCount.set("nodeMatrix", nodeMatrix);
+    return nodesWithNewCount.set("adjacencyMatrix", adjacencyMatrix);
 }
 
 nodesRecord.prototype.setNode = function({i, j}, val) {
-    const fromJToI = ["nodeMatrix", i, j];
-    const fromIToJ = ["nodeMatrix", j, i];
-
+    const fromJToI = ["adjacencyMatrix", i, j];
+    const fromIToJ = ["adjacencyMatrix", j, i];
 
     if (!this.get("isDirected")) {
         return this.setIn(fromJToI, val).setIn(fromIToJ, val);
@@ -77,14 +76,14 @@ nodesRecord.prototype.toggleIsWeighted = function() {
         //if the graph wasn't weighted, the "true" edges become 1s
         nodeCell => nodeCell ? 1 : 0;
 
-    const nodeMatrixWithReversedWeight = nodesWithReversedWeight
-        .get("nodeMatrix")
+    const adjacencyMatrixWithReversedWeight = nodesWithReversedWeight
+        .get("adjacencyMatrix")
         .map(nodeColumn=>
                 nodeColumn
-                .map(edge=>edge ? 1 : 0)
+                .map(changeNodeValueDependingOnWeightedness)
             );
 
-    return nodesWithReversedWeight.set("nodeMatrix", nodeMatrixWithReversedWeight);
+    return nodesWithReversedWeight.set("adjacencyMatrix", adjacencyMatrixWithReversedWeight);
 }
 
 nodesRecord.prototype.deleteNode = function (i) {
@@ -92,14 +91,14 @@ nodesRecord.prototype.deleteNode = function (i) {
 
     const nodesWithNewCount = this.set("nodeCount", this.nodeCount - 1);
 
-    const nodeMatrixWithoutFromCells = this.get("nodeMatrix")
+    const adjacencyMatrixWithoutFromCells = this.get("adjacencyMatrix")
         .reduce((curList, nodeRow) => {
             return curList.push(nodeRow.delete(i));
         }, List());
 
-    const nodeMatrixWithoutFromCellsAndToCell = nodeMatrixWithoutFromCells.delete(i);
+    const adjacencyMatrixWithoutFromCellsAndToCell = adjacencyMatrixWithoutFromCells.delete(i);
 
-    return nodesWithNewCount.set("nodeMatrix", nodeMatrixWithoutFromCellsAndToCell);
+    return nodesWithNewCount.set("adjacencyMatrix", adjacencyMatrixWithoutFromCellsAndToCell);
 }
 
 nodesRecord.prototype.toggleIsDirected = function () {
@@ -107,19 +106,19 @@ nodesRecord.prototype.toggleIsDirected = function () {
     const nodesWithReversedDirected = this.set("isDirected", !wasDirected);
 
     if (wasDirected) {
-        return nodesWithReversedDirected.set("nodeMatrix",
-            directedToUndirectedNodeMatrix(this.get("nodeMatrix"))
+        return nodesWithReversedDirected.set("adjacencyMatrix",
+            directedToUndirectedAdjacencyMatrix(this.get("adjacencyMatrix"))
         );
     }
 
     return nodesWithReversedDirected;
 }
 
-function NodeMatrixAsListFromArray(nodeMatrixArray) {
-    return List.of(...nodeMatrixArray.map(nodeRowArray=>List.of(...nodeRowArray)));
+function AdjacencyMatrixAsListFromArray(adjacencyMatrixArray) {
+    return List.of(...adjacencyMatrixArray.map(nodeRowArray=>List.of(...nodeRowArray)));
 }
 
 export const NodesRecord = nodesRecord;
 export function NodesRecordFromGraphObject(graph) {
-    return nodesRecord({...graph, nodeMatrix: NodeMatrixAsListFromArray(graph.adjacencyMatrix)});
+    return nodesRecord({...graph, adjacencyMatrix: AdjacencyMatrixAsListFromArray(graph.adjacencyMatrix)});
 }

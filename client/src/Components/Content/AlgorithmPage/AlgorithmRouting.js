@@ -3,7 +3,7 @@ import {NodesRecord, NodesRecordFromGraphObject} from "../../../Records/NodesRec
 import {getOneById} from "../../../Services/algorithmService";
 import NodesCard from "./NodesCard/NodesCard";
 import RndOfStartAlgorithmButton from "./RndOfStartAlgorithmButton/RndOfStartAlgorithmButton";
-import {nodeMatrixToGraphRepresentation} from "../../../Utilities/graphs";
+import {adjacencyMatrixToGraphRepresentation} from "../../../Utilities/graphs";
 import { getHandlers } from "../../../Tests/Utilities/algorithmHandlers";
 import GraphCard from "./GraphCard/GraphCard";
 
@@ -34,7 +34,7 @@ export default function AlgorithmRouting({match: {params}}) {
         algorithmGetterPromise
             .then(({default: algorithmGetter})=>algorithmGetter(algorithmController))
             .then(({algorithm, graphRepresentation})=>
-                algorithm(nodeMatrixToGraphRepresentation(nodes.nodeMatrix, graphRepresentation))
+                algorithm(adjacencyMatrixToGraphRepresentation(nodes.adjacencyMatrix, graphRepresentation))
             );
 
         return () => algorithmController.invalidate();
