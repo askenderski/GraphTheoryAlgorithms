@@ -14,11 +14,15 @@
     position: fixed;
 }
 
-.header {
+.headerMover {
     border-color: black;
     border-width: medium;
     border-style: solid;
     background-color: rgba(128, 128, 128, 15);
     /* needs fixed position so it can be moved */
     position: fixed;
+}
+
+.header {
+    flex-shrink: 0;
 }

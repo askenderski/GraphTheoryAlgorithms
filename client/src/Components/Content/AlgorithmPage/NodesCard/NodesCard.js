@@ -8,7 +8,7 @@ import useMover from "../../../../Hooks/useMover";
 const defaultPosition = {x: 100, y: 100};
 const defaultSize = {width: "300px", height: "300px"};
 
-const headerClasses = `${cardStyleModule.header} ${style.unselectable}`;
+const headerClasses = `${cardStyleModule.header} ${cardStyleModule.headerMover} ${style.unselectable}`;
 
 export default function NodesCard({nodes, handlers}) {
     const {position, onMouseDown} = useMover(defaultPosition);
@@ -25,7 +25,7 @@ export default function NodesCard({nodes, handlers}) {
                 Graph
             </div>
             {/* invisible header that has relative position and thus affects the flow */}
-            <div style={headerStyle}/>
+            <div style={headerStyle} className={cardStyleModule.header}/>
             <NodesCardBody nodes={nodes} handlers={handlers}/>
         </div>
     );
