@@ -22,7 +22,6 @@ export default function RegistrationForm() {
     );
 
     useEffect(() => {
-        console.log(passwordRepeatedErrors)
         setPasswordAndPasswordRepeated({password, passwordRepeated});
     }, [password, passwordRepeated]);
 

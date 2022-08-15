@@ -15,7 +15,7 @@ export default function ArticleRouting({match}) {
         getOne({type: match.params.articleType, title: match.params.articleTitle})
             .then(articleResponse => setArticle(articleResponse))
             .catch(err => setArticleExists(false));
-    }, []);
+    }, [match.params]);
 
     if (articleExists) {
         if (article !== undefined) {

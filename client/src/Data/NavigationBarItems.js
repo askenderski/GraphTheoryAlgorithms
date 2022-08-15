@@ -1,3 +1,5 @@
 import {Routes} from "./Routes/routes";
 
-export default [{text: "Articles", redirectPath: Routes.articles.allArticles.fullPath}];
+const NavigationBarItems = [{text: "Articles", redirectPath: Routes.articles.allArticles.fullPath}];
+
+export default NavigationBarItems;

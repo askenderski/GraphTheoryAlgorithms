@@ -23,9 +23,6 @@ export default function Form(
     const history = useHistory();
     const [formResponseErrors, setFormResponseErrors] = useState([]);
     const [formPreSubmitErrors, setFormPreSubmitErrors] = useStateWithShallowMerge({});
-    console.log(otherFormErrors)
-    console.log(formPreSubmitErrors)
-    console.log(formResponseErrors)
 
     useEffect(() => {
         console.log("lol")

@@ -32,7 +32,7 @@ export const getMakeSureIsOkWithStream = function ({streamType = "json", allowed
     return function (res) {
         if (!allowedStatuses.includes(res.status)) {
             return res[streamType]().then(({message})=>{
-                throw {message};
+                throw Error(message);
             });
         }
 

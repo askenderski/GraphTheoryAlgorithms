@@ -13,7 +13,7 @@ export default function DefaultAlgorithmRouting({routeToRedirectTo, match: {para
                 setGraphId(graph._id);
             })
             .catch(err=>setDoesArticleExist(false));
-    }, []);
+    }, [params]);
 
     if (!doesArticleExist) {
         return <div>Error in loading algorithm</div>;

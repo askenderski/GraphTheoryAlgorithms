@@ -28,16 +28,20 @@ export default function AlgorithmRouting({match: {params}}) {
 
     const [algorithmController, setAlgorithmController] = useState();
 
-    useEffect(async () => {
-        if (algorithmController === undefined) return;
+    useEffect(() => {
+        async function main() {
+            if (algorithmController === undefined) return;
 
-        algorithmGetterPromise
-            .then(({default: algorithmGetter})=>algorithmGetter(algorithmController))
-            .then(({algorithm, graphRepresentation})=>
-                algorithm(adjacencyMatrixToGraphRepresentation(nodes.adjacencyMatrix, graphRepresentation))
-            );
+            algorithmGetterPromise
+                .then(({default: algorithmGetter})=>algorithmGetter(algorithmController))
+                .then(({algorithm, graphRepresentation})=>
+                    algorithm(adjacencyMatrixToGraphRepresentation(nodes.adjacencyMatrix, graphRepresentation))
+                );
 
-        return () => algorithmController.invalidate();
+            return () => algorithmController.invalidate();
+        }
+        
+        main();
     }, [algorithmController]);
 
     async function startAlgorithm() {

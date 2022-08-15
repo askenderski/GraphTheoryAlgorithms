@@ -1,5 +1,5 @@
 import {getWordsCutOffAtLength} from "../../../../Utilities/String/getWordsCutOffAtLength";
-import {articleColorsMap, articleTypesSet} from "../../../../Data/ArticleTypes";
+import {articleColorsMap} from "../../../../Data/ArticleTypes";
 import {validateArticleType} from "../../../../Utilities/Validation/articleTypeValidation";
 import {Link} from "react-router-dom";
 
@@ -15,7 +15,7 @@ function validateProps({type, description}) {
     validateArticleType(type);
 }
 
-export default function (props) {
+export default function ArticleLink(props) {
     validateProps(props);
 
     const {title, description, type, to} = props;

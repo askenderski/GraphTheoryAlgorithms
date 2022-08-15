@@ -1,8 +1,6 @@
 import {Layout} from "antd";
 import {Redirect, Route, Switch} from "react-router-dom";
 import InvalidRoute from "../Common/InvalidRoute/InvalidRoute";
-import Loading from "../Common/Loading/Loading";
-import {createElement, useEffect, useState} from "react";
 
 function getRoutes(route) {
     return [...route.subRoutes.map(subRoute=> {
@@ -39,7 +37,7 @@ function getRouting(routes) {
     );
 }
 
-export default function ({routes}) {
+export default function Content({routes}) {
     return (
         <Layout.Content>{getRouting(routes)}</Layout.Content>
     );

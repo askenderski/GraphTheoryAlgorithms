@@ -1,5 +1,3 @@
-import ControlledTextInputWithValidation
-    from "../../Common/ControlledTextInputWithValidation/ControlledTextInputWithValidation";
 import {useContext, useState} from "react";
 import {emailValidator, passwordValidator} from "../../../Utilities/validators";
 import {login} from "../../../Services/authenticationService";

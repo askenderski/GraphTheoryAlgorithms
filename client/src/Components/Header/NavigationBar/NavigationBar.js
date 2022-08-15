@@ -11,7 +11,7 @@ function removeTrailingSlash(a) {
     return a.substring(a.length-1) === "/" ? a.substring(0,a.length-1) : a;
 }
 
-export default function () {
+export default function NavigationBar() {
     const { user, setUser } = useContext(UserContext);
     const location = useLocation();
 
