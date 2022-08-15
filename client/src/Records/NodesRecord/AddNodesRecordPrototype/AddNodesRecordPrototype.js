@@ -1,3 +1,5 @@
+import {List} from "immutable";
+
 function directedToUndirectedAdjacencyMatrix(directedAdjacencyMatrix) {
     let matrix = directedAdjacencyMatrix;
 

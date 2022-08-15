@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {NodesRecord, NodesRecordFromGraphObject} from "../../../Records/NodesRecord";
+import {NodesRecord, NodesRecordFromGraphObject} from "../../../Records/NodesRecord/NodesRecord";
 import {getOneById} from "../../../Services/algorithmService";
 import NodesCard from "./NodesCard/NodesCard";
 import RndOfStartAlgorithmButton from "./RndOfStartAlgorithmButton/RndOfStartAlgorithmButton";

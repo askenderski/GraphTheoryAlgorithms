@@ -15,5 +15,5 @@ function AdjacencyMatrixAsListFromArray(adjacencyMatrixArray) {
 }
 
 export function NodesRecordFromGraphObject(graph) {
-    return nodesRecord({...graph, adjacencyMatrix: AdjacencyMatrixAsListFromArray(graph.adjacencyMatrix)});
-}''
+    return NodesRecord({...graph, adjacencyMatrix: AdjacencyMatrixAsListFromArray(graph.adjacencyMatrix)});
+}
