@@ -6,9 +6,9 @@ export default function Nodes({nodes, handlers: {setEdge, deleteNode} = {}, isDe
         ...new Array(nodeCount).fill(false).map((_,i)=>getHorizontalHeaderByIndex(i))
     ];
 
-    const horizontalHeaderRow = <tr>{horizontalHeaders}</tr>;
+    const horizontalHeaderRow = <thead><tr>{horizontalHeaders}</tr></thead>;
 
-    const rows = new Array(nodeCount).fill(false).map((_, rowIndex)=> getRowByRowIndex(rowIndex));
+    const rows = <tbody>{new Array(nodeCount).fill(false).map((_, rowIndex)=> getRowByRowIndex(rowIndex))}</tbody>;
 
     function getHeaderByIndex(index, {children}={}) {
         return (
