@@ -1,9 +1,6 @@
 import { Record } from "immutable";
 import { v4 as uuidv4 } from 'uuid';
 
-const defaultWeighted = true;
-const getDefaultValue = weighted => weighted ? 1 : true;
-
 const NodeRecordWithoutId = Record({
     style: {},
     value: "Node",
