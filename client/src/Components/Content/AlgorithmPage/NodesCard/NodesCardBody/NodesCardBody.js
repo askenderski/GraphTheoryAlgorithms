@@ -19,7 +19,7 @@ export default function NodesCardBody({ nodes, handlers }) {
                 toggleIsOn={handlers.toggleIsWeighted}
                 values={{ on: "Weighted", off: "Unweighted" }} />
             <Nodes nodes={nodes} handlers={{
-                setNode: handlers.setNode, deleteNode: (...props) => {
+                setEdge: handlers.setEdge, deleteNode: (...props) => {
                     toggleIsDeleting();
                     handlers.deleteNode(...props);
                 }

@@ -7,31 +7,14 @@ export const adjacencyMatrixToGraphRepresentation = function (adjacencyMatrix, g
         case "adjacencyList":
             const emptyEdgeList = List.of(...new Array(adjacencyMatrix.size).fill().map(()=>List.of()));
 
-            console.log(adjacencyMatrix)
-            console.log(graphRepresentation)
-            // console.log(nodeMatrix
-            //     .reduce((curEdgeList1, curRow, cellTo) => {
-            //         return curRow.reduce((curEdgeList2, curCell, cellFrom) => {
-            //             console.log(curEdgeList2)
-            //             console.log(curCell)
-            //             console.log(cellFrom)
-            //             console.log(curEdgeList2.get(cellFrom))
-            //             if (curCell === 0 || curCell === false) {
-            //                 return curEdgeList2;
-            //             }
-            //
-            //             return curEdgeList2.set(cellFrom, curEdgeList2.get(cellFrom).push({to: cellTo, val: curCell}));
-            //         }, curEdgeList1);
-            //     }, emptyEdgeList))
-
             return adjacencyMatrix
                 .reduce((curEdgeList1, curRow, cellTo) => {
-                    return curRow.reduce((curEdgeList2, curCell, cellFrom) => {
-                        if (curCell === 0 || curCell === false) {
+                    return curRow.reduce((curEdgeList2, curEdge, cellFrom) => {
+                        if (curEdge === 0 || curEdge === false) {
                             return curEdgeList2;
                         }
 
-                        return curEdgeList2.set(cellFrom, curEdgeList2.get(cellFrom).push({to: cellTo, val: curCell}));
+                        return curEdgeList2.set(cellFrom, curEdgeList2.get(cellFrom).push({to: cellTo, val: curEdge}));
                     }, curEdgeList1);
                 }, emptyEdgeList);
         case "edgeList":
@@ -47,7 +30,6 @@ export const adjacencyMatrixToGraphRepresentation = function (adjacencyMatrix, g
 
             return edgeList;
         default:
-            console.log("fucker")
             return;
     }
 };

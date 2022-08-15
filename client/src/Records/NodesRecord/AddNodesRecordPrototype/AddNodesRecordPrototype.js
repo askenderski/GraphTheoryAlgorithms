@@ -5,10 +5,9 @@ function directedToUndirectedAdjacencyMatrix(directedAdjacencyMatrix) {
 
     for (let fromIndex = 0; fromIndex < directedAdjacencyMatrix.size; fromIndex++) {
         for (let toIndex = 0; toIndex < directedAdjacencyMatrix.size; toIndex++) {
-            const cellValue = matrix.get(toIndex).get(fromIndex);
-            console.log(cellValue, toIndex, fromIndex)
-
-            if (cellValue) matrix = matrix.setIn([fromIndex, toIndex], cellValue);
+            const edgeValue = matrix.get(toIndex).get(fromIndex);
+            
+            if (edgeValue) matrix = matrix.setIn([fromIndex, toIndex], edgeValue);
         }
     }
 
@@ -16,80 +15,81 @@ function directedToUndirectedAdjacencyMatrix(directedAdjacencyMatrix) {
 }
 
 export default function AddNodesRecordPrototype(NodesRecord) {
-    NodesRecord.prototype.getNode = function ({i, j}) {
+    NodesRecord.prototype.getEdge = function ({to, from}) {
+        // console.log(this)
         const matrix = this.get("adjacencyMatrix");
+        // console.log(matrix)
     
-        return matrix.get(i).get(j);
+        return matrix.get(to).get(from);
     };
     
     NodesRecord.prototype.addNode = function () {
-        const defaultNode = this.get("isWeighted") ? 0 : false;
-        const nodesWithNewCount = this.set("nodeCount", this.nodeCount + 1);
+        const defaultEdge = this.get("isWeighted") ? 0 : false;
+        const edgesWithNewCount = this.set("nodeCount", this.nodeCount + 1);
     
-        let adjacencyMatrix = nodesWithNewCount.get("adjacencyMatrix");
+        let adjacencyMatrix = edgesWithNewCount.get("adjacencyMatrix");
         //every column started by a to node with from nodes will add a new node at the end,
         //that being the newly added node, and it will have the default (0 or false) value
         let fromNodesMatrix = new List();
     
-        for (let nodeColumn of adjacencyMatrix) {
+        for (let edgeColumn of adjacencyMatrix) {
             //the current node column will add the default node at the end
-            const nodeColumnWithNewFromNode = nodeColumn.push(defaultNode);
+            const edgeColumnWithNewFromNode = edgeColumn.push(defaultEdge);
     
-            fromNodesMatrix = fromNodesMatrix.push(nodeColumnWithNewFromNode);
+            fromNodesMatrix = fromNodesMatrix.push(edgeColumnWithNewFromNode);
         }
     
         adjacencyMatrix = fromNodesMatrix;
     
         //the last column (the one where the destination is the new node) is empty as it isn't needed
-        const columnOfNodesFromToNodeTo = List.of(...new Array(nodesWithNewCount.nodeCount).fill(defaultNode));
+        const columnOfNodesFromToNodeTo = List.of(...new Array(edgesWithNewCount.nodeCount).fill(defaultEdge));
     
         adjacencyMatrix = adjacencyMatrix.push(columnOfNodesFromToNodeTo);
     
-        return nodesWithNewCount.set("adjacencyMatrix", adjacencyMatrix);
+        return edgesWithNewCount.set("adjacencyMatrix", adjacencyMatrix);
     }
     
-    NodesRecord.prototype.setNode = function({i, j}, val) {
-        const fromJToI = ["adjacencyMatrix", i, j];
-        const fromIToJ = ["adjacencyMatrix", j, i];
+    NodesRecord.prototype.setEdge = function({to, from}, val) {
+        const edgeFromTo = ["adjacencyMatrix", to, from];
+        const edgeToFrom = ["adjacencyMatrix", from, to];
     
         if (!this.get("isDirected")) {
-            return this.setIn(fromJToI, val).setIn(fromIToJ, val);
+            return this.setIn(edgeFromTo, val).setIn(edgeToFrom, val);
         }
     
-        return this.setIn(fromJToI, val);
+        return this.setIn(edgeFromTo, val);
     }
     
     NodesRecord.prototype.toggleIsWeighted = function() {
         const wasWeighted = this.get("isWeighted");
         const nodesWithReversedWeight = this.set("isWeighted", !wasWeighted);
     
-        const changeNodeValueDependingOnWeightedness = wasWeighted ?
+        const changeEdgeValueDependingOnWeightedness = wasWeighted ?
             //if the graph was weighted, the existing edges remain so
-            nodeCell => nodeCell !== 0 ? true : false :
+            edge => edge !== 0 ? true : false :
             //if the graph wasn't weighted, the "true" edges become 1s
-            nodeCell => nodeCell ? 1 : 0;
+            edge => edge ? 1 : 0;
     
         const adjacencyMatrixWithReversedWeight = nodesWithReversedWeight
             .get("adjacencyMatrix")
-            .map(nodeColumn=>
-                    nodeColumn
-                    .map(changeNodeValueDependingOnWeightedness)
-                );
+            .map(nodeColumn=>nodeColumn.map(changeEdgeValueDependingOnWeightedness));
     
         return nodesWithReversedWeight.set("adjacencyMatrix", adjacencyMatrixWithReversedWeight);
     }
     
-    NodesRecord.prototype.deleteNode = function (i) {
+    NodesRecord.prototype.deleteNode = function (nodeIndex) {
         if (this.nodeCount <= 0) return this;
     
         const nodesWithNewCount = this.set("nodeCount", this.nodeCount - 1);
     
-        const adjacencyMatrixWithoutFromCells = this.get("adjacencyMatrix")
-            .reduce((curList, nodeRow) => {
-                return curList.push(nodeRow.delete(i));
-            }, List());
+        let adjacencyMatrixWithoutFromCells = this.get("adjacencyMatrix");
+
+        for (let toIndex = 0; toIndex < this.get("nodeCount"); toIndex++) {
+            adjacencyMatrixWithoutFromCells = adjacencyMatrixWithoutFromCells.deleteIn([toIndex, nodeIndex]);
+        }
     
-        const adjacencyMatrixWithoutFromCellsAndToCell = adjacencyMatrixWithoutFromCells.delete(i);
+        const adjacencyMatrixWithoutFromCellsAndToCell = adjacencyMatrixWithoutFromCells.delete(nodeIndex);
+        console.log(adjacencyMatrixWithoutFromCellsAndToCell)
     
         return nodesWithNewCount.set("adjacencyMatrix", adjacencyMatrixWithoutFromCellsAndToCell);
     }

@@ -1,12 +1,10 @@
-import {List} from "immutable";
-
 export function getHandlers(nodes, setNodes) {
     function addNode() {
         setNodes(nodes => nodes.addNode());
     }
 
-    function setNode({i, j}, val) {
-        setNodes(nodes => nodes.setNode({i, j}, val));
+    function setEdge({to, from}, val) {
+        setNodes(nodes => nodes.setEdge({to, from}, val));
     }
 
     function deleteNode(i) {
@@ -21,5 +19,5 @@ export function getHandlers(nodes, setNodes) {
         setNodes(nodes => nodes.toggleIsWeighted());
     }
 
-    return {addNode, setNode, deleteNode, toggleIsDirected, toggleIsWeighted};
+    return {addNode, setEdge, deleteNode, toggleIsDirected, toggleIsWeighted};
 };
