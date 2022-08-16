@@ -53,6 +53,10 @@ export default function GetTopSorter({consider, setIsDone, setResult}) {
 
             const nodesTopSorted = [];
             const visited = [];
+
+            //done is used purely for styling purposes, it contains visited nodes that have also been completely
+            // dfs-ed, so if we hit a simply visited node, it means it's still down the dfs chain (and done ones
+            // aren't)
             const done = [];
 
             for (let i = 0; i < nodes.size; i++) {
