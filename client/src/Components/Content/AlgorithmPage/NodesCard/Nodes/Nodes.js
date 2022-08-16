@@ -1,4 +1,4 @@
-export default function Nodes({nodes, handlers: {setEdge, deleteNode} = {}, isDeletingNode}) {
+export default function Nodes({nodes, handlers: {setEdgeByIndex, deleteNode} = {}, isDeletingNode}) {
     const {nodeCount} = nodes;
 
     const horizontalHeaders = [
@@ -39,14 +39,14 @@ export default function Nodes({nodes, handlers: {setEdge, deleteNode} = {}, isDe
             <td key={colIndex}>
                 {
                     nodes.get("isWeighted") ?
-                        <input type="number" value={nodes.getEdge({to: rowIndex, from: colIndex})}
+                        <input type="number" value={nodes.getEdgeByIndex({to: rowIndex, from: colIndex}).get("value")}
                                onChange={e => {
-                                   setEdge({to: rowIndex, from: colIndex}, e.target.value);
+                                   setEdgeByIndex({to: rowIndex, from: colIndex}, {value: e.target.value});
                                }}
                         /> :
-                        <input type="checkbox" checked={nodes.getEdge({to: rowIndex, from: colIndex})}
+                        <input type="checkbox" checked={nodes.getEdgeByIndex({to: rowIndex, from: colIndex}).get("value")}
                                onChange={e => {
-                                   setEdge({to: rowIndex, from: colIndex}, !nodes.getEdge({to: rowIndex, from: colIndex}));
+                                   setEdgeByIndex({to: rowIndex, from: colIndex}, {value: !nodes.getEdgeByIndex({to: rowIndex, from: colIndex}).get("value")});
                                }}
                         />
                 }

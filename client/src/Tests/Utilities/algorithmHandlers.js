@@ -3,12 +3,12 @@ export function getHandlers(nodes, setNodes) {
         setNodes(nodes => nodes.addNode());
     }
 
-    function setEdge({to, from}, val) {
-        setNodes(nodes => nodes.setEdge({to, from}, val));
+    function setEdgeByIndex({to, from}, val) {
+        setNodes(nodes => nodes.setEdgeByIndex({to, from}, val));
     }
 
-    function deleteNode(i) {
-        setNodes(nodes => nodes.deleteNode(i));
+    function deleteNodeByIndex(i) {
+        setNodes(nodes => nodes.deleteNodeByIndex(i));
     }
 
     function toggleIsDirected() {
@@ -19,5 +19,5 @@ export function getHandlers(nodes, setNodes) {
         setNodes(nodes => nodes.toggleIsWeighted());
     }
 
-    return {addNode, setEdge, deleteNode, toggleIsDirected, toggleIsWeighted};
+    return {addNode, setEdgeByIndex, deleteNodeByIndex, toggleIsDirected, toggleIsWeighted};
 };

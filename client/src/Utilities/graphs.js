@@ -14,7 +14,7 @@ export const adjacencyMatrixToGraphRepresentation = function (adjacencyMatrix, g
                             return curEdgeList2;
                         }
 
-                        return curEdgeList2.set(cellFrom, curEdgeList2.get(cellFrom).push({to: cellTo, val: curEdge}));
+                        return curEdgeList2.set(cellFrom, curEdgeList2.get(cellFrom).push(curEdge));
                     }, curEdgeList1);
                 }, emptyEdgeList);
         case "edgeList":
@@ -24,7 +24,8 @@ export const adjacencyMatrixToGraphRepresentation = function (adjacencyMatrix, g
                 const listOfNodesFromToNodeTo = adjacencyMatrix.get(i);
 
                 for (let j = 0; j < listOfNodesFromToNodeTo.size; j++) {
-                    if (listOfNodesFromToNodeTo.get(j)) edgeList.push({from: j, to: i});
+                    if (listOfNodesFromToNodeTo.get(j).get("value"))
+                        edgeList.push(listOfNodesFromToNodeTo.get(j));
                 }
             }
 

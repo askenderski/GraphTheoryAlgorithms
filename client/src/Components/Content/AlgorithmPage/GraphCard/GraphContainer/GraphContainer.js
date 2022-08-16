@@ -3,11 +3,9 @@ import {adjacencyMatrixToGraphRepresentation} from "../../../../../Utilities/gra
 import { useEffect, useState } from "react";
 
 export default function GraphContainer({nodes}) {
-    const edgeList = adjacencyMatrixToGraphRepresentation(nodes.get("adjacencyMatrix"), "edgeList");
-    const nodesForGraph = nodes.adjacencyMatrix.map((_,i)=>({
-        id: i,
-        label: i
-    })).toArray();
+    const edgeList = adjacencyMatrixToGraphRepresentation(nodes.get("adjacencyMatrix"), "edgeList")
+        .map(edge=>edge.toObject());
+    const nodesForGraph = nodes.nodes.map(node=>node.toObject()).toArray();
 
     const [network, setNetwork] = useState({fit:()=>{}});
 

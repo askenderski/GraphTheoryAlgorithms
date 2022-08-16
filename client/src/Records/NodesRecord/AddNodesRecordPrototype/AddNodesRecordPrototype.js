@@ -1,13 +1,15 @@
 import {List} from "immutable";
+import { EdgeRecord } from "../../EdgeRecord/EdgeRecord";
+import { NodeRecord } from "../../NodeRecord/NodeRecord";
 
 function directedToUndirectedAdjacencyMatrix(directedAdjacencyMatrix) {
     let matrix = directedAdjacencyMatrix;
 
     for (let fromIndex = 0; fromIndex < directedAdjacencyMatrix.size; fromIndex++) {
         for (let toIndex = 0; toIndex < directedAdjacencyMatrix.size; toIndex++) {
-            const edgeValue = matrix.get(toIndex).get(fromIndex);
+            const edgeValue = matrix.get(toIndex).get(fromIndex).get("value");
             
-            if (edgeValue) matrix = matrix.setIn([fromIndex, toIndex], edgeValue);
+            if (edgeValue) matrix = matrix.setIn([fromIndex, toIndex, "value"], edgeValue);
         }
     }
 
@@ -15,7 +17,7 @@ function directedToUndirectedAdjacencyMatrix(directedAdjacencyMatrix) {
 }
 
 export default function AddNodesRecordPrototype(NodesRecord) {
-    NodesRecord.prototype.getEdge = function ({to, from}) {
+    NodesRecord.prototype.getEdgeByIndex = function ({to, from}) {
         // console.log(this)
         const matrix = this.get("adjacencyMatrix");
         // console.log(matrix)
@@ -23,8 +25,8 @@ export default function AddNodesRecordPrototype(NodesRecord) {
         return matrix.get(to).get(from);
     };
     
-    NodesRecord.prototype.addNode = function (node) {
-        const defaultEdge = this.get("isWeighted") ? 0 : false;
+    NodesRecord.prototype.addNode = function (node = NodeRecord()) {
+        const getEdge = (args)=>EdgeRecord({...args, weighted: this.get("isWeighted")});
         const recordWithNewCount = this.set("nodeCount", this.nodeCount + 1);
     
         let adjacencyMatrix = recordWithNewCount.get("adjacencyMatrix");
@@ -32,9 +34,13 @@ export default function AddNodesRecordPrototype(NodesRecord) {
         //that being the newly added node, and it will have the default (0 or false) value
         let fromNodesMatrix = new List();
     
-        for (let edgeColumn of adjacencyMatrix) {
+        for (let edgeColumnIndex = 0; edgeColumnIndex < adjacencyMatrix.size; edgeColumnIndex++) {
+            const edgeColumn = adjacencyMatrix.get(edgeColumnIndex);
+
             //the current node column will add the default node at the end
-            const edgeColumnWithNewFromNode = edgeColumn.push(defaultEdge);
+            const edgeColumnWithNewFromNode = edgeColumn.push(
+                getEdge({from: node.id, to: this.nodes.get(edgeColumnIndex)})
+            );
     
             fromNodesMatrix = fromNodesMatrix.push(edgeColumnWithNewFromNode);
         }
@@ -42,24 +48,35 @@ export default function AddNodesRecordPrototype(NodesRecord) {
         adjacencyMatrix = fromNodesMatrix;
     
         //the last column (the one where the destination is the new node) is empty as it isn't needed
-        const columnOfNodesFromToNodeTo = List.of(...new Array(recordWithNewCount.nodeCount).fill(defaultEdge));
+        const columnOfNodesFromToNodeTo = List(new Array(recordWithNewCount.nodeCount)
+            .fill(1).map((_, i)=>getEdge({from: i, to: node.id})));
     
         adjacencyMatrix = adjacencyMatrix.push(columnOfNodesFromToNodeTo);
     
         const recordWithNewCountAndEdges = recordWithNewCount.set("adjacencyMatrix", adjacencyMatrix);
 
-        return recordWithNewCountAndEdges.set("nodes", recordWithNewCountAndEdges.get("nodes").push(node));
+        const finalRecord = recordWithNewCountAndEdges.set("nodes", recordWithNewCountAndEdges.get("nodes").push(node));
+        return finalRecord;
     }
     
-    NodesRecord.prototype.setEdge = function({to, from}, val) {
+    NodesRecord.prototype.setEdgeByIndex = function({to, from}, {value}) {
         const edgeFromTo = ["adjacencyMatrix", to, from];
         const edgeToFrom = ["adjacencyMatrix", from, to];
     
         if (!this.get("isDirected")) {
-            return this.setIn(edgeFromTo, val).setIn(edgeToFrom, val);
+            return this
+                .setIn([...edgeFromTo, "value"], value)
+                .setIn([...edgeFromTo, "from"], this.nodes.get(from).get("id"))
+                .setIn([...edgeFromTo, "to"], this.nodes.get(to).get("id"))
+                .setIn([...edgeToFrom, "value"], value)
+                .setIn([...edgeToFrom, "from"], this.nodes.get(to).get("id"))
+                .setIn([...edgeToFrom, "to"], this.nodes.get(from).get("id"));
         }
     
-        return this.setIn(edgeFromTo, val);
+        return this
+            .setIn([...edgeFromTo, "value"], value)
+            .setIn([...edgeFromTo, "from"], this.nodes.get(from).get("id"))
+            .setIn([...edgeFromTo, "to"], this.nodes.get(to).get("id"));
     }
     
     NodesRecord.prototype.toggleIsWeighted = function() {
@@ -68,9 +85,9 @@ export default function AddNodesRecordPrototype(NodesRecord) {
     
         const changeEdgeValueDependingOnWeightedness = wasWeighted ?
             //if the graph was weighted, the existing edges remain so
-            edge => edge !== 0 ? true : false :
+            edge => (edge.get("value") !== 0 ? edge.set("value", true) : edge.set("value", false)) :
             //if the graph wasn't weighted, the "true" edges become 1s
-            edge => edge ? 1 : 0;
+            edge => (edge.get("value") === true ? edge.set("value", 1) : edge.set("value", 0));
     
         const adjacencyMatrixWithReversedWeight = nodesWithReversedWeight
             .get("adjacencyMatrix")
@@ -91,7 +108,6 @@ export default function AddNodesRecordPrototype(NodesRecord) {
         }
     
         const adjacencyMatrixWithoutFromCellsAndToCell = adjacencyMatrixWithoutFromCells.delete(nodeIndex);
-        console.log(adjacencyMatrixWithoutFromCellsAndToCell)
     
         const nodesWithNewCountAndEdges = nodesWithNewCount.set("adjacencyMatrix", adjacencyMatrixWithoutFromCellsAndToCell);
 

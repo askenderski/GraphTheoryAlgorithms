@@ -58,13 +58,17 @@ export default function AlgorithmRouting({match: {params}}) {
             }
         }));
     }
+    
+    console.log(doesGraphExist, doesAlgorithmExist)
 
     useEffect(() => {
         getOneById(graphId)
             .then(graph=>{
+                console.log("a")
                 setNodes(NodesRecordFromGraphObject(graph));
             })
             .catch(err=>{
+                console.log(err)
                 setDoesGraphExist(false);
             });
     }, [graphId]);

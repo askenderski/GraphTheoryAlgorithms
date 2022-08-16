@@ -3,8 +3,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 const NodeRecordWithoutId = Record({
     style: {},
-    value: "Node",
-    id: 0
+    value: undefined,
+    id: undefined
 });
 
 export const NodeRecord = ({value, id, style} = {}) =>
