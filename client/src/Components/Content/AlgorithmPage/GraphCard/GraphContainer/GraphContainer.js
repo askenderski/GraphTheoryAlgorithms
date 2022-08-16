@@ -4,8 +4,11 @@ import { useEffect, useState } from "react";
 
 export default function GraphContainer({nodes}) {
     const edgeList = adjacencyMatrixToGraphRepresentation(nodes.get("adjacencyMatrix"), "edgeList")
-        .map(edge=>edge.toObject());
-    const nodesForGraph = nodes.nodes.map(node=>node.toObject()).toArray();
+        .map(edge=>edge.toObject()).toArray();
+    const nodesForGraph = nodes.nodes
+        .map(node=>node.toObject())
+        .map(nodeObj=>({...nodeObj, ...nodeObj.style}))
+        .toArray();
 
     const [network, setNetwork] = useState({fit:()=>{}});
 

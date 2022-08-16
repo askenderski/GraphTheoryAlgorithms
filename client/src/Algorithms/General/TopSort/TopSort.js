@@ -1,18 +1,26 @@
 export default function GetTopSorter({consider, setIsDone, setResult}) {
     return {
-        graphRepresentation: "edgeList",
-        algorithm: async function(edgeList) {
+        graphRepresentation: "adjacencyList",
+        algorithm: async function(nodes, edgeList) {
             async function runAlgorithm() {
                 async function dfs(node) {
-                    console.log(consider)
-                    await consider(node, "current");
                     if (visited[node]) {
+                        await consider(node, "current2");
+                        await consider(node, "done");
                         return;
                     }
+
+                    await consider(node, "current");
 
                     visited[node] = true;
 
                     for (let i = 0; i < edgeList.get(node).size; i++) {
+                        if (i === node) {
+                            await consider(node, "current3");
+                            await consider(node, "current");
+                            continue;
+                        }
+
                         await consider(node, "passed");
                         await dfs(edgeList.get(node).get(i).to);
                         await consider(node, "current");
@@ -26,9 +34,7 @@ export default function GetTopSorter({consider, setIsDone, setResult}) {
                 const nodesTopSorted = [];
                 const visited = [];
 
-                console.log("sad")
-                for (let i = 0; i < edgeList.size; i++) {
-                    console.log(consider)
+                for (let i = 0; i < nodes.size; i++) {
                     await dfs(i);
                 }
 

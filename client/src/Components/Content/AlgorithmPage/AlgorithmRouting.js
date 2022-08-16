@@ -35,7 +35,7 @@ export default function AlgorithmRouting({match: {params}}) {
             algorithmGetterPromise
                 .then(({default: algorithmGetter})=>algorithmGetter(algorithmController))
                 .then(({algorithm, graphRepresentation})=>
-                    algorithm(adjacencyMatrixToGraphRepresentation(nodes.adjacencyMatrix, graphRepresentation))
+                    algorithm(nodes.nodes, adjacencyMatrixToGraphRepresentation(nodes.adjacencyMatrix, graphRepresentation))
                 );
 
             return () => algorithmController.invalidate();
@@ -52,19 +52,20 @@ export default function AlgorithmRouting({match: {params}}) {
         setAlgorithmController(controller.default({
             setOutputValue: () => {},
             setIsDone: () => setIsAlgorithmRunning(false),
-            setNodeStyle: (node, style) => {
-                console.log(node)
-                console.log(style)
+            setNodeStyle: (nodeIndex, style) => {
+                const newNodesRecord=nodes.setNodeByIndex(nodeIndex, {style});
+                setNodes(oldNodesRecord => {
+                    const oldNodes = oldNodesRecord.get("nodes");
+                    const newNodes = oldNodes.set(nodeIndex, newNodesRecord.get("nodes").get(nodeIndex));
+                    return oldNodesRecord.set("nodes", newNodes);
+                });
             }
         }));
     }
-    
-    console.log(doesGraphExist, doesAlgorithmExist)
 
     useEffect(() => {
         getOneById(graphId)
             .then(graph=>{
-                console.log("a")
                 setNodes(NodesRecordFromGraphObject(graph));
             })
             .catch(err=>{

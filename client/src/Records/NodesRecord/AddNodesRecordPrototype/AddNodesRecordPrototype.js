@@ -60,7 +60,15 @@ export default function AddNodesRecordPrototype(NodesRecord) {
     }
 
     NodesRecord.prototype.setNodeByIndex = function(nodeIndex, node) {
-        return this.setIn(["nodes", nodeIndex], node);
+        const prevNodeObj = this.get("nodes").get(nodeIndex).toObject();
+        const nodeRecordArg = {...prevNodeObj, ...node};
+        const nodeRecord = NodeRecord(nodeRecordArg);
+
+        const newNodesRecord = this.setIn(
+            ["nodes", nodeIndex],
+            nodeRecord
+        );
+        return newNodesRecord;
     }
     
     NodesRecord.prototype.setEdgeByIndex = function({to, from}, {value}) {

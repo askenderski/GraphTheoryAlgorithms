@@ -5,7 +5,7 @@ export const adjacencyMatrixToGraphRepresentation = function (adjacencyMatrix, g
         case "adjacencyMatrix":
             return adjacencyMatrix;
         case "adjacencyList":
-            const emptyEdgeList = List.of(...new Array(adjacencyMatrix.size).fill().map(()=>List.of()));
+            const emptyEdgeList = List.of(...new Array(adjacencyMatrix.size).fill(1).map(()=>List()));
 
             return adjacencyMatrix
                 .reduce((curEdgeList1, curRow, cellTo) => {
@@ -18,14 +18,14 @@ export const adjacencyMatrixToGraphRepresentation = function (adjacencyMatrix, g
                     }, curEdgeList1);
                 }, emptyEdgeList);
         case "edgeList":
-            const edgeList = [];
+            let edgeList = List();
 
             for (let i = 0; i < adjacencyMatrix.size; i++) {
                 const listOfNodesFromToNodeTo = adjacencyMatrix.get(i);
 
                 for (let j = 0; j < listOfNodesFromToNodeTo.size; j++) {
                     if (listOfNodesFromToNodeTo.get(j).get("value"))
-                        edgeList.push(listOfNodesFromToNodeTo.get(j));
+                        edgeList = edgeList.push(listOfNodesFromToNodeTo.get(j));
                 }
             }
 
