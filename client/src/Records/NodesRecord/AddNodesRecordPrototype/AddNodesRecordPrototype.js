@@ -58,6 +58,12 @@ export default function AddNodesRecordPrototype(NodesRecord) {
         const finalRecord = recordWithNewCountAndEdges.set("nodes", recordWithNewCountAndEdges.get("nodes").push(node));
         return finalRecord;
     }
+
+    NodesRecord.prototype.setNode = function(id, node) {
+        const nodeIndex = this.nodes.map((node,i)=>[node,i]).filter(([node,i])=>node.get("id") === id)[0][1];
+
+        return this.setIn(["nodes", nodeIndex], node);
+    }
     
     NodesRecord.prototype.setEdgeByIndex = function({to, from}, {value}) {
         const edgeFromTo = ["adjacencyMatrix", to, from];

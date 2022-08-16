@@ -4,7 +4,7 @@ import {getOneById} from "../../../Services/algorithmService";
 import NodesCard from "./NodesCard/NodesCard";
 import RndOfStartAlgorithmButton from "./RndOfStartAlgorithmButton/RndOfStartAlgorithmButton";
 import {adjacencyMatrixToGraphRepresentation} from "../../../Utilities/graphs";
-import { getHandlers } from "../../../Tests/Utilities/algorithmHandlers";
+import { getHandlers } from "../../../Utilities/algorithmHandlers";
 import GraphCard from "./GraphCard/GraphCard";
 
 export default function AlgorithmRouting({match: {params}}) {
