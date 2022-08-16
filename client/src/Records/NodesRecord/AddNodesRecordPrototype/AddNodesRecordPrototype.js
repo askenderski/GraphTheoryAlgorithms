@@ -59,9 +59,7 @@ export default function AddNodesRecordPrototype(NodesRecord) {
         return finalRecord;
     }
 
-    NodesRecord.prototype.setNode = function(id, node) {
-        const nodeIndex = this.nodes.map((node,i)=>[node,i]).filter(([node,i])=>node.get("id") === id)[0][1];
-
+    NodesRecord.prototype.setNodeByIndex = function(nodeIndex, node) {
         return this.setIn(["nodes", nodeIndex], node);
     }
     
