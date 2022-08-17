@@ -1,11 +1,11 @@
 import {useEffect, useState} from "react";
 import {NodesRecord, NodesRecordFromGraphObject} from "../../../Records/NodesRecord/NodesRecord";
-import {getOneById} from "../../../Services/algorithmService";
 import NodesCard from "./NodesCard/NodesCard";
 import StartAlgorithmButton from "./StartAlgorithmButton/StartAlgorithmButton";
 import {adjacencyMatrixToGraphRepresentation} from "../../../Utilities/graphs";
 import { getHandlers } from "../../../Utilities/algorithmHandlers";
 import GraphCard from "./GraphCard/GraphCard";
+import useSetGraph from "./Hooks/useSetGraph";
 
 export default function AlgorithmRouting({match: {params}}) {
     const { algorithmType, algorithmTitle, graphId } = params;
@@ -15,12 +15,14 @@ export default function AlgorithmRouting({match: {params}}) {
     const [isAlgorithmRunning, setIsAlgorithmRunning] = useState(false);
 
     const algorithmGetterPromise = import(`../../../Algorithms/${algorithmType}/${algorithmTitle}/${algorithmTitle}`)
+        .then(module=>module.default)
         .catch(err=>{
             setDoesAlgorithmExist(false);
             return null;
         });
 
     const controllerPromise = import(`../../../Algorithms/${algorithmType}/${algorithmTitle}/Controller`)
+        .then(module=>module.default)
         .catch(err=>{
             setDoesAlgorithmExist(false);
             return null;
@@ -33,7 +35,7 @@ export default function AlgorithmRouting({match: {params}}) {
             if (algorithmController === undefined) return;
 
             algorithmGetterPromise
-                .then(({default: algorithmGetter})=>algorithmGetter(algorithmController))
+                .then(algorithmGetter=>algorithmGetter(algorithmController))
                 .then(({algorithm, graphRepresentation})=>
                     algorithm(nodes.nodes, adjacencyMatrixToGraphRepresentation(nodes.adjacencyMatrix, graphRepresentation))
                 );
@@ -49,7 +51,7 @@ export default function AlgorithmRouting({match: {params}}) {
 
         const controller = (await controllerPromise);
 
-        setAlgorithmController(controller.default({
+        setAlgorithmController(controller({
             setOutputValue: () => {},
             setIsDone: () => setIsAlgorithmRunning(false),
             setNodeStyle: (nodeIndex, style) => {
@@ -63,16 +65,7 @@ export default function AlgorithmRouting({match: {params}}) {
         }));
     }
 
-    useEffect(() => {
-        getOneById(graphId)
-            .then(graph=>{
-                setNodes(NodesRecordFromGraphObject(graph));
-            })
-            .catch(err=>{
-                console.log(err)
-                setDoesGraphExist(false);
-            });
-    }, [graphId]);
+    useSetGraph(graphId, {setDoesGraphExist, setNodes});
 
     const nodesCardHandlers = getHandlers(nodes, setNodes);
 
