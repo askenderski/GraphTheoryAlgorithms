@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {NodesRecord, NodesRecordFromGraphObject} from "../../../Records/NodesRecord/NodesRecord";
 import {getOneById} from "../../../Services/algorithmService";
 import NodesCard from "./NodesCard/NodesCard";
-import RndOfStartAlgorithmButton from "./RndOfStartAlgorithmButton/RndOfStartAlgorithmButton";
+import StartAlgorithmButton from "./StartAlgorithmButton/StartAlgorithmButton";
 import {adjacencyMatrixToGraphRepresentation} from "../../../Utilities/graphs";
 import { getHandlers } from "../../../Utilities/algorithmHandlers";
 import GraphCard from "./GraphCard/GraphCard";
@@ -80,7 +80,7 @@ export default function AlgorithmRouting({match: {params}}) {
         return (
             <>
                 <NodesCard nodes={nodes} handlers={nodesCardHandlers}/>
-                <RndOfStartAlgorithmButton startAlgorithm={startAlgorithm}/>
+                <StartAlgorithmButton startAlgorithm={startAlgorithm}/>
                 <GraphCard nodes={nodes}/>
             </>
         );
