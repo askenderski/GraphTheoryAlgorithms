@@ -2,7 +2,7 @@ import { Header } from "../Common";
 import NodeDeleteButtonContainer from "./NodeDeleteButtonContainer";
 
 function HorizontalVerticalHeader() {
-    return <th key="top-left" />;
+    return <th/>;
 }
 
 function HorizontalHeader({index, isDeletingNode, deleteNode}) {
@@ -14,11 +14,11 @@ function HorizontalHeader({index, isDeletingNode, deleteNode}) {
 export function TableHead({nodeCount, isDeletingNode, deleteNode}) {
     const iterableNodeHeaderArray = new Array(nodeCount).fill(false);
     const nodeHeaders = iterableNodeHeaderArray.map((_,i)=>
-        <HorizontalHeader index={i} isDeletingNode={isDeletingNode} deleteNode={deleteNode} />
+        <HorizontalHeader key={i} index={i} isDeletingNode={isDeletingNode} deleteNode={deleteNode} />
     );
 
     const horizontalHeaders = [
-        <HorizontalVerticalHeader />,
+        <HorizontalVerticalHeader key="top-left"/>,
         ...nodeHeaders
     ];
 

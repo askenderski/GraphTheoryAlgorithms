@@ -6,7 +6,7 @@ function VerticalHeader({index}) {
 }
 
 function TableBodyRow({rowIndex, nodeCount, nodesRecord, setEdgeByIndex}) {
-    const getCell = (_, colIndex) => <Cell rowIndex={rowIndex} colIndex={colIndex}
+    const getCell = (_, colIndex) => <Cell key={`${rowIndex} ${colIndex}`} rowIndex={rowIndex} colIndex={colIndex}
         nodesRecord={nodesRecord} setEdgeByIndex={setEdgeByIndex} />;
 
     const cells = new Array(nodeCount).fill(false).map(getCell);
@@ -19,7 +19,7 @@ function TableBodyRow({rowIndex, nodeCount, nodesRecord, setEdgeByIndex}) {
 
 export function TableBody({nodeCount, nodesRecord, setEdgeByIndex}) {
     const getTableBodyRow = (_, rowIndex)=>
-        <TableBodyRow
+        <TableBodyRow key={rowIndex}
         rowIndex={rowIndex} nodeCount={nodeCount}
         nodesRecord={nodesRecord} setEdgeByIndex={setEdgeByIndex} />;
 
