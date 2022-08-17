@@ -10,18 +10,9 @@ export default function Articles({articles}) {
         )
         .filter(articlesOfType => articlesOfType.length > 0)
         .map(articlesOfType => {
-            const articleChildren = articlesOfType.map(article=>
-                <ArticleLink
-                    to={Routes.articles.article.fullPath
-                        .replace(":articleType", article.type.name)
-                        .replace(":articleTitle", article.title)
-                    }
-                    {...article} key={article.title}></ArticleLink>);
-
             return (
-                <ArticleLinkGroup type={articlesOfType[0].type} key={articlesOfType[0].type.name}>
-                    {articleChildren}
-                </ArticleLinkGroup>
+                <ArticleLinkGroup articles={articlesOfType}
+                type={articlesOfType[0].type} key={articlesOfType[0].type.name} />
             );
         });
 
