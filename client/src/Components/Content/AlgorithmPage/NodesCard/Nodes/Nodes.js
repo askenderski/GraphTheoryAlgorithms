@@ -1,79 +1,109 @@
-export default function Nodes({nodes, handlers: {setEdgeByIndex, deleteNode} = {}, isDeletingNode}) {
-    const {nodeCount} = nodes;
+function Header({index, children}) {
+    return (
+        <th key={index}>
+            {index}
+            {children}
+        </th>
+    );
+}
 
-    const horizontalHeaders = [
-        <th key="top-left"></th>,
-        ...new Array(nodeCount).fill(false).map((_,i)=>getHorizontalHeaderByIndex(i))
-    ];
+function VerticalHeader({index}) {
+    return <Header index={index}/>;
+}
 
-    const horizontalHeaderRow = <thead><tr>{horizontalHeaders}</tr></thead>;
-
-    const rows = <tbody>{new Array(nodeCount).fill(false).map((_, rowIndex)=> getRowByRowIndex(rowIndex))}</tbody>;
-
-    function getHeaderByIndex(index, {children}={}) {
-        return (
-            <th key={index}>
-                {index}
-                {children}
-            </th>
-        );
-    }
-
-    function getVerticalHeaderByIndex(index) {
-        return getHeaderByIndex(index);
-    }
-
-    function getHorizontalHeaderByIndex(index) {
-        return getHeaderByIndex(
-            index,
-            {children:
-                    isDeletingNode
-                        ? <button data-testid={`delete-${index}`} onClick={() => deleteNode(index)}>X</button>
-                        : null
-            }
-        );
-    }
-
-    function getCellByRowAndColIndex(rowIndex, colIndex) {
-        return (
-            <td key={colIndex}>
-                {
-                    nodes.get("isWeighted") ?
-                        <input type="number" value={nodes.getEdgeByIndex({to: rowIndex, from: colIndex}).get("value")}
-                               onChange={e => {
-                                   setEdgeByIndex({to: rowIndex, from: colIndex}, {value: e.target.value});
-                               }}
-                        /> :
-                        <input type="checkbox" checked={nodes.getEdgeByIndex({to: rowIndex, from: colIndex}).get("value")}
-                               onChange={e => {
-                                   setEdgeByIndex({to: rowIndex, from: colIndex}, {value: !nodes.getEdgeByIndex({to: rowIndex, from: colIndex}).get("value")});
-                               }}
-                        />
-                }
-            </td>
-        );
-    }
-
-    function getRowElementsByRowIndex(rowIndex) {
-        return (
-            <>
-                {getVerticalHeaderByIndex(rowIndex)}
-                {
-                    new Array(nodes.nodeCount).fill(false)
-                        .map((_, colIndex) => getCellByRowAndColIndex(rowIndex, colIndex))
-                }
-            </>
-        );
-    }
-
-    function getRowByRowIndex(rowIndex) {
-        return <tr key={rowIndex}>{getRowElementsByRowIndex(rowIndex)}</tr>;
-    }
+export default function Nodes({nodes: nodesRecord, handlers: {setEdgeByIndex, deleteNode} = {}, isDeletingNode}) {
+    const {nodeCount} = nodesRecord;
 
     return (
         <table>
-            {horizontalHeaderRow}
-            {rows}
+            <TableHead nodeCount={nodeCount} isDeletingNode={isDeletingNode} deleteNode={deleteNode} />
+            <TableBody nodeCount={nodeCount} nodesRecord={nodesRecord} setEdgeByIndex={setEdgeByIndex}/>
         </table>
     );
+}
+
+function WeightedCellContent({edgeValue, setEdge}) {
+    return <input type="number" value={edgeValue} onChange={e => setEdge(e.target.value)}/>;
+}
+
+function NonWeightedCellContent({setEdge, edgeValue}) {
+    return <input type="checkbox" checked={edgeValue} onChange={e => setEdge(!edgeValue)}/>;
+}
+
+function Cell({rowIndex, colIndex, nodesRecord, setEdgeByIndex}) {
+    const edgeValue = nodesRecord.getEdgeByIndex({to: rowIndex, from: colIndex}).get("value");
+
+    const CellContentComponent = nodesRecord.get("isWeighted") ? WeightedCellContent : NonWeightedCellContent;
+
+    return (
+        <td key={colIndex}>
+            {
+                <CellContentComponent
+                setEdge={value=>setEdgeByIndex({to: rowIndex, from: colIndex}, {value})}
+                nodesRecord={nodesRecord} edgeValue={edgeValue}/>
+            }
+        </td>
+    );
+}
+
+function TableBodyRow({rowIndex, nodeCount, nodesRecord, setEdgeByIndex}) {
+    const getCell = (_, colIndex) => <Cell rowIndex={rowIndex} colIndex={colIndex}
+        nodesRecord={nodesRecord} setEdgeByIndex={setEdgeByIndex} />;
+
+    const cells = new Array(nodeCount).fill(false).map(getCell);
+
+    return <tr key={rowIndex}>
+        <VerticalHeader index={rowIndex} />
+        {cells}
+        </tr>;
+}
+
+function TableBody({nodeCount, nodesRecord, setEdgeByIndex}) {
+    const getTableBodyRow = (_, rowIndex)=>
+        <TableBodyRow
+        rowIndex={rowIndex} nodeCount={nodeCount}
+        nodesRecord={nodesRecord} setEdgeByIndex={setEdgeByIndex} />;
+
+    const emptyIterableArray = new Array(nodeCount).fill(false);
+    const rows = emptyIterableArray.map(getTableBodyRow);
+
+    return <tbody>
+        {rows}
+    </tbody>;
+}
+
+function NodeDeleteButton({index, deleteNode}) {
+    return <button data-testid={`delete-${index}`} onClick={() => deleteNode(index)}>X</button>
+}
+
+function NodeDeleteButtonContainer({index, deleteNode, isDeletingNode}) {
+    if (isDeletingNode) {
+        return <NodeDeleteButton index={index} deleteNode={deleteNode} />;
+    }
+    
+    return null;
+}
+
+function HorizontalHeader({index, isDeletingNode, deleteNode}) {
+    return <Header index={index}>
+            <NodeDeleteButtonContainer index={index} isDeletingNode={isDeletingNode} deleteNode={deleteNode}/>
+        </Header>;
+}
+
+function HorizontalVerticalHeader() {
+    return <th key="top-left" />;
+}
+
+function TableHead({nodeCount, isDeletingNode, deleteNode}) {
+    const iterableNodeHeaderArray = new Array(nodeCount).fill(false);
+    const nodeHeaders = iterableNodeHeaderArray.map((_,i)=>
+        <HorizontalHeader index={i} isDeletingNode={isDeletingNode} deleteNode={deleteNode} />
+    );
+
+    const horizontalHeaders = [
+        <HorizontalVerticalHeader />,
+        ...nodeHeaders
+    ];
+
+    return <thead><tr>{horizontalHeaders}</tr></thead>;
 }
