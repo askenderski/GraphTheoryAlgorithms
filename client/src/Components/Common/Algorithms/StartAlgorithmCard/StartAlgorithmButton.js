@@ -2,7 +2,7 @@ import {useState, useEffect, useContext} from "react";
 import BasicAlgorithmContext from "../../../../Contexts/Controller/BasicAlgorithmContext";
 import { adjacencyMatrixToGraphRepresentation } from "../../../../Utilities/graphs";
 
-export default function StartAlgorithmButton({algorithmTitle, algorithmType}) {
+export default function StartAlgorithmButton() {
     const {nodesRecord: nodes, handlers, algorithmGetter, controller} = useContext(BasicAlgorithmContext);
 
     const [isAlgorithmRunning, setIsAlgorithmRunning] = useState(false);
