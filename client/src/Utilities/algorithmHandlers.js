@@ -19,5 +19,9 @@ export function getHandlers(nodes, setNodes) {
         setNodes(nodes => nodes.toggleIsWeighted());
     }
 
-    return {addNode, setEdgeByIndex, deleteNodeByIndex, toggleIsDirected, toggleIsWeighted};
+    function setNodesRecord(newRecord) {
+        setNodes(newRecord);
+    }
+
+    return {addNode, setNodesRecord, setEdgeByIndex, deleteNodeByIndex, toggleIsDirected, toggleIsWeighted};
 };

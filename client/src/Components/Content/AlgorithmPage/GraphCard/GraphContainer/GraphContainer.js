@@ -1,6 +1,7 @@
 import VisNetworkReactComponent from "vis-network-react";
 import {adjacencyMatrixToGraphRepresentation} from "../../../../../Utilities/graphs";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import NodeContext from "../../../../../Contexts/Node";
 
 const getEdgeList = adjacencyMatrix => {
     const edgeListAsImmutable = adjacencyMatrixToGraphRepresentation(adjacencyMatrix, "edgeList");
@@ -17,7 +18,9 @@ const getNodes = nodes => {
 
 const defaultNetwork = {fit:()=>{}};
 
-export default function GraphContainer({nodes: nodesRecord}) {
+export default function GraphContainer() {
+    const {nodesRecord} = useContext(NodeContext);
+
     const edges = getEdgeList(nodesRecord.adjacencyMatrix);
     const nodes = getNodes(nodesRecord.nodes);
 
