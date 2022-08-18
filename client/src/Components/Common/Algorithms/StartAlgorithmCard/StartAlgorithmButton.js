@@ -3,21 +3,9 @@ import BasicAlgorithmContext from "../../../../Contexts/Controller/BasicAlgorith
 import { adjacencyMatrixToGraphRepresentation } from "../../../../Utilities/graphs";
 
 export default function StartAlgorithmButton({algorithmTitle, algorithmType}) {
-    const {nodesRecord: nodes, handlers} = useContext(BasicAlgorithmContext);
+    const {nodesRecord: nodes, handlers, algorithmGetter, controller} = useContext(BasicAlgorithmContext);
 
     const [isAlgorithmRunning, setIsAlgorithmRunning] = useState(false);
-
-    const algorithmGetterPromise = import(`../../../../Algorithms/${algorithmType}/${algorithmTitle}/${algorithmTitle}`)
-        .then(module=>module.default)
-        .catch(err=>{
-            return null;
-        });
-
-    const controllerPromise = import(`../../../../Algorithms/${algorithmType}/${algorithmTitle}/Controller`)
-        .then(module=>module.default)
-        .catch(err=>{
-            return null;
-        });
 
     const [algorithmController, setAlgorithmController] = useState();
 
@@ -25,11 +13,11 @@ export default function StartAlgorithmButton({algorithmTitle, algorithmType}) {
         async function main() {
             if (algorithmController === undefined) return;
 
-            algorithmGetterPromise
-                .then(algorithmGetter=>algorithmGetter(algorithmController))
-                .then(({algorithm, graphRepresentation})=>
-                    algorithm(nodes.nodes, adjacencyMatrixToGraphRepresentation(nodes.adjacencyMatrix, graphRepresentation))
-                );
+            const algorithm = algorithmGetter(algorithmController);
+            algorithm.algorithm(
+                nodes.nodes,
+                adjacencyMatrixToGraphRepresentation(nodes.adjacencyMatrix, algorithm.graphRepresentation)
+            );
 
             return () => algorithmController.invalidate();
         }
@@ -39,8 +27,6 @@ export default function StartAlgorithmButton({algorithmTitle, algorithmType}) {
 
     async function startAlgorithm() {
         setIsAlgorithmRunning(true);
-
-        const controller = (await controllerPromise);
 
         setAlgorithmController(controller({
             setResult: () => {},
