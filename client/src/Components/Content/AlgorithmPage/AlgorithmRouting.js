@@ -1,8 +1,7 @@
-import React, {useState, Suspense} from "react";
+import React, {useState, useMemo, Suspense} from "react";
 import {NodesRecord} from "../../../Records/NodesRecord/NodesRecord";
 import useSetGraph from "./Hooks/useSetGraph";
 import Loading from "../../Common/Loading/Loading";
-import TopSort from "../Algorithms/General/TopSort";
 
 export default function AlgorithmRouting({match: {params}}) {
     const { algorithmType, algorithmTitle, graphId } = params;
@@ -12,13 +11,13 @@ export default function AlgorithmRouting({match: {params}}) {
 
     useSetGraph(graphId, {setDoesGraphExist, setNodesRecord});
 
-    const AlgorithmComponent = React.lazy(
+    const AlgorithmComponent = useMemo(()=>React.lazy(
         ()=>import(`../Algorithms/${algorithmType}/${algorithmTitle}`)
             .catch(err=>{
                 setDoesAlgorithmExist(false);
                 return {default: Loading};
             })
-    );
+    ), []);
 
     if (doesGraphExist && doesAlgorithmExist) {
         return (
