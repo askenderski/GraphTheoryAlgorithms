@@ -18,8 +18,7 @@ export default function TopSort({nodesRecord, setNodesRecord}) {
                 <NodesCard/>
             </NodeContext.Provider>
             <TopSortAlgorithmContext.Provider value={{nodesRecord, handlers: nodesCardHandlers}}>
-                <StartAlgorithmCard algorithmType={algorithmType}
-                algorithmTitle={algorithmTitle}/>
+                <StartAlgorithmCard/>
             </TopSortAlgorithmContext.Provider>
             <GraphContext.Provider value={{nodesRecord}}>
                 <GraphCard/>
