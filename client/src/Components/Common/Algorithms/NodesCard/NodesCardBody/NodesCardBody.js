@@ -3,7 +3,7 @@ import useToggle from "../../../../../Hooks/useToggle";
 import ToggleableComponent from "../../../../Common/ToggleableComponent/ToggleableComponent";
 import style from "./NodesCardBody.module.css";
 import { useContext } from "react";
-import NodeContext from "../../../../../Contexts/Node";
+import NodeContext from "../../../../../Contexts/Controller/Node";
 
 export default function NodesCardBody() {
     const [isDeleting, toggleIsDeleting] = useToggle(false);

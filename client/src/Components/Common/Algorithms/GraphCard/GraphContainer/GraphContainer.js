@@ -1,7 +1,7 @@
 import VisNetworkReactComponent from "vis-network-react";
 import {adjacencyMatrixToGraphRepresentation} from "../../../../../Utilities/graphs";
 import { useContext, useEffect, useState } from "react";
-import NodeContext from "../../../../../Contexts/Node";
+import NodeContext from "../../../../../Contexts/Controller/Node";
 
 const getEdgeList = adjacencyMatrix => {
     const edgeListAsImmutable = adjacencyMatrixToGraphRepresentation(adjacencyMatrix, "edgeList");

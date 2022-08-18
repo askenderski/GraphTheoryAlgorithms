@@ -1,4 +1,4 @@
-import NodeContext from "../../../../Contexts/Node";
+import NodeContext from "../../../../Contexts/Controller/Node";
 import NodesCard from "../../../Common/Algorithms/NodesCard/NodesCard";
 import { getHandlers } from "../../../../Utilities/algorithmHandlers";
 import StartAlgorithmCard from "../../../Common/Algorithms/StartAlgorithmCard/StartAlgorithmCard";

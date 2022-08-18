@@ -1,5 +1,5 @@
 import {useState, useEffect, useContext} from "react";
-import NodeContext from "../../../../Contexts/Node";
+import NodeContext from "../../../../Contexts/Controller/Node";
 import { adjacencyMatrixToGraphRepresentation } from "../../../../Utilities/graphs";
 
 export default function StartAlgorithmButton({algorithmTitle, algorithmType}) {

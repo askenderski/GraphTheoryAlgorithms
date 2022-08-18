@@ -1,5 +1,5 @@
 import {createContext} from "react";
-import {NodesRecord} from "../Records/NodesRecord/NodesRecord";
+import {NodesRecord} from "../../Records/NodesRecord/NodesRecord";
 
 const NodeContext = createContext({
     nodesRecord: NodesRecord(),
