@@ -1,9 +1,8 @@
 import NodeContext from "../../../../Contexts/Node";
-import NodesCard from "../../AlgorithmPage/NodesCard/NodesCard";
+import NodesCard from "../../../Common/Algorithms/NodesCard/NodesCard";
 import { getHandlers } from "../../../../Utilities/algorithmHandlers";
-import StartAlgorithmCard from "../../AlgorithmPage/StartAlgorithmCard/StartAlgorithmCard";
-import GraphCard from "../../AlgorithmPage/GraphCard/GraphCard";
-import { NodesRecord } from "../../../../Records/NodesRecord/NodesRecord";
+import StartAlgorithmCard from "../../../Common/Algorithms/StartAlgorithmCard/StartAlgorithmCard";
+import GraphCard from "../../../Common/Algorithms/GraphCard/GraphCard";
 
 const algorithmType = "General";
 const algorithmTitle = "TopSort";
