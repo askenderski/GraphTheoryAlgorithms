@@ -4,6 +4,7 @@ import { getHandlers } from "../../../../Utilities/algorithmHandlers";
 import StartAlgorithmCard from "../../../Common/Algorithms/StartAlgorithmCard/StartAlgorithmCard";
 import GraphCard from "../../../Common/Algorithms/GraphCard/GraphCard";
 import GraphContext from "../../../../Contexts/Controller/Graph";
+import TopSortAlgorithmContext from "../.././../../Contexts/Controller/TopSort/Algorithm";
 
 const algorithmType = "General";
 const algorithmTitle = "TopSort";
@@ -16,10 +17,10 @@ export default function TopSort({nodesRecord, setNodesRecord}) {
             <NodeContext.Provider value={{nodesRecord, handlers: nodesCardHandlers}}>
                 <NodesCard/>
             </NodeContext.Provider>
-            <NodeContext.Provider value={{nodesRecord, handlers: nodesCardHandlers}}>
+            <TopSortAlgorithmContext.Provider value={{nodesRecord, handlers: nodesCardHandlers}}>
                 <StartAlgorithmCard algorithmType={algorithmType}
                 algorithmTitle={algorithmTitle}/>
-            </NodeContext.Provider>
+            </TopSortAlgorithmContext.Provider>
             <GraphContext.Provider value={{nodesRecord}}>
                 <GraphCard/>
             </GraphContext.Provider>
