@@ -1,5 +1,6 @@
-import {useState, useEffect, useContext} from "react";
+import {useState, useContext} from "react";
 import BasicAlgorithmContext from "../../../../Contexts/Controller/BasicAlgorithmContext";
+import useEffectWithWaitForCleanup from "../../../../Hooks/useEffectWithWaitForCleanup";
 import { adjacencyMatrixToGraphRepresentation } from "../../../../Utilities/graphs";
 
 export default function StartAlgorithmButton() {
@@ -7,22 +8,28 @@ export default function StartAlgorithmButton() {
 
     const [isAlgorithmRunning, setIsAlgorithmRunning] = useState(false);
 
-    const [algorithmController, setAlgorithmController] = useState();
+    const [algorithmController, setAlgorithmController] = useState({invalidate: ()=>{}, isMock: true});
 
-    useEffect(() => {
+    useEffectWithWaitForCleanup(() => {
         async function main() {
-            if (algorithmController === undefined) return;
+            if (algorithmController.isMock) return;
 
             const algorithm = algorithmGetter(algorithmController);
             algorithm.algorithm(
                 nodes.nodes,
                 adjacencyMatrixToGraphRepresentation(nodes.adjacencyMatrix, algorithm.graphRepresentation)
             );
-
-            return () => algorithmController.invalidate();
         }
         
         main();
+
+        return async () => {
+            console.log(1)
+            await algorithmController.invalidate();
+            console.log(2)
+            handlers.resetNodes();
+            console.log(3)
+        };
     }, [algorithmController]);
 
     async function startAlgorithm() {

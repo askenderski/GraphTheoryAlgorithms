@@ -1,8 +1,9 @@
 import { Record } from "immutable";
 import { v4 as uuidv4 } from 'uuid';
+import { defaultNodeStyle } from "../../Data/Algorithms/graph";
 
 const NodeRecordWithoutId = Record({
-    style: {},
+    style: defaultNodeStyle,
     value: undefined,
     id: undefined
 });

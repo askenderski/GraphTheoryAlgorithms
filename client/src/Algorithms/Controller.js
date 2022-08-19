@@ -1,4 +1,6 @@
 export default function Controller({setResult, setIsDone, time = 3000, setNodeStyle}) {
+    let isDone = false;
+
     const handlers = {
         waitToConsider: async (time) => new Promise((resolve) => setTimeout(() => resolve(), time))
     };
@@ -28,8 +30,14 @@ export default function Controller({setResult, setIsDone, time = 3000, setNodeSt
     }
 
     function invalidate() {
-        handlers.getWait = () => Promise.reject();
+        return new Promise(resolve=>{
+            if (isDone) return resolve();
+            
+            handlers.waitToConsider = () => Promise.reject().finally(()=>{
+                resolve();
+            });
+        });
     }
 
-    return {consider, setIsDone, setResult, invalidate};
+    return {consider, setIsDone: (...args)=>{isDone = true; setIsDone(...args)}, setResult, invalidate};
 };

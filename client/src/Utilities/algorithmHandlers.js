@@ -1,6 +1,15 @@
+import { defaultNodeStyle } from "../Data/Algorithms/graph";
+
 export function getHandlers(nodes, setNodes) {
     function addNode() {
         setNodes(nodes => nodes.addNode());
+    }
+
+    function resetNodes() {
+        setNodes(nodesRecord => {
+            const newNodes = nodesRecord.get("nodes").map(node=>node.set("style", defaultNodeStyle));
+            return nodesRecord.set("nodes", newNodes);
+        });
     }
 
     function setEdgeByIndex({to, from}, val) {
@@ -23,5 +32,5 @@ export function getHandlers(nodes, setNodes) {
         setNodes(newRecord);
     }
 
-    return {addNode, setNodesRecord, setEdgeByIndex, deleteNodeByIndex, toggleIsDirected, toggleIsWeighted};
+    return {addNode, setNodesRecord, resetNodes, setEdgeByIndex, deleteNodeByIndex, toggleIsDirected, toggleIsWeighted};
 };
