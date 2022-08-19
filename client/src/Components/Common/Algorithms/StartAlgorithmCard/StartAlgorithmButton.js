@@ -18,10 +18,10 @@ export default function StartAlgorithmButton() {
 
     useEffectWithWaitForCleanup(() => {
         async function main() {
-            if (algorithmController.isMock) return;
-
             //this is needed as useState set functions execute function arguments
             setInvalidateAlgorithm(()=>invalidateAlgorithm.bind(undefined, algorithmController));
+            
+            if (algorithmController.isMock) return;
 
             const algorithm = algorithmGetter(algorithmController);
             algorithm.algorithm(
