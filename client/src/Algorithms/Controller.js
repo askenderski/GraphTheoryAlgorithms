@@ -1,3 +1,5 @@
+import { v4 } from "uuid";
+
 export default function Controller({setResult, setIsDone, time = 3000, setNodeStyle}) {
     let isDone = false;
 
@@ -34,10 +36,11 @@ export default function Controller({setResult, setIsDone, time = 3000, setNodeSt
             if (isDone) return resolve();
             
             handlers.waitToConsider = () => Promise.reject().finally(()=>{
+                isDone = true;
                 resolve();
             });
         });
     }
 
-    return {consider, setIsDone: (...args)=>{isDone = true; setIsDone(...args)}, setResult, invalidate};
+    return {consider, _id: v4(), setIsDone: (...args)=>{isDone = true; setIsDone(...args)}, setResult, invalidate};
 };

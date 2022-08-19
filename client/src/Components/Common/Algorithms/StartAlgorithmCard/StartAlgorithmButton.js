@@ -4,15 +4,24 @@ import useEffectWithWaitForCleanup from "../../../../Hooks/useEffectWithWaitForC
 import { adjacencyMatrixToGraphRepresentation } from "../../../../Utilities/graphs";
 
 export default function StartAlgorithmButton() {
-    const {nodesRecord: nodes, handlers, algorithmGetter, controller} = useContext(BasicAlgorithmContext);
+    const {nodesRecord: nodes, handlers,
+        setInvalidateAlgorithm, algorithmGetter, controller} = useContext(BasicAlgorithmContext);
 
     const [isAlgorithmRunning, setIsAlgorithmRunning] = useState(false);
 
     const [algorithmController, setAlgorithmController] = useState({invalidate: ()=>{}, isMock: true});
 
+    async function invalidateAlgorithm(algorithmController) {
+        await algorithmController.invalidate();
+        handlers.resetNodes();
+    }
+
     useEffectWithWaitForCleanup(() => {
         async function main() {
             if (algorithmController.isMock) return;
+
+            //this is needed as useState set functions execute function arguments
+            setInvalidateAlgorithm(()=>invalidateAlgorithm.bind(undefined, algorithmController));
 
             const algorithm = algorithmGetter(algorithmController);
             algorithm.algorithm(
@@ -24,11 +33,7 @@ export default function StartAlgorithmButton() {
         main();
 
         return async () => {
-            console.log(1)
-            await algorithmController.invalidate();
-            console.log(2)
-            handlers.resetNodes();
-            console.log(3)
+            await invalidateAlgorithm(algorithmController);
         };
     }, [algorithmController]);
 

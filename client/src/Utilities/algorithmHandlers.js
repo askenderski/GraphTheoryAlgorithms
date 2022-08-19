@@ -1,6 +1,6 @@
 import { defaultNodeStyle } from "../Data/Algorithms/graph";
 
-export function getNodesHandlers(setNodes) {
+export function getNodesHandlers(setNodes, {invalidateAlgorithm}) {
     function addNode() {
         setNodes(nodes => nodes.addNode());
     }
@@ -21,7 +21,18 @@ export function getNodesHandlers(setNodes) {
         setNodes(nodes => nodes.toggleIsWeighted());
     }
 
-    return {addNode, setEdgeByIndex, toggleIsDirected, toggleIsWeighted, deleteNodeByIndex};
+    const nodeRecordHandlers = {addNode, setEdgeByIndex, toggleIsDirected, toggleIsWeighted, deleteNodeByIndex};
+
+    Object.keys(nodeRecordHandlers).forEach(key=>{
+        const originalFunc = nodeRecordHandlers[key];
+
+        nodeRecordHandlers[key] = async function (...args) {
+            await invalidateAlgorithm();
+            return originalFunc.apply(nodeRecordHandlers, args);
+        };
+    })
+
+    return nodeRecordHandlers;
 };
 
 export function getStartAlgorithmHandlers(setNodes) {
