@@ -5,8 +5,8 @@ export function getNodesHandlers(setNodes, {invalidateAlgorithm}) {
         setNodes(nodes => nodes.addNode());
     }
 
-    function deleteNodeByIndex(i) {
-        setNodes(nodes => nodes.deleteNodeByIndex(i));
+    function deleteNode(nodeId) {
+        setNodes(nodes => nodes.deleteNodeById(nodeId));
     }
 
     function setEdgeByIndex({to, from}, val) {
@@ -21,7 +21,7 @@ export function getNodesHandlers(setNodes, {invalidateAlgorithm}) {
         setNodes(nodes => nodes.toggleIsWeighted());
     }
 
-    const nodeRecordHandlers = {addNode, setEdgeByIndex, toggleIsDirected, toggleIsWeighted, deleteNodeByIndex};
+    const nodeRecordHandlers = {addNode, setEdgeByIndex, toggleIsDirected, toggleIsWeighted, deleteNode};
 
     Object.keys(nodeRecordHandlers).forEach(key=>{
         const originalFunc = nodeRecordHandlers[key];

@@ -24,7 +24,7 @@ export default function NodesCardBody() {
             <Nodes nodes={nodesRecord} handlers={{
                 setEdgeByIndex: handlers.setEdgeByIndex, deleteNode: (...props) => {
                     toggleIsDeleting();
-                    handlers.deleteNodeByIndex(...props);
+                    handlers.deleteNode(...props);
                 }
             }} isDeletingNode={isDeleting} />
         </div>

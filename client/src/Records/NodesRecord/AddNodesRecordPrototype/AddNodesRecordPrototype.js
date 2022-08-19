@@ -107,6 +107,10 @@ export default function AddNodesRecordPrototype(NodesRecord) {
     
         return nodesWithReversedWeight.set("adjacencyMatrix", adjacencyMatrixWithReversedWeight);
     }
+
+    NodesRecord.prototype.deleteNodeById = function (nodeId) {
+        return this.deleteNodeByIndex(this.nodes.findIndex(node=>node.id === nodeId));
+    }
     
     NodesRecord.prototype.deleteNodeByIndex = function (nodeIndex) {
         if (this.nodeCount <= 0) return this;

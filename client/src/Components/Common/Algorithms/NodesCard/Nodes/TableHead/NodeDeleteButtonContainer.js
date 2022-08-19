@@ -1,5 +1,5 @@
 function NodeDeleteButton({index, deleteNode}) {
-    return <button data-testid={`delete-${index}`} onClick={() => deleteNode(index)}>X</button>
+    return <button data-testid={`delete-${index}`} onClick={() => deleteNode()}>X</button>
 }
 
 export default function NodeDeleteButtonContainer({index, deleteNode, isDeletingNode}) {

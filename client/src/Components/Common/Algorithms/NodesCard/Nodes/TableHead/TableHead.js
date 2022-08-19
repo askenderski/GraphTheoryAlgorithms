@@ -12,8 +12,9 @@ function HorizontalHeader({index, isDeletingNode, deleteNode}) {
 }
 
 export function TableHead({nodes, isDeletingNode, deleteNode}) {
-    const nodeHeaders = nodes.map((_,i)=>
-        <HorizontalHeader key={i} index={i} isDeletingNode={isDeletingNode} deleteNode={deleteNode} />
+    const nodeHeaders = nodes.map((node,i)=>
+        <HorizontalHeader key={i} index={i}
+        isDeletingNode={isDeletingNode} deleteNode={deleteNode.bind(undefined, node.id)} />
     );
 
     const horizontalHeaders = [
