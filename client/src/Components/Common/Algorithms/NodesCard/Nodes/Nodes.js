@@ -6,7 +6,7 @@ export default function Nodes({nodes: nodesRecord, handlers = {}, isDeletingNode
 
     return (
         <table>
-            <TableHead nodes={getNodesArray()} isDeletingNode={isDeletingNode} deleteNode={deleteNode} />
+            <TableHead nodes={getNodesArray()} isDeletingNode={isDeletingNode} handlers={handlers} />
             <TableBody nodeCount={getNodeCount()} nodesRecord={nodesRecord} handlers={handlers}/>
         </table>
     );
