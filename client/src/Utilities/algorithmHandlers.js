@@ -31,6 +31,10 @@ export function getNodesHandlers(nodesRecord, setNodes, {invalidateAlgorithm}) {
         return nodesRecord.get("nodeCount");
     }
 
+    function getEdgeByIndex({to, from}) {
+        return nodesRecord.getEdgeByIndex({to, from});
+    }
+
     Object.keys(nodeRecordHandlers).forEach(key=>{
         const originalFunc = nodeRecordHandlers[key];
 
@@ -42,6 +46,7 @@ export function getNodesHandlers(nodesRecord, setNodes, {invalidateAlgorithm}) {
 
     nodeRecordHandlers.getNodesArray = getNodesArray;
     nodeRecordHandlers.getNodeCount = getNodeCount;
+    nodeRecordHandlers.getEdgeByIndex = getEdgeByIndex;
 
     return nodeRecordHandlers;
 };
