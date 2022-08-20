@@ -22,10 +22,10 @@ export default function NodesCardBody() {
                 toggleIsOn={handlers.toggleIsWeighted}
                 values={{ on: "Weighted", off: "Unweighted" }} />
             <Nodes nodes={nodesRecord} handlers={{
-                setEdgeByIndex: handlers.setEdgeByIndex, deleteNode: (...props) => {
+                ...handlers, deleteNode: (...props) => {
                     toggleIsDeleting();
                     handlers.deleteNode(...props);
-                }, getNodesArray: handlers.getNodesArray
+                }
             }} isDeletingNode={isDeleting} />
         </div>
     );

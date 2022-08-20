@@ -5,10 +5,6 @@ export function getNodesHandlers(nodesRecord, setNodes, {invalidateAlgorithm}) {
         setNodes(nodes => nodes.addNode());
     }
 
-    function getNodesArray() {
-        return nodesRecord.get("nodes");
-    }
-
     function deleteNode(nodeId) {
         setNodes(nodes => nodes.deleteNodeById(nodeId));
     }
@@ -27,6 +23,14 @@ export function getNodesHandlers(nodesRecord, setNodes, {invalidateAlgorithm}) {
 
     const nodeRecordHandlers = {addNode, setEdgeByIndex, toggleIsDirected, toggleIsWeighted, deleteNode};
 
+    function getNodesArray() {
+        return nodesRecord.get("nodes");
+    }
+
+    function getNodeCount() {
+        return nodesRecord.get("nodeCount");
+    }
+
     Object.keys(nodeRecordHandlers).forEach(key=>{
         const originalFunc = nodeRecordHandlers[key];
 
@@ -37,6 +41,7 @@ export function getNodesHandlers(nodesRecord, setNodes, {invalidateAlgorithm}) {
     })
 
     nodeRecordHandlers.getNodesArray = getNodesArray;
+    nodeRecordHandlers.getNodeCount = getNodeCount;
 
     return nodeRecordHandlers;
 };
