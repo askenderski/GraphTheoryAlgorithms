@@ -23,7 +23,7 @@ export function getNodesHandlers(nodesRecord, setNodes, {invalidateAlgorithm}) {
 
     const nodeRecordHandlers = {addNode, setEdgeByIndex, toggleIsDirected, toggleIsWeighted, deleteNode};
 
-    function getNodesArray() {
+    function getNodesList() {
         return nodesRecord.get("nodes");
     }
 
@@ -52,7 +52,7 @@ export function getNodesHandlers(nodesRecord, setNodes, {invalidateAlgorithm}) {
         };
     })
 
-    nodeRecordHandlers.getNodesArray = getNodesArray;
+    nodeRecordHandlers.getNodesList = getNodesList;
     nodeRecordHandlers.getNodeCount = getNodeCount;
     nodeRecordHandlers.getEdgeByIndex = getEdgeByIndex;
     nodeRecordHandlers.getIsWeighted = getIsWeighted;

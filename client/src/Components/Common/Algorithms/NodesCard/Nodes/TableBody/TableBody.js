@@ -9,7 +9,7 @@ function TableBodyRow({rowIndex, handlers}) {
     const getCell = (_, colIndex) =>
         <Cell key={`${rowIndex} ${colIndex}`} rowIndex={rowIndex} colIndex={colIndex} handlers={handlers}/>;
 
-    const cells = new Array(handlers.getNodeCount()).fill(false).map(getCell);
+    const cells = handlers.getNodesList().map(getCell);
 
     return <tr>
         <VerticalHeader index={rowIndex} />
@@ -22,8 +22,7 @@ export function TableBody({handlers}) {
         <TableBodyRow key={rowIndex}
         rowIndex={rowIndex} handlers={handlers}/>;
 
-    const emptyIterableArray = new Array(handlers.getNodeCount()).fill(false);
-    const rows = emptyIterableArray.map(getTableBodyRow);
+    const rows = handlers.getNodesList().map(getTableBodyRow);
 
     return <tbody>
         {rows}
