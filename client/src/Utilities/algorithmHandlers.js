@@ -39,6 +39,10 @@ export function getNodesHandlers(nodesRecord, setNodes, {invalidateAlgorithm}) {
         return nodesRecord.get("isWeighted");
     }
 
+    function getEdgeValue(edge) {
+        return edge.get("value");
+    }
+
     Object.keys(nodeRecordHandlers).forEach(key=>{
         const originalFunc = nodeRecordHandlers[key];
 
@@ -52,6 +56,7 @@ export function getNodesHandlers(nodesRecord, setNodes, {invalidateAlgorithm}) {
     nodeRecordHandlers.getNodeCount = getNodeCount;
     nodeRecordHandlers.getEdgeByIndex = getEdgeByIndex;
     nodeRecordHandlers.getIsWeighted = getIsWeighted;
+    nodeRecordHandlers.getEdgeValue = getEdgeValue;
 
     return nodeRecordHandlers;
 };
