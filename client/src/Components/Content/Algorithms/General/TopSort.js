@@ -10,9 +10,7 @@ import TopSortAlgorithmContext from "../.././../../Contexts/Controller/TopSort/A
 export default function TopSort({nodesRecord, setNodesRecord}) {
     const [invalidateAlgorithm, setInvalidateAlgorithm] = useState(()=>{});
 
-    const nodesCardHandlers = useMemo(
-        ()=>getNodesHandlers(setNodesRecord, {invalidateAlgorithm}),[invalidateAlgorithm]
-    );
+    const nodesCardHandlers = getNodesHandlers(nodesRecord, setNodesRecord, {invalidateAlgorithm});
     const startAlgorithmHandlers = getStartAlgorithmHandlers(setNodesRecord);
 
     return (

@@ -25,7 +25,7 @@ export default function NodesCardBody() {
                 setEdgeByIndex: handlers.setEdgeByIndex, deleteNode: (...props) => {
                     toggleIsDeleting();
                     handlers.deleteNode(...props);
-                }
+                }, getNodesArray: handlers.getNodesArray
             }} isDeletingNode={isDeleting} />
         </div>
     );

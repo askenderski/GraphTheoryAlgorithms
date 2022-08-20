@@ -1,8 +1,12 @@
 import { defaultNodeStyle } from "../Data/Algorithms/graph";
 
-export function getNodesHandlers(setNodes, {invalidateAlgorithm}) {
+export function getNodesHandlers(nodesRecord, setNodes, {invalidateAlgorithm}) {
     function addNode() {
         setNodes(nodes => nodes.addNode());
+    }
+
+    function getNodesArray() {
+        return nodesRecord.get("nodes");
     }
 
     function deleteNode(nodeId) {
@@ -31,6 +35,8 @@ export function getNodesHandlers(setNodes, {invalidateAlgorithm}) {
             return originalFunc.apply(nodeRecordHandlers, args);
         };
     })
+
+    nodeRecordHandlers.getNodesArray = getNodesArray;
 
     return nodeRecordHandlers;
 };
