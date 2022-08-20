@@ -5,7 +5,7 @@ function VerticalHeader({index}) {
     return <Header index={index}/>;
 }
 
-function TableBodyRow({rowIndex, nodeCount, nodesRecord, getEdgeValue, getIsWeighted, getEdgeByIndex, setEdgeByIndex}) {
+function TableBodyRow({rowIndex, nodeCount, getEdgeValue, getIsWeighted, getEdgeByIndex, setEdgeByIndex}) {
     const getCell = (_, colIndex) => <Cell key={`${rowIndex} ${colIndex}`} rowIndex={rowIndex} colIndex={colIndex}
         getEdgeByIndex={getEdgeByIndex} getIsWeighted={getIsWeighted}
         setEdgeByIndex={setEdgeByIndex} getEdgeValue={getEdgeValue}/>;
