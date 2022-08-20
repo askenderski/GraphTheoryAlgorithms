@@ -11,7 +11,7 @@ function TableBodyRow({rowIndex, nodeCount, nodesRecord, setEdgeByIndex}) {
 
     const cells = new Array(nodeCount).fill(false).map(getCell);
 
-    return <tr key={rowIndex}>
+    return <tr>
         <VerticalHeader index={rowIndex} />
         {cells}
         </tr>;
