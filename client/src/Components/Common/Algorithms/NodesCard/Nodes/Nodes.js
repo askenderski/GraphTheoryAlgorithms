@@ -2,7 +2,7 @@ import { TableHead } from "./TableHead/TableHead";
 import { TableBody } from "./TableBody/TableBody";
 
 export default function Nodes({nodes: nodesRecord, handlers = {}, isDeletingNode}) {
-    const {deleteNode, getNodesArray, getNodeCount} = handlers;
+    const {getNodesArray, getNodeCount} = handlers;
 
     return (
         <table>

@@ -5,12 +5,11 @@ function VerticalHeader({index}) {
     return <Header index={index}/>;
 }
 
-function TableBodyRow({rowIndex, nodeCount, getEdgeValue, getIsWeighted, getEdgeByIndex, setEdgeByIndex}) {
-    const getCell = (_, colIndex) => <Cell key={`${rowIndex} ${colIndex}`} rowIndex={rowIndex} colIndex={colIndex}
-        getEdgeByIndex={getEdgeByIndex} getIsWeighted={getIsWeighted}
-        setEdgeByIndex={setEdgeByIndex} getEdgeValue={getEdgeValue}/>;
+function TableBodyRow({rowIndex, handlers}) {
+    const getCell = (_, colIndex) =>
+        <Cell key={`${rowIndex} ${colIndex}`} rowIndex={rowIndex} colIndex={colIndex} handlers={handlers}/>;
 
-    const cells = new Array(nodeCount).fill(false).map(getCell);
+    const cells = new Array(handlers.getNodeCount()).fill(false).map(getCell);
 
     return <tr>
         <VerticalHeader index={rowIndex} />
@@ -18,16 +17,12 @@ function TableBodyRow({rowIndex, nodeCount, getEdgeValue, getIsWeighted, getEdge
         </tr>;
 }
 
-export function TableBody({nodeCount, nodesRecord, handlers}) {
-    const {setEdgeByIndex} = handlers;
-
+export function TableBody({handlers}) {
     const getTableBodyRow = (_, rowIndex)=>
         <TableBodyRow key={rowIndex}
-        rowIndex={rowIndex} nodeCount={nodeCount}
-        nodesRecord={nodesRecord} getIsWeighted={handlers.getIsWeighted} getEdgeByIndex={handlers.getEdgeByIndex}
-        setEdgeByIndex={setEdgeByIndex} getEdgeValue={handlers.getEdgeValue}/>;
+        rowIndex={rowIndex} handlers={handlers}/>;
 
-    const emptyIterableArray = new Array(nodeCount).fill(false);
+    const emptyIterableArray = new Array(handlers.getNodeCount()).fill(false);
     const rows = emptyIterableArray.map(getTableBodyRow);
 
     return <tbody>
