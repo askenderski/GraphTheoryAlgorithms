@@ -39,6 +39,10 @@ export function getNodesHandlers(nodesRecord, setNodes, {invalidateAlgorithm}) {
         return nodesRecord.get("isWeighted");
     }
 
+    function getIsDirected() {
+        return nodesRecord.get("isDirected");
+    }
+
     function getEdgeValue(edge) {
         return edge.get("value");
     }
@@ -56,6 +60,7 @@ export function getNodesHandlers(nodesRecord, setNodes, {invalidateAlgorithm}) {
     nodeRecordHandlers.getNodeCount = getNodeCount;
     nodeRecordHandlers.getEdgeByIndex = getEdgeByIndex;
     nodeRecordHandlers.getIsWeighted = getIsWeighted;
+    nodeRecordHandlers.getIsDirected = getIsDirected;
     nodeRecordHandlers.getEdgeValue = getEdgeValue;
 
     return nodeRecordHandlers;
