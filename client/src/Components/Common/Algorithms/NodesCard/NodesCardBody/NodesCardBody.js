@@ -18,7 +18,7 @@ export default function NodesCardBody() {
                 toggleIsOn={handlers.toggleIsDirected}
                 values={{ on: "Directed", off: "Undirected" }} />
             <ToggleableComponent
-                isOn={nodesRecord.isWeighted}
+                isOn={handlers.getIsWeighted()}
                 toggleIsOn={handlers.toggleIsWeighted}
                 values={{ on: "Weighted", off: "Unweighted" }} />
             <Nodes nodes={nodesRecord} handlers={{
