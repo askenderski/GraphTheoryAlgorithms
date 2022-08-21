@@ -78,5 +78,15 @@ export function getStartAlgorithmHandlers(setNodes) {
         setNodes(newRecord);
     }
 
-    return {setNodesRecord, resetNodes};
+    function setNodeStyleByIndex(nodeIndex, style) {
+        setNodesRecord(oldNodesRecord => {
+            const newNodesRecord=oldNodesRecord.setNodeByIndex(nodeIndex, {style});
+
+            const oldNodes = oldNodesRecord.get("nodes");
+            const newNodes = oldNodes.set(nodeIndex, newNodesRecord.get("nodes").get(nodeIndex));
+            return oldNodesRecord.set("nodes", newNodes);
+        });
+    }
+
+    return {setNodesRecord, resetNodes, setNodeStyleByIndex};
 };

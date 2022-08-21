@@ -44,12 +44,7 @@ export default function StartAlgorithmButton() {
             setResult: () => {},
             setIsDone: () => setIsAlgorithmRunning(false),
             setNodeStyle: (nodeIndex, style) => {
-                const newNodesRecord=nodes.setNodeByIndex(nodeIndex, {style});
-                handlers.setNodesRecord(oldNodesRecord => {
-                    const oldNodes = oldNodesRecord.get("nodes");
-                    const newNodes = oldNodes.set(nodeIndex, newNodesRecord.get("nodes").get(nodeIndex));
-                    return oldNodesRecord.set("nodes", newNodes);
-                });
+                handlers.setNodeStyleByIndex(nodeIndex, style);
             }
         }));
     }
