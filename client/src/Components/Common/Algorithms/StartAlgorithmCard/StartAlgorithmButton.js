@@ -23,7 +23,7 @@ export default function StartAlgorithmButton() {
 
             const algorithm = algorithmGetter(algorithmController);
             algorithm.algorithm(
-                handlers.getNodesList(),
+                handlers.getNodesIdList(),
                 handlers.getEdgesRepresentation(algorithm.graphRepresentation)
             );
         }
@@ -41,8 +41,8 @@ export default function StartAlgorithmButton() {
         setAlgorithmController(controller({
             setResult: () => {},
             setIsDone: () => setIsAlgorithmRunning(false),
-            setNodeStyle: (nodeIndex, style) => {
-                handlers.setNodeStyleByIndex(nodeIndex, style);
+            setNodeStyle: (nodeId, style) => {
+                handlers.setNodeStyle(nodeId, style);
             }
         }));
     }

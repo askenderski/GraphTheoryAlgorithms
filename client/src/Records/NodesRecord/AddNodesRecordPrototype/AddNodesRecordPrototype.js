@@ -26,13 +26,19 @@ export default function AddNodesRecordPrototype(NodesRecord) {
         return tos.get(toIndex);
     };
     NodesRecord.prototype.getEdge = function ({to, from}) {
+        console.log(this.get("edgesRecord"))
+
         const fromMap = this
             .get("edgesRecord")
             .get("edgesFromRecord")
             .get("fromMap");
+        console.log(from, to);
+        console.log(fromMap)
 
         const edgesToRecord = fromMap
             .get(from);
+
+        console.log(edgesToRecord)
 
         const toMap = edgesToRecord
             .get("toMap");

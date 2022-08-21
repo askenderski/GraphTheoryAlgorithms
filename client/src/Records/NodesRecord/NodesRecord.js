@@ -16,16 +16,19 @@ export const NodesRecord = Record({
 
 AddNodesRecordPrototype(NodesRecord);
 
-function getAdjacencyMatrixAsList({adjacencyMatrix, isWeighted}) {
+function getAdjacencyMatrixAsList({adjacencyMatrix, isWeighted}, nodesList) {
     return List.of(...adjacencyMatrix.map((nodeRowArray, toIndex)=>List.of(
         ...nodeRowArray
             .map((value, fromIndex)=>
-                EdgeRecord({value, to: toIndex, from: fromIndex, weighted: isWeighted}))
+                EdgeRecord({
+                    value, to: nodesList.get(toIndex).get("id"),
+                    from: nodesList.get(fromIndex).get("id"), weighted: isWeighted
+                }))
         )
     ));
 }
 
-const getNodeRecordByIndex = (_,i)=>NodeRecord({value: i.toString(), id: i});
+const getNodeRecordByIndex = (_,i)=>NodeRecord({value: i.toString()});
 
 export function getNodesRecordFromGraphObject(graph) {
     const {adjacencyMatrix} = graph;
@@ -33,8 +36,10 @@ export function getNodesRecordFromGraphObject(graph) {
     const nodesArray = new Array(adjacencyMatrix.length).fill(1).map(getNodeRecordByIndex);
     const nodesList = List(nodesArray);
     
-    const adjacencyMatrixAsList = getAdjacencyMatrixAsList(graph);
-    const edgesRecord = getEdgesRecord(adjacencyMatrixAsList, nodesList);
+    const adjacencyMatrixAsList = getAdjacencyMatrixAsList(graph, nodesList);
+    const edgesRecord = getEdgesRecord(adjacencyMatrixAsList.flatten(2));
+
+    console.log(edgesRecord)
 
     const nodesRecord = NodesRecord({...graph, edgesRecord, nodes: nodesList, adjacencyMatrix: adjacencyMatrixAsList});
     

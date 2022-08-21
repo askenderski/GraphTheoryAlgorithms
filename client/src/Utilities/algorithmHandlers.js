@@ -88,25 +88,24 @@ export function getStartAlgorithmHandlers(nodesRecord, setNodes) {
         setNodes(newRecord);
     }
 
-    function setNodeStyleByIndex(nodeIndex, style) {
+    function setNodeStyle(nodeId, style) {
         setNodesRecord(oldNodesRecord => {
-            const newNodesRecord=oldNodesRecord.setNodeByIndex(nodeIndex, {style});
+            const nodeIndex = oldNodesRecord.get("nodes").findIndex(node=>node.id===nodeId);
+            console.log(nodeIndex, style)
 
-            const oldNodes = oldNodesRecord.get("nodes");
-            const newNodes = oldNodes.set(nodeIndex, newNodesRecord.get("nodes").get(nodeIndex));
-            return oldNodesRecord.set("nodes", newNodes);
+            return oldNodesRecord.setIn(["nodes", nodeIndex, "style"], style);
         });
     }
 
-    function getNodesList() {
-        return nodesRecord.get("nodes");
+    function getNodesIdList() {
+        return nodesRecord.get("nodes").map(node=>node.id);
     }
 
     function getEdgesRepresentation(edgesRepresentation) {
         return edgesRecordToGraphRepresentation(nodesRecord.get("edgesRecord"), edgesRepresentation);
     }
 
-    return {setNodesRecord, resetNodes, setNodeStyleByIndex, getNodesList, getEdgesRepresentation};
+    return {setNodesRecord, resetNodes, setNodeStyle, getNodesIdList, getEdgesRepresentation};
 };
 
 export function getGraphCardHandlers(nodesRecord, setNodesRecord) {

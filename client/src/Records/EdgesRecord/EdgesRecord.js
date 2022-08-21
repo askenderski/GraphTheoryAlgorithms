@@ -24,21 +24,6 @@ EdgesToRecord.prototype.setEdge = function ({to, value}) {
     return newTos;
 }
 
-const getEdgesToRecord = ({nodes, tosArrayOfEdges, fromId}) => {
-    const toIdsAndIndexTuples = tosArrayOfEdges.map((_,i)=>[nodes.get(i).get("id"), i]);
-
-    let toMap = Map();
-    let tos = List();
-
-    toIdsAndIndexTuples.forEach(([id, i])=>{
-        const edge = tosArrayOfEdges.get(i);
-        toMap = toMap.set(id, edge);
-        tos = tos.push(edge);
-    });
-
-    return EdgesToRecord({_tos: tos, toMap, from: fromId});
-};
-
 const EdgesFromRecord = Record({
     fromMap: Map(),
     _froms: List()
@@ -58,6 +43,7 @@ EdgesFromRecord.prototype.addEdge = function (edge) {
     let edgesFromRecord = this;
 
     if (!edgesFromRecord.get("fromMap").has(edge.from)) {
+        console.log("hey")
         const edgesToRecord = EdgesToRecord({from: edge.from});
 
         edgesFromRecord = edgesFromRecord.setIn(["fromMap", edge.from], edgesToRecord);
@@ -89,24 +75,6 @@ EdgesFromRecord.prototype.addEdge = function (edge) {
     return edgesFromRecord;
 };
 
-const getEdgesFromRecord = ({adjacencyMatrixOfEdges, nodes}) => {
-    const fromIdsAndIndexTuples = adjacencyMatrixOfEdges.map((_,i)=>[nodes.get(i).get("id"), i]);
-    
-    let fromMap = Map();
-    let froms = List();
-    
-    fromIdsAndIndexTuples.forEach(([id, index])=>{
-        const edgesToRecord = getEdgesToRecord({nodes, fromId: id, tosArrayOfEdges: adjacencyMatrixOfEdges.get(index)});
-        fromMap = fromMap.set(id, edgesToRecord);
-        froms = froms.push(edgesToRecord);
-    });
-
-    return EdgesFromRecord({
-        fromMap,
-        _froms: froms
-    });
-};
-
 export const EdgesRecord = Record({
     edgesFromRecord: EdgesFromRecord(),
     _edges: List()
@@ -120,13 +88,13 @@ EdgesRecord.prototype.addEdge = function(edge) {
 };
 
 EdgesRecord.prototype.addEdges = function(...edges) {
-    let edgeRecord = this;
+    let edgesRecord = this;
 
     edges.forEach(edge => {
-        edgeRecord = edgeRecord.addEdge(edge);
+        edgesRecord = edgesRecord.addEdge(edge);
     });
 
-    return edgeRecord;
+    return edgesRecord;
 };
 
 EdgesRecord.prototype.setEdge = function({from, to, value}) {
@@ -144,12 +112,13 @@ EdgesRecord.prototype.setEdge = function({from, to, value}) {
         .set("edgesFromRecord", this.get("edgesFromRecord").setEdge({from, to, value}));
 }
 
-export const getEdgesRecord = (adjacencyMatrixOfEdges, nodes) => {
-    const edgesFromRecord = getEdgesFromRecord({adjacencyMatrixOfEdges, nodes});
-    const edges = adjacencyMatrixOfEdges.flatten(2);
+export const getEdgesRecord = (edgesArray) => {
+    const edges = List(edgesArray);
+    console.log(edges)
 
-    return EdgesRecord({
-        _edges: edges,
-        edgesFromRecord
-    });
+    let res = EdgesRecord().addEdges(...edges);
+
+    console.log(res);
+
+    return res;
 };
