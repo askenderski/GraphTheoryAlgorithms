@@ -20,7 +20,7 @@ export default function TopSort({nodesRecord, setNodesRecord}) {
                 <NodesCard/>
             </NodeContext.Provider>
             <TopSortAlgorithmContext.Provider
-            value={{nodesRecord, setInvalidateAlgorithm, handlers: startAlgorithmHandlers}}>
+            value={{setInvalidateAlgorithm, handlers: startAlgorithmHandlers}}>
                 <StartAlgorithmCard/>
             </TopSortAlgorithmContext.Provider>
             <GraphContext.Provider value={{nodesRecord, handlers: graphCardHandlers}}>
