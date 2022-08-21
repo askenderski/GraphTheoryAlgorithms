@@ -33,7 +33,12 @@ export default function Controller({setResult, setIsDone, time = 1500, setNodeSt
         return handlers.waitToConsider(time);
     }
 
-    function invalidate() {
+    async function invalidate() {
+        if (doUnpause) {
+            isDone = true;
+            return;
+        }
+
         return new Promise(resolve=>{
             if (isDone) return resolve();
             
@@ -51,6 +56,7 @@ export default function Controller({setResult, setIsDone, time = 1500, setNodeSt
             doUnpause = () => {
                 resolve();
                 handlers.waitToConsider = originalWaitToConsider;
+                doUnpause = undefined;
             };
         });
     }

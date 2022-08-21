@@ -61,12 +61,19 @@ export default function StartAlgorithmButton() {
         setIsAlgorithmPaused(!isAlgorithmPaused);
     }
 
+    async function stopAlgorithm() {
+        await invalidateAlgorithm(algorithmController);
+        setIsAlgorithmPaused(false);
+        setIsAlgorithmRunning(false);
+    }
+
     return (
         <>
             <button onClick={startAlgorithm}>{isAlgorithmRunning ? "Restart" : "Start"}</button>
             <button onClick={toggleAlgorithmPause} disabled={!isAlgorithmRunning}>
                 {isAlgorithmPaused ? "Unpause" : "Pause"}
             </button>
+            <button onClick={stopAlgorithm} disabled={!isAlgorithmRunning}>Stop</button>
         </>
     );
 }
