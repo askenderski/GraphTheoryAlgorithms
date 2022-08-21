@@ -34,3 +34,20 @@ export const adjacencyMatrixToGraphRepresentation = function (adjacencyMatrix, g
             return;
     }
 };
+
+export const edgesRecordToGraphRepresentation = function (edgesRecord, graphRepresentation) {
+    switch (graphRepresentation) {
+        case "edgeList":
+            const res = edgesRecord
+                .get("edgesFromRecord")
+                .get("fromMap")
+                .valueSeq()
+                .map(edgesFromRecord=>edgesFromRecord.get("toMap"))
+                .flatten(1)
+                .filter(edge=>edge.value !== false && edge.value !== 0);
+
+            return res;
+        default:
+            return;
+    }
+};

@@ -1,15 +1,15 @@
 import VisNetworkReactComponent from "vis-network-react";
-import {adjacencyMatrixToGraphRepresentation} from "../../../../../Utilities/graphs";
+import {edgesRecordToGraphRepresentation} from "../../../../../Utilities/graphs";
 import { useContext, useEffect, useState } from "react";
 import GraphContext from "../../../../../Contexts/Controller/Graph";
 
-const getEdgeList = adjacencyMatrix => {
-    const edgeListAsImmutable = adjacencyMatrixToGraphRepresentation(adjacencyMatrix, "edgeList");
+const getEdgeList = edgesRecord => {
+    const edgeListAsImmutable = edgesRecordToGraphRepresentation(edgesRecord, "edgeList");
 
     return edgeListAsImmutable.toJS();
 }
 
-const getNodes = nodes => {
+const getNodesAsJS = nodes => {
     return nodes.toJS()
         //every node has its style combined with itself as in the Record the style is a property with own props
         // and for VisJS style props are part of node props
@@ -19,10 +19,11 @@ const getNodes = nodes => {
 const defaultNetwork = {fit:()=>{}};
 
 export default function GraphContainer() {
-    const {nodesRecord} = useContext(GraphContext);
+    const {nodesRecord, handlers} = useContext(GraphContext);
 
-    const edges = getEdgeList(nodesRecord.adjacencyMatrix);
-    const nodes = getNodes(nodesRecord.nodes);
+    const edges = getEdgeList(nodesRecord.get("edgesRecord"));
+    const nodes = getNodesAsJS(handlers.getNodes());
+    console.log(edges)
 
     const [network, setNetwork] = useState(defaultNetwork);
 

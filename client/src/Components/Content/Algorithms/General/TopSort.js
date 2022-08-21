@@ -1,7 +1,7 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import NodeContext from "../../../../Contexts/Controller/Node";
 import NodesCard from "../../../Common/Algorithms/NodesCard/NodesCard";
-import { getNodesHandlers, getStartAlgorithmHandlers } from "../../../../Utilities/algorithmHandlers";
+import { getNodesHandlers, getStartAlgorithmHandlers, getGraphCardHandlers } from "../../../../Utilities/algorithmHandlers";
 import StartAlgorithmCard from "../../../Common/Algorithms/StartAlgorithmCard/StartAlgorithmCard";
 import GraphCard from "../../../Common/Algorithms/GraphCard/GraphCard";
 import GraphContext from "../../../../Contexts/Controller/Graph";
@@ -12,6 +12,7 @@ export default function TopSort({nodesRecord, setNodesRecord}) {
 
     const nodesCardHandlers = getNodesHandlers(nodesRecord, setNodesRecord, {invalidateAlgorithm});
     const startAlgorithmHandlers = getStartAlgorithmHandlers(nodesRecord, setNodesRecord);
+    const graphCardHandlers = getGraphCardHandlers(nodesRecord, setNodesRecord);
 
     return (
         <>
@@ -22,7 +23,7 @@ export default function TopSort({nodesRecord, setNodesRecord}) {
             value={{nodesRecord, setInvalidateAlgorithm, handlers: startAlgorithmHandlers}}>
                 <StartAlgorithmCard/>
             </TopSortAlgorithmContext.Provider>
-            <GraphContext.Provider value={{nodesRecord}}>
+            <GraphContext.Provider value={{nodesRecord, handlers: graphCardHandlers}}>
                 <GraphCard/>
             </GraphContext.Provider>
         </>
