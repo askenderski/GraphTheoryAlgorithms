@@ -5,7 +5,7 @@ export default function Nodes({nodes: nodesRecord, handlers = {}, isDeletingNode
     return (
         <table>
             <TableHead isDeletingNode={isDeletingNode} handlers={handlers} />
-            <TableBody nodesRecord={nodesRecord} handlers={handlers}/>
+            <TableBody handlers={handlers}/>
         </table>
     );
 }

@@ -15,7 +15,7 @@ export default function TopSort({nodesRecord, setNodesRecord}) {
 
     return (
         <>
-            <NodeContext.Provider value={{nodesRecord, handlers: nodesCardHandlers}}>
+            <NodeContext.Provider value={{handlers: nodesCardHandlers}}>
                 <NodesCard/>
             </NodeContext.Provider>
             <TopSortAlgorithmContext.Provider
