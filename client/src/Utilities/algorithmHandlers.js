@@ -14,6 +14,10 @@ export function getNodesHandlers(nodesRecord, setNodes, {invalidateAlgorithm}) {
         setNodes(nodes => nodes.setEdgeByIndex({to, from}, val));
     }
 
+    function setEdge({to, from}, value) {
+        setNodes(nodes => nodes.setEdge({to, from, value}));
+    }
+
     function toggleIsDirected() {
         setNodes(nodes => nodes.toggleIsDirected());
     }
@@ -22,7 +26,7 @@ export function getNodesHandlers(nodesRecord, setNodes, {invalidateAlgorithm}) {
         setNodes(nodes => nodes.toggleIsWeighted());
     }
 
-    const nodeRecordHandlers = {addNode, setEdgeByIndex, toggleIsDirected, toggleIsWeighted, deleteNode};
+    const nodeRecordHandlers = {addNode, setEdgeByIndex, toggleIsDirected, toggleIsWeighted, deleteNode, setEdge};
 
     function getNodesList() {
         return nodesRecord.get("nodes");
@@ -34,6 +38,10 @@ export function getNodesHandlers(nodesRecord, setNodes, {invalidateAlgorithm}) {
 
     function getEdgeByIndex({to, from}) {
         return nodesRecord.getEdgeByIndex({to, from});
+    }
+
+    function getEdge({to, from}) {
+        return nodesRecord.getEdge({to, from});
     }
 
     function getIsWeighted() {
@@ -63,6 +71,7 @@ export function getNodesHandlers(nodesRecord, setNodes, {invalidateAlgorithm}) {
     nodeRecordHandlers.getIsWeighted = getIsWeighted;
     nodeRecordHandlers.getIsDirected = getIsDirected;
     nodeRecordHandlers.getEdgeValue = getEdgeValue;
+    nodeRecordHandlers.getEdge = getEdge;
 
     return nodeRecordHandlers;
 };

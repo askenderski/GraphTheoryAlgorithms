@@ -25,6 +25,21 @@ export default function AddNodesRecordPrototype(NodesRecord) {
         
         return tos.get(toIndex);
     };
+    NodesRecord.prototype.getEdge = function ({to, from}) {
+        const fromMap = this
+            .get("edgesRecord")
+            .get("edgesFromRecord")
+            .get("fromMap");
+
+        const edgesToRecord = fromMap
+            .get(from);
+
+        const toMap = edgesToRecord
+            .get("toMap");
+
+        return toMap
+            .get(to);
+    };
     
     NodesRecord.prototype.addNode = function (node = NodeRecord()) {
         const getEdge = (args)=>getEdgeRecord({...args, weighted: this.get("isWeighted")});
@@ -90,7 +105,8 @@ export default function AddNodesRecordPrototype(NodesRecord) {
     }
 
     NodesRecord.prototype.setEdge = function({to, from, value}) {
-        return this.set("edgesRecord", this.get("edgesRecord").setEdge({to, from, value}));   
+        const newEdgesRecord = this.get("edgesRecord").setEdge({to, from, value});
+        return this.set("edgesRecord", newEdgesRecord);   
     }
     
     NodesRecord.prototype.setEdgeByIndex = function({to, from}, {value}) {

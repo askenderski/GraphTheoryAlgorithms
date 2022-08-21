@@ -6,15 +6,17 @@ function NonWeightedCellContent({setEdge, edgeValue}) {
     return <input type="checkbox" checked={edgeValue} onChange={e => setEdge(!edgeValue)}/>;
 }
 
-export default function Cell({rowIndex, colIndex, handlers}) {
-    const edgeValue = handlers.getEdgeValue(handlers.getEdgeByIndex({from: rowIndex, to: colIndex}));
+export default function Cell({nodeFrom, nodeTo, handlers}) {
+    const edgeValue = handlers.getEdgeValue(handlers.getEdge({from: nodeFrom.id, to: nodeTo.id}));
 
     const CellContentComponent = handlers.getIsWeighted() ? WeightedCellContent : NonWeightedCellContent;
 
-    const setEdge = value=>handlers.setEdgeByIndex({from: rowIndex, to: colIndex}, {value});
+    const setEdge = value=>{
+        handlers.setEdge({from: nodeFrom.id, to: nodeTo.id}, value);
+    };
 
     return (
-        <td key={colIndex}>
+        <td>
             <CellContentComponent setEdge={setEdge} edgeValue={edgeValue}/>
         </td>
     );

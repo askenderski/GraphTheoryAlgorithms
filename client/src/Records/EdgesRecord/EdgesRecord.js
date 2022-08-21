@@ -15,15 +15,12 @@ EdgesToRecord.prototype.addEdge = function (edge) {
 };
 
 EdgesToRecord.prototype.setEdge = function ({to, value}) {
-    console.log(value)
-    console.log(this.get("toMap").get(to).get("value"))
     const newTos = this
         .setIn(["toMap", to, "value"], value)
         .setIn(["_tos",
             this.get("_tos").findIndex(edge => edge.to === to),
             "value"
         ], value);
-    console.log(newTos);
     return newTos;
 }
 
@@ -61,7 +58,6 @@ EdgesFromRecord.prototype.addEdge = function (edge) {
     let edgesFromRecord = this;
 
     if (!edgesFromRecord.get("fromMap").has(edge.from)) {
-        console.log(`Adding from key=${edge.from}`)
         const edgesToRecord = EdgesToRecord({from: edge.from});
 
         edgesFromRecord = edgesFromRecord.setIn(["fromMap", edge.from], edgesToRecord);
@@ -90,8 +86,6 @@ EdgesFromRecord.prototype.addEdge = function (edge) {
         edgesFromRecord.get("_froms").push(newEdgesToRecord)
     );
 
-    console.log(edgesFromRecord)
-
     return edgesFromRecord;
 };
 
@@ -106,8 +100,6 @@ const getEdgesFromRecord = ({adjacencyMatrixOfEdges, nodes}) => {
         fromMap = fromMap.set(id, edgesToRecord);
         froms = froms.push(edgesToRecord);
     });
-
-    console.log(fromMap)
 
     return EdgesFromRecord({
         fromMap,
