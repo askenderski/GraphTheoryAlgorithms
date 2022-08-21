@@ -1,5 +1,5 @@
 import {List} from "immutable";
-import { getEdgeRecord } from "../../EdgeRecord/EdgeRecord";
+import { EdgeRecord, getEdgeRecord } from "../../EdgeRecord/EdgeRecord";
 import { NodeRecord } from "../../NodeRecord/NodeRecord";
 
 function directedToUndirectedAdjacencyMatrix(directedAdjacencyMatrix) {
@@ -29,7 +29,7 @@ export default function AddNodesRecordPrototype(NodesRecord) {
     NodesRecord.prototype.addNode = function (node = NodeRecord()) {
         const getEdge = (args)=>getEdgeRecord({...args, weighted: this.get("isWeighted")});
         const recordWithNewCount = this.set("nodeCount", this.nodeCount + 1);
-    
+        
         let adjacencyMatrix = recordWithNewCount.get("adjacencyMatrix");
         //every column started by a to node with from nodes will add a new node at the end,
         //that being the newly added node, and it will have the default (0 or false) value
@@ -56,7 +56,24 @@ export default function AddNodesRecordPrototype(NodesRecord) {
     
         const recordWithNewCountAndEdges = recordWithNewCount.set("adjacencyMatrix", adjacencyMatrix);
 
-        const finalRecord = recordWithNewCountAndEdges.set("nodes", recordWithNewCountAndEdges.get("nodes").push(node));
+        const recordWithNewCountEdgesAndNodes = recordWithNewCountAndEdges.set("nodes", recordWithNewCountAndEdges.get("nodes").push(node));
+
+        const edgesFromCurNodeToAdd = new Array(recordWithNewCount.nodeCount)
+            .fill(1).map((_,i)=>getEdge({
+                from: node.id,
+                to: recordWithNewCountEdgesAndNodes.get("nodes").get(i).get("id")
+            }));
+        const edgesToCurNodeToAdd = new Array(recordWithNewCount.nodeCount - 1)
+            .fill(1).map((_,i)=>getEdge({
+                to: node.id,
+                from: recordWithNewCountEdgesAndNodes.get("nodes").get(i).get("id")
+            }));
+
+        const edgesToAdd = [...edgesFromCurNodeToAdd, ...edgesToCurNodeToAdd];
+        
+        const newEdgesRecord = this.get("edgesRecord").addEdges(...edgesToAdd);
+        const finalRecord = recordWithNewCountEdgesAndNodes.set("edgesRecord", newEdgesRecord);
+
         return finalRecord;
     }
 
