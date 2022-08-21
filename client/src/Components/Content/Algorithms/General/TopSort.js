@@ -2,7 +2,7 @@ import { useState } from "react";
 import NodeContext from "../../../../Contexts/Controller/Node";
 import NodesCard from "../../../Common/Algorithms/NodesCard/NodesCard";
 import { getNodesHandlers, getStartAlgorithmHandlers, getGraphCardHandlers } from "../../../../Utilities/algorithmHandlers";
-import StartAlgorithmCard from "../../../Common/Algorithms/StartAlgorithmCard/StartAlgorithmCard";
+import AlgorithmControllerCard from "../../../Common/Algorithms/AlgorithmControllerCard/AlgorithmControllerCard";
 import GraphCard from "../../../Common/Algorithms/GraphCard/GraphCard";
 import GraphContext from "../../../../Contexts/Controller/Graph";
 import TopSortAlgorithmContext from "../.././../../Contexts/Controller/TopSort/Algorithm";
@@ -21,7 +21,7 @@ export default function TopSort({nodesRecord, setNodesRecord}) {
             </NodeContext.Provider>
             <TopSortAlgorithmContext.Provider
             value={{setInvalidateAlgorithm, handlers: startAlgorithmHandlers}}>
-                <StartAlgorithmCard/>
+                <AlgorithmControllerCard/>
             </TopSortAlgorithmContext.Provider>
             <GraphContext.Provider value={{nodesRecord, handlers: graphCardHandlers}}>
                 <GraphCard/>
