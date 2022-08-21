@@ -17,12 +17,13 @@ function directedToUndirectedAdjacencyMatrix(directedAdjacencyMatrix) {
 }
 
 export default function AddNodesRecordPrototype(NodesRecord) {
-    NodesRecord.prototype.getEdgeByIndex = function ({to, from}) {
-        // console.log(this)
-        const matrix = this.get("adjacencyMatrix");
-        // console.log(matrix)
-    
-        return matrix.get(to).get(from);
+    NodesRecord.prototype.getEdgeByIndex = function ({to: toIndex, from: fromIndex}) {
+        const edgesFromRecord = this.get("edgesRecord").get("edgesFromRecord");
+        const froms = edgesFromRecord.get("_froms");
+        const edgesToRecord = froms.get(fromIndex);
+        const tos = edgesToRecord.get("_tos");
+        
+        return tos.get(toIndex);
     };
     
     NodesRecord.prototype.addNode = function (node = NodeRecord()) {

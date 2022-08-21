@@ -1,4 +1,4 @@
-import { fromJS, List, Map, Record } from "immutable";
+import { List, Map, Record } from "immutable";
 
 const EdgesToRecord = Record({
     _tos: List(),
