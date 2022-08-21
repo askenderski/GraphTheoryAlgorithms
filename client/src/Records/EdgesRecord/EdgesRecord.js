@@ -14,13 +14,26 @@ EdgesToRecord.prototype.addEdge = function (edge) {
     return edgesToRecord;
 };
 
+EdgesToRecord.prototype.setEdge = function ({to, value}) {
+    console.log(value)
+    console.log(this.get("toMap").get(to).get("value"))
+    const newTos = this
+        .setIn(["toMap", to, "value"], value)
+        .setIn(["_tos",
+            this.get("_tos").findIndex(edge => edge.to === to),
+            "value"
+        ], value);
+    console.log(newTos);
+    return newTos;
+}
+
 const getEdgesToRecord = ({nodes, tosArrayOfEdges, fromId}) => {
     const toIdsAndIndexTuples = tosArrayOfEdges.map((_,i)=>[nodes.get(i).get("id"), i]);
 
     let toMap = Map();
     let tos = List();
 
-    toIdsAndIndexTuples.forEach((id, i)=>{
+    toIdsAndIndexTuples.forEach(([id, i])=>{
         const edge = tosArrayOfEdges.get(i);
         toMap = toMap.set(id, edge);
         tos = tos.push(edge);
@@ -33,6 +46,16 @@ const EdgesFromRecord = Record({
     fromMap: Map(),
     _froms: List()
 });
+
+EdgesFromRecord.prototype.setEdge = function({from, to, value}) {
+    const prevEdgesToRecord = this.get("fromMap").get(from);
+    const newEdgesToRecord = prevEdgesToRecord.setEdge({from, to, value});
+
+    return this
+        .setIn(["fromMap", from], newEdgesToRecord)
+        .setIn(["_froms", this.get("_froms").map((edgesTo,i)=>[edgesTo, i])
+            .filter(([edgesTo])=>edgesTo.from === from).get(0)[1]], newEdgesToRecord);
+};
 
 EdgesFromRecord.prototype.addEdge = function (edge) {
     let edgesFromRecord = this;
@@ -84,6 +107,8 @@ const getEdgesFromRecord = ({adjacencyMatrixOfEdges, nodes}) => {
         froms = froms.push(edgesToRecord);
     });
 
+    console.log(fromMap)
+
     return EdgesFromRecord({
         fromMap,
         _froms: froms
@@ -111,6 +136,21 @@ EdgesRecord.prototype.addEdges = function(...edges) {
 
     return edgeRecord;
 };
+
+EdgesRecord.prototype.setEdge = function({from, to, value}) {
+    return this
+        .setIn(
+            [
+                "_edges",
+                this.get("_edges")
+                    .map((edge,i)=>[edge, i])
+                    .filter(([edge])=>edge.from === from && edge.to === to).get(0)[1],
+                "value"
+            ],
+            value
+        )
+        .set("edgesFromRecord", this.get("edgesFromRecord").setEdge({from, to, value}));
+}
 
 export const getEdgesRecord = (adjacencyMatrixOfEdges, nodes) => {
     const edgesFromRecord = getEdgesFromRecord({adjacencyMatrixOfEdges, nodes});

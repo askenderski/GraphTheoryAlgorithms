@@ -88,6 +88,10 @@ export default function AddNodesRecordPrototype(NodesRecord) {
         );
         return newNodesRecord;
     }
+
+    NodesRecord.prototype.setEdge = function({to, from, value}) {
+        return this.set("edgesRecord", this.get("edgesRecord").setEdge({to, from, value}));   
+    }
     
     NodesRecord.prototype.setEdgeByIndex = function({to, from}, {value}) {
         const edgeFromTo = ["adjacencyMatrix", to, from];
@@ -100,13 +104,23 @@ export default function AddNodesRecordPrototype(NodesRecord) {
                 .setIn([...edgeFromTo, "to"], this.nodes.get(to).get("id"))
                 .setIn([...edgeToFrom, "value"], value)
                 .setIn([...edgeToFrom, "from"], this.nodes.get(to).get("id"))
-                .setIn([...edgeToFrom, "to"], this.nodes.get(from).get("id"));
+                .setIn([...edgeToFrom, "to"], this.nodes.get(from).get("id"))
+                .setEdge({
+                    to: this.nodes.get(to).get("id"),
+                    from: this.nodes.get(from).get("id"),
+                    value
+                });
         }
     
         return this
             .setIn([...edgeFromTo, "value"], value)
             .setIn([...edgeFromTo, "from"], this.nodes.get(from).get("id"))
-            .setIn([...edgeFromTo, "to"], this.nodes.get(to).get("id"));
+            .setIn([...edgeFromTo, "to"], this.nodes.get(to).get("id"))
+            .setEdge({
+                to: this.nodes.get(to).get("id"),
+                from: this.nodes.get(from).get("id"),
+                value
+            });
     }
     
     NodesRecord.prototype.toggleIsWeighted = function() {
