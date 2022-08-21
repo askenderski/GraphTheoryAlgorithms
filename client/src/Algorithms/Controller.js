@@ -1,10 +1,12 @@
 import { v4 } from "uuid";
 
-export default function Controller({setResult, setIsDone, time = 3000, setNodeStyle}) {
+export default function Controller({setResult, setIsDone, time = 1500, setNodeStyle}) {
     let isDone = false;
 
+    const originalWaitToConsider = async (time) => new Promise((resolve) => setTimeout(() => resolve(), time));
+
     const handlers = {
-        waitToConsider: async (time) => new Promise((resolve) => setTimeout(() => resolve(), time))
+        waitToConsider: originalWaitToConsider
     };
 
     async function consider(node, type) {
@@ -41,6 +43,17 @@ export default function Controller({setResult, setIsDone, time = 3000, setNodeSt
             });
         });
     }
+    
+    let doUnpause;
 
-    return {consider, _id: v4(), setIsDone: (...args)=>{isDone = true; setIsDone(...args)}, setResult, invalidate};
+    function pause() {
+        handlers.waitToConsider = () => new Promise((resolve) => {
+            doUnpause = () => {
+                resolve();
+                handlers.waitToConsider = originalWaitToConsider;
+            };
+        });
+    }
+
+    return {consider, _id: v4(), pause, unpause: () => doUnpause(), setIsDone: (...args)=>{isDone = true; setIsDone(...args)}, setResult, invalidate};
 };
