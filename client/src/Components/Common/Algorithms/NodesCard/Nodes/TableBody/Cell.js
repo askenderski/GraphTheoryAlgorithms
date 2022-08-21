@@ -7,7 +7,7 @@ function NonWeightedCellContent({setEdge, edgeValue}) {
 }
 
 export default function Cell({rowIndex, colIndex, handlers}) {
-    const edgeValue = handlers.getEdgeValue(handlers.getEdgeByIndex({to: rowIndex, from: colIndex}));
+    const edgeValue = handlers.getEdgeValue(handlers.getEdgeByIndex({from: rowIndex, to: colIndex}));
 
     const CellContentComponent = handlers.getIsWeighted() ? WeightedCellContent : NonWeightedCellContent;
 
