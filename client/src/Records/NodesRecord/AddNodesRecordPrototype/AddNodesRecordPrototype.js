@@ -1,5 +1,5 @@
 import {List} from "immutable";
-import { EdgeRecord } from "../../EdgeRecord/EdgeRecord";
+import { getEdgeRecord } from "../../EdgeRecord/EdgeRecord";
 import { NodeRecord } from "../../NodeRecord/NodeRecord";
 
 function directedToUndirectedAdjacencyMatrix(directedAdjacencyMatrix) {
@@ -26,7 +26,7 @@ export default function AddNodesRecordPrototype(NodesRecord) {
     };
     
     NodesRecord.prototype.addNode = function (node = NodeRecord()) {
-        const getEdge = (args)=>EdgeRecord({...args, weighted: this.get("isWeighted")});
+        const getEdge = (args)=>getEdgeRecord({...args, weighted: this.get("isWeighted")});
         const recordWithNewCount = this.set("nodeCount", this.nodeCount + 1);
     
         let adjacencyMatrix = recordWithNewCount.get("adjacencyMatrix");

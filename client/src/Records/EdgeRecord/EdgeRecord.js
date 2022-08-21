@@ -13,7 +13,7 @@ const EdgeRecordWithoutWeightednessAndId = Record({
     to: undefined
 });
 
-export const EdgeRecord = ({value, style, id, weighted = defaultWeighted, from, to} = {}) => {
+export const getEdgeRecord = ({value, style, id, weighted = defaultWeighted, from, to} = {}) => {
     return EdgeRecordWithoutWeightednessAndId({
         value: value === undefined ? getDefaultValueForWeighted(weighted) : value,
         id: id === undefined ? uuidv4() : id,
@@ -22,4 +22,6 @@ export const EdgeRecord = ({value, style, id, weighted = defaultWeighted, from, 
         from,
         to
     });
-}
+};
+
+export const EdgeRecord = EdgeRecordWithoutWeightednessAndId;
