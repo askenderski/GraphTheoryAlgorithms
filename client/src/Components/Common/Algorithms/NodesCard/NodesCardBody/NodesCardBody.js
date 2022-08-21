@@ -7,7 +7,7 @@ import NodeContext from "../../../../../Contexts/Controller/Node";
 
 export default function NodesCardBody() {
     const [isDeleting, toggleIsDeleting] = useToggle(false);
-    const {nodesRecord, handlers} = useContext(NodeContext);
+    const {handlers} = useContext(NodeContext);
 
     return (
         <div className={style.cardBody}>
@@ -21,7 +21,7 @@ export default function NodesCardBody() {
                 isOn={handlers.getIsWeighted()}
                 toggleIsOn={handlers.toggleIsWeighted}
                 values={{ on: "Weighted", off: "Unweighted" }} />
-            <Nodes nodes={nodesRecord} handlers={{
+            <Nodes handlers={{
                 ...handlers, deleteNode: (...props) => {
                     toggleIsDeleting();
                     handlers.deleteNode(...props);
