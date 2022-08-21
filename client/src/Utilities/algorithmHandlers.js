@@ -1,4 +1,5 @@
 import { defaultNodeStyle } from "../Data/Algorithms/graph";
+import { adjacencyMatrixToGraphRepresentation } from "./graphs";
 
 export function getNodesHandlers(nodesRecord, setNodes, {invalidateAlgorithm}) {
     function addNode() {
@@ -92,5 +93,9 @@ export function getStartAlgorithmHandlers(nodesRecord, setNodes) {
         return nodesRecord.get("nodes");
     }
 
-    return {setNodesRecord, resetNodes, setNodeStyleByIndex, getNodesList};
+    function getEdgesRepresentation(edgesRepresentation) {
+        return adjacencyMatrixToGraphRepresentation(nodesRecord.adjacencyMatrix, edgesRepresentation);
+    }
+
+    return {setNodesRecord, resetNodes, setNodeStyleByIndex, getNodesList, getEdgesRepresentation};
 };

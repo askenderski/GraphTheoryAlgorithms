@@ -26,7 +26,7 @@ export default function StartAlgorithmButton() {
             const algorithm = algorithmGetter(algorithmController);
             algorithm.algorithm(
                 handlers.getNodesList(),
-                adjacencyMatrixToGraphRepresentation(nodesRecord.adjacencyMatrix, algorithm.graphRepresentation)
+                handlers.getEdgesRepresentation(algorithm.graphRepresentation)
             );
         }
         
