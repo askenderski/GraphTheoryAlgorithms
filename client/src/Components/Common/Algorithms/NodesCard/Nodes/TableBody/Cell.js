@@ -11,7 +11,7 @@ export default function Cell({rowIndex, colIndex, handlers}) {
 
     const CellContentComponent = handlers.getIsWeighted() ? WeightedCellContent : NonWeightedCellContent;
 
-    const setEdge = value=>handlers.setEdgeByIndex({to: rowIndex, from: colIndex}, {value});
+    const setEdge = value=>handlers.setEdgeByIndex({from: rowIndex, to: colIndex}, {value});
 
     return (
         <td key={colIndex}>
