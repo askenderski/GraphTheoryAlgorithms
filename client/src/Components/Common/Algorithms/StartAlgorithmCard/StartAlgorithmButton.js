@@ -4,7 +4,7 @@ import useEffectWithWaitForCleanup from "../../../../Hooks/useEffectWithWaitForC
 import { adjacencyMatrixToGraphRepresentation } from "../../../../Utilities/graphs";
 
 export default function StartAlgorithmButton() {
-    const {nodesRecord: nodes, handlers,
+    const {nodesRecord, handlers,
         setInvalidateAlgorithm, algorithmGetter, controller} = useContext(BasicAlgorithmContext);
 
     const [isAlgorithmRunning, setIsAlgorithmRunning] = useState(false);
@@ -25,8 +25,8 @@ export default function StartAlgorithmButton() {
 
             const algorithm = algorithmGetter(algorithmController);
             algorithm.algorithm(
-                nodes.nodes,
-                adjacencyMatrixToGraphRepresentation(nodes.adjacencyMatrix, algorithm.graphRepresentation)
+                nodesRecord.nodes,
+                adjacencyMatrixToGraphRepresentation(nodesRecord.adjacencyMatrix, algorithm.graphRepresentation)
             );
         }
         
