@@ -66,7 +66,7 @@ export function getNodesHandlers(nodesRecord, setNodes, {invalidateAlgorithm}) {
     return nodeRecordHandlers;
 };
 
-export function getStartAlgorithmHandlers(setNodes) {
+export function getStartAlgorithmHandlers(nodesRecord, setNodes) {
     function resetNodes() {
         setNodes(nodesRecord => {
             const newNodes = nodesRecord.get("nodes").map(node=>node.set("style", defaultNodeStyle));
@@ -88,5 +88,9 @@ export function getStartAlgorithmHandlers(setNodes) {
         });
     }
 
-    return {setNodesRecord, resetNodes, setNodeStyleByIndex};
+    function getNodesList() {
+        return nodesRecord.get("nodes");
+    }
+
+    return {setNodesRecord, resetNodes, setNodeStyleByIndex, getNodesList};
 };

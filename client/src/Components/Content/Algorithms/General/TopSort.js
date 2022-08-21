@@ -11,7 +11,7 @@ export default function TopSort({nodesRecord, setNodesRecord}) {
     const [invalidateAlgorithm, setInvalidateAlgorithm] = useState(()=>{});
 
     const nodesCardHandlers = getNodesHandlers(nodesRecord, setNodesRecord, {invalidateAlgorithm});
-    const startAlgorithmHandlers = getStartAlgorithmHandlers(setNodesRecord);
+    const startAlgorithmHandlers = getStartAlgorithmHandlers(nodesRecord, setNodesRecord);
 
     return (
         <>
