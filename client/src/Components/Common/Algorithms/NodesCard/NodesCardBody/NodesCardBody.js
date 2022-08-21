@@ -14,7 +14,7 @@ export default function NodesCardBody() {
             <button onClick={handlers.addNode}>Add Node</button>
             <button onClick={toggleIsDeleting}>Delete Node</button>
             <ToggleableComponent
-                isOn={nodesRecord.isDirected}
+                isOn={handlers.getIsDirected()}
                 toggleIsOn={handlers.toggleIsDirected}
                 values={{ on: "Directed", off: "Undirected" }} />
             <ToggleableComponent
