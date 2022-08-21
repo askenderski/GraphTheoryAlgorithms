@@ -23,7 +23,6 @@ export default function GraphContainer() {
 
     const edges = getEdgeList(nodesRecord.get("edgesRecord"));
     const nodes = getNodesAsJS(handlers.getNodes());
-    console.log(edges)
 
     const [network, setNetwork] = useState(defaultNetwork);
 

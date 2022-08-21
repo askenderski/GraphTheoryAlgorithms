@@ -37,16 +37,24 @@ export const adjacencyMatrixToGraphRepresentation = function (adjacencyMatrix, g
 
 export const edgesRecordToGraphRepresentation = function (edgesRecord, graphRepresentation) {
     switch (graphRepresentation) {
+        case "adjacencyList":
+            let res = edgesRecord
+                .get("edgesFromRecord")
+                .get("fromMap")
+                .map(edgesFromRecord =>
+                        edgesFromRecord.get("toMap").valueSeq()
+                            .filter(edge=>edge.value !== false && edge.value !== 0).toList()
+                );
+            console.log(res)
+            return res;
         case "edgeList":
-            const res = edgesRecord
+            return edgesRecord
                 .get("edgesFromRecord")
                 .get("fromMap")
                 .valueSeq()
                 .map(edgesFromRecord=>edgesFromRecord.get("toMap"))
                 .flatten(1)
                 .filter(edge=>edge.value !== false && edge.value !== 0);
-
-            return res;
         default:
             return;
     }
