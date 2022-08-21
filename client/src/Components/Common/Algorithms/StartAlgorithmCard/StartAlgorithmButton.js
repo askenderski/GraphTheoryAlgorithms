@@ -1,7 +1,6 @@
 import {useState, useContext} from "react";
 import BasicAlgorithmContext from "../../../../Contexts/Controller/BasicAlgorithmContext";
 import useEffectWithWaitForCleanup from "../../../../Hooks/useEffectWithWaitForCleanup";
-import { adjacencyMatrixToGraphRepresentation } from "../../../../Utilities/graphs";
 
 export default function StartAlgorithmButton() {
     const {nodesRecord, handlers,

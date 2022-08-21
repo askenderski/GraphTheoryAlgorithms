@@ -111,6 +111,10 @@ export default function AddNodesRecordPrototype(NodesRecord) {
     NodesRecord.prototype.deleteNodeById = function (nodeId) {
         return this.deleteNodeByIndex(this.nodes.findIndex(node=>node.id === nodeId));
     }
+
+    NodesRecord.prototype.getNodeById = function (nodeId) {
+        return this.nodes.find(node => node.id === nodeId);
+    }
     
     NodesRecord.prototype.deleteNodeByIndex = function (nodeIndex) {
         if (this.nodeCount <= 0) return this;
