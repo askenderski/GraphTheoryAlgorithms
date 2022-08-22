@@ -52,13 +52,24 @@ export default function AddNodesRecordPrototype(NodesRecord) {
         const wasWeighted = this.get("isWeighted");
         const nodesWithReversedWeight = this.set("isWeighted", !wasWeighted);
     
-        // const changeEdgeValueDependingOnWeightedness = wasWeighted ?
-        //     //if the graph was weighted, the existing edges remain so
-        //     edge => (edge.get("value") !== 0 ? edge.set("value", true) : edge.set("value", false)) :
-        //     //if the graph wasn't weighted, the "true" edges become 1s
-        //     edge => (edge.get("value") === true ? edge.set("value", 1) : edge.set("value", 0));
+        const changeEdgeValueDependingOnWeightedness = wasWeighted ?
+            //if the graph was weighted, the existing edges remain so
+            edge => (edge.get("value") !== 0 ?
+                edge.set("value", true).set("weighted", false) :
+                edge.set("value", false).set("weighted", false)) :
+            //if the graph wasn't weighted, the "true" edges become 1s
+            edge => (edge.get("value") === true ?
+                edge.set("value", 1).set("weighted", true) :
+                edge.set("value", 0).set("weighted", true));
+
+        let newEdgesRecord = nodesWithReversedWeight.edgesRecord;
+        newEdgesRecord._edges.forEach(edge=>{
+            const newEdge = changeEdgeValueDependingOnWeightedness(edge);
+            newEdgesRecord = newEdgesRecord.setEdge(newEdge);
+        });
     
-        return nodesWithReversedWeight;
+        return nodesWithReversedWeight
+            .set("edgesRecord", newEdgesRecord);
     }
 
     NodesRecord.prototype.deleteNodeById = function (nodeId) {
