@@ -12,6 +12,8 @@ export default function StartAlgorithmButton() {
     const [algorithmController, setAlgorithmController] = useState({invalidate: ()=>{}, isMock: true});
 
     async function invalidateAlgorithm(algorithmController) {
+        setIsAlgorithmPaused(false);
+        setIsAlgorithmRunning(false);
         await algorithmController.invalidate();
         handlers.resetNodes();
     }
@@ -19,6 +21,9 @@ export default function StartAlgorithmButton() {
     useEffectWithWaitForCleanup(() => {
         async function main() {
             //this is needed as useState set functions execute function arguments
+            setIsAlgorithmRunning(true);
+            setIsAlgorithmPaused(false);
+
             setInvalidateAlgorithm(()=>invalidateAlgorithm.bind(undefined, algorithmController));
             
             if (algorithmController.isMock) return;
@@ -38,8 +43,6 @@ export default function StartAlgorithmButton() {
     }, [algorithmController]);
 
     async function startAlgorithm() {
-        setIsAlgorithmRunning(true);
-
         setAlgorithmController(controller({
             setResult: () => {},
             setIsDone: () => setIsAlgorithmRunning(false),
@@ -47,8 +50,6 @@ export default function StartAlgorithmButton() {
                 handlers.setNodeStyle(nodeId, style);
             }
         }));
-
-        setIsAlgorithmPaused(false);
     }
 
     function toggleAlgorithmPause() {
@@ -63,8 +64,6 @@ export default function StartAlgorithmButton() {
 
     async function stopAlgorithm() {
         await invalidateAlgorithm(algorithmController);
-        setIsAlgorithmPaused(false);
-        setIsAlgorithmRunning(false);
     }
 
     return (
