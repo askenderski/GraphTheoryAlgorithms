@@ -4,7 +4,7 @@ import useEffectWithWaitForCleanup from "../../../../Hooks/useEffectWithWaitForC
 import useToggle from "../../../../Hooks/useToggle";
 
 export default function StartAlgorithmButton() {
-    const {handlers, setInvalidateAlgorithm, algorithmGetter, controller} = useContext(BasicAlgorithmContext);
+    const {handlers, setInvalidateAlgorithm, algorithmGetter, controller, setPointerLine} = useContext(BasicAlgorithmContext);
 
     const [isAlgorithmRunning, setIsAlgorithmRunning] = useState(false);
     const [isAlgorithmPaused, setIsAlgorithmPaused] = useState(false);
@@ -48,7 +48,8 @@ export default function StartAlgorithmButton() {
             setIsDone: () => setIsAlgorithmRunning(false),
             setNodeStyle: (nodeId, style) => {
                 handlers.setNodeStyle(nodeId, style);
-            }
+            },
+            setPointerLine
         }));
     }
 

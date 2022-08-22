@@ -76,7 +76,7 @@ export function getNodesHandlers(nodesRecord, setNodes, {invalidateAlgorithm}) {
     return nodeRecordHandlers;
 };
 
-export function getStartAlgorithmHandlers(nodesRecord, setNodes) {
+export function getStartAlgorithmHandlers(nodesRecord, setNodes, {setPointerLine}) {
     function resetNodes() {
         setNodes(nodesRecord => {
             const newNodes = nodesRecord.get("nodes").map(node=>node.set("style", defaultNodeStyle));
@@ -105,7 +105,7 @@ export function getStartAlgorithmHandlers(nodesRecord, setNodes) {
         return edgesRecordToGraphRepresentation(nodesRecord.get("edgesRecord"), edgesRepresentation);
     }
 
-    return {setNodesRecord, resetNodes, setNodeStyle, getNodesIdList, getEdgesRepresentation};
+    return {setNodesRecord, resetNodes, setNodeStyle, getNodesIdList, getEdgesRepresentation, setPointerLine};
 };
 
 export function getGraphCardHandlers(nodesRecord, setNodesRecord) {

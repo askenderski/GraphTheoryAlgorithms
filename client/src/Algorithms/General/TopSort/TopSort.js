@@ -9,9 +9,9 @@ export default function GetTopSorter({consider, setIsDone, setResult}) {
                 if (done[index]) {
                     //the node is marked as current2, aka we've already been through it but we are visiting it again
                     // just for visual effect
-                    await consider(nodeId, "current2");
+                    await consider("graph", nodeId, "current2");
                     //we return the node to "done" status
-                    await consider(nodeId, "done");
+                    await consider("graph", nodeId, "done");
                     return;
                 }
 
@@ -20,14 +20,14 @@ export default function GetTopSorter({consider, setIsDone, setResult}) {
                     // dfs and we will return to it; we use current2 to mark it as something we've already been
                     // through, then we return it to passed (it must be in passed status if it's down the
                     // dfs stack)
-                    await consider(nodeId, "current2");
-                    await consider(nodeId, "passed");
+                    await consider("graph", nodeId, "current2");
+                    await consider("graph", nodeId, "passed");
                     return;
                 }
 
                 //the node is marked as the current one
-                await consider(nodeId, "current");
-console.log("a")
+                await consider("graph", nodeId, "current");
+
                 visited[index] = true;
 
                 for (let i = 0; i < edgeList.get(nodeId).size; i++) {
@@ -36,24 +36,22 @@ console.log("a")
                     //if we are going to the same node, we only show it through "current3" and then return it
                     // to current as we're either going to a new node or are done with this node
                     if (edgeList.get(nodeId).get(i).to === nodeId) {
-                        await consider(nodeId, "current3");
-                        await consider(nodeId, "current");
+                        await consider("graph", nodeId, "current3");
+                        await consider("graph", nodeId, "current");
                         continue;
                     }
 
-                    await consider(nodeId, "passed");
+                    await consider("graph", nodeId, "passed");
                     await dfs(nextNodeId, nodesIds.findIndex(nodeId=>nodeId===nextNodeId));
-                    await consider(nodeId, "current");
+                    await consider("graph", nodeId, "current");
                 }
 
-                await consider(nodeId, "done");
+                await consider("graph", nodeId, "done");
                 done[index] = true;
 
                 nodesTopSorted.unshift(index);
                 setResult(nodesTopSorted);
             }
-
-            console.log(edgeList)
 
             const nodesTopSorted = [];
             const visited = [];

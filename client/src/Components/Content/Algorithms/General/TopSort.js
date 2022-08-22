@@ -14,9 +14,10 @@ const algorithmText = TopSortText;
 
 export default function TopSort({nodesRecord, setNodesRecord}) {
     const [invalidateAlgorithm, setInvalidateAlgorithm] = useState(()=>{});
+    const [pointerLine, setPointerLine] = useState();
 
     const nodesCardHandlers = getNodesHandlers(nodesRecord, setNodesRecord, {invalidateAlgorithm});
-    const startAlgorithmHandlers = getStartAlgorithmHandlers(nodesRecord, setNodesRecord);
+    const startAlgorithmHandlers = getStartAlgorithmHandlers(nodesRecord, setNodesRecord, {setPointerLine});
     const graphCardHandlers = getGraphCardHandlers(nodesRecord, setNodesRecord);
 
     return (
@@ -28,7 +29,7 @@ export default function TopSort({nodesRecord, setNodesRecord}) {
             value={{setInvalidateAlgorithm, handlers: startAlgorithmHandlers}}>
                 <AlgorithmControllerCard/>
             </TopSortAlgorithmContext.Provider>
-            <AlgorithmTextContext.Provider value={{algorithmText, pointLine: 1}}>
+            <AlgorithmTextContext.Provider value={{algorithmText, pointerLine}}>
                 <AlgorithmTextCard />
             </AlgorithmTextContext.Provider>
             <GraphContext.Provider value={{nodesRecord, handlers: graphCardHandlers}}>
