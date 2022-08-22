@@ -6,6 +6,7 @@ import AlgorithmControllerCard from "../../../Common/Algorithms/AlgorithmControl
 import GraphCard from "../../../Common/Algorithms/GraphCard/GraphCard";
 import GraphContext from "../../../../Contexts/Controller/Graph";
 import TopSortAlgorithmContext from "../.././../../Contexts/Controller/TopSort/Algorithm";
+import AlgorithmTextCard from "../../../Common/Algorithms/AlgorithmTextCard/AlgorithmTextCard";
 
 export default function TopSort({nodesRecord, setNodesRecord}) {
     const [invalidateAlgorithm, setInvalidateAlgorithm] = useState(()=>{});
@@ -23,6 +24,7 @@ export default function TopSort({nodesRecord, setNodesRecord}) {
             value={{setInvalidateAlgorithm, handlers: startAlgorithmHandlers}}>
                 <AlgorithmControllerCard/>
             </TopSortAlgorithmContext.Provider>
+            <AlgorithmTextCard />
             <GraphContext.Provider value={{nodesRecord, handlers: graphCardHandlers}}>
                 <GraphCard/>
             </GraphContext.Provider>
