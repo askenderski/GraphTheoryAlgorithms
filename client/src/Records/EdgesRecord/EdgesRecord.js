@@ -6,6 +6,12 @@ const EdgesToRecord = Record({
     toMap: Map()
 });
 
+EdgesToRecord.prototype.deleteEdgesForNode = function (nodeId) {
+    return this
+        .set("_tos", this.get("_tos").filter(edge=>edge.to !== nodeId))
+        .set("toMap", this.get("toMap").filter((_, to)=>to!==nodeId));
+}
+
 EdgesToRecord.prototype.addEdge = function (edge) {
     let edgesToRecord = this;
     edgesToRecord = edgesToRecord.setIn(["toMap", edge.to], edge);
@@ -28,6 +34,19 @@ const EdgesFromRecord = Record({
     fromMap: Map(),
     _froms: List()
 });
+
+EdgesFromRecord.prototype.deleteEdgesForNode = function(nodeId) {
+    let res = this;
+    res = res.set("_froms", res.get("_froms").filter(edgesToRecord=>edgesToRecord.from !== nodeId));
+    res = res.set("fromMap", res.fromMap.filter((_, from)=>from !== nodeId));
+    
+    res.fromMap.keySeq().forEach(from=>{
+        const newEdgesToRecord = res.fromMap.get(from).deleteEdgesForNode(nodeId);
+        res = res.setIn(["fromMap", from], newEdgesToRecord);
+    })
+
+    return res;
+}
 
 EdgesFromRecord.prototype.setEdge = function({from, to, value}) {
     const prevEdgesToRecord = this.get("fromMap").get(from);
@@ -79,6 +98,12 @@ export const EdgesRecord = Record({
     edgesFromRecord: EdgesFromRecord(),
     _edges: List()
 });
+
+EdgesRecord.prototype.deleteEdgesForNode = function(nodeId) {
+    let res = this;
+    res = res.set("_edges", res.get("_edges").filter(edge=>edge.from !== nodeId && edge.to !== nodeId));
+    return res.set("edgesFromRecord", res.edgesFromRecord.deleteEdgesForNode(nodeId));
+}
 
 EdgesRecord.prototype.addEdge = function(edge) {
     let edgesRecord = this;

@@ -1,7 +1,7 @@
-export function Header({index, children}) {
+export function Header({label, children}) {
     return (
         <th>
-            {index}
+            {label}
             {children}
         </th>
     );

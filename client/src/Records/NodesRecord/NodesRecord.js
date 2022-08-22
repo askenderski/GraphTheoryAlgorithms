@@ -28,18 +28,17 @@ function getAdjacencyMatrixAsList({adjacencyMatrix, isWeighted}, nodesList) {
     ));
 }
 
-const getNodeRecordByIndex = (_,i)=>NodeRecord({value: i.toString()});
+const getNodeRecordByIndex = (_,i)=>NodeRecord({value: i, label: i.toString()});
 
 export function getNodesRecordFromGraphObject(graph) {
     const {adjacencyMatrix} = graph;
     
     const nodesArray = new Array(adjacencyMatrix.length).fill(1).map(getNodeRecordByIndex);
     const nodesList = List(nodesArray);
+    console.log(nodesList)
     
     const adjacencyMatrixAsList = getAdjacencyMatrixAsList(graph, nodesList);
     const edgesRecord = getEdgesRecord(adjacencyMatrixAsList.flatten(2));
-
-    console.log(edgesRecord)
 
     const nodesRecord = NodesRecord({...graph, edgesRecord, nodes: nodesList, adjacencyMatrix: adjacencyMatrixAsList});
     

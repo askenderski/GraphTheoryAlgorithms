@@ -5,8 +5,9 @@ import { defaultNodeStyle } from "../../Data/Algorithms/graph";
 const NodeRecordWithoutId = Record({
     style: defaultNodeStyle,
     value: undefined,
-    id: undefined
+    id: undefined,
+    label: undefined
 });
 
-export const NodeRecord = ({value, id, style} = {}) =>
-    NodeRecordWithoutId({value, id: id === undefined ? uuidv4() : id, style});
+export const NodeRecord = ({id, ...rest} = {}) =>
+    NodeRecordWithoutId({id: id === undefined ? uuidv4() : id, ...rest});

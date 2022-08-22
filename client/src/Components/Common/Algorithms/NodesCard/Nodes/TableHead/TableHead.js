@@ -5,16 +5,16 @@ function HorizontalVerticalHeader() {
     return <th/>;
 }
 
-function HorizontalHeader({index, isDeletingNode, deleteNode}) {
-    return <Header index={index}>
-            <NodeDeleteButtonContainer index={index} isDeletingNode={isDeletingNode} deleteNode={deleteNode}/>
+function HorizontalHeader({label, isDeletingNode, deleteNode}) {
+    return <Header label={label}>
+            <NodeDeleteButtonContainer label={label} isDeletingNode={isDeletingNode} deleteNode={deleteNode}/>
         </Header>;
 }
 
 export function TableHead({isDeletingNode, handlers}) {
     const nodes = handlers.getNodesList();
     const nodeHeaders = nodes.map((node,i)=>
-        <HorizontalHeader key={i} index={i}
+        <HorizontalHeader key={i} label={handlers.getNodeLabel(node)}
         isDeletingNode={isDeletingNode} deleteNode={handlers.deleteNode.bind(undefined, node.id)} />
     );
 

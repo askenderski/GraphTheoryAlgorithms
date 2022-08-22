@@ -179,7 +179,9 @@ export default function AddNodesRecordPrototype(NodesRecord) {
     
         const nodesWithNewCountAndEdges = nodesWithNewCount.set("adjacencyMatrix", adjacencyMatrixWithoutFromCellsAndToCell);
 
-        return nodesWithNewCountAndEdges.deleteIn(["nodes", nodeIndex]);
+        const newEdgesRecord = this.get("edgesRecord").deleteEdgesForNode(this.nodes.get(nodeIndex).get("id"));
+
+        return nodesWithNewCountAndEdges.deleteIn(["nodes", nodeIndex]).set("edgesRecord", newEdgesRecord);
     }
     
     NodesRecord.prototype.toggleIsDirected = function () {

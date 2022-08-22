@@ -1,8 +1,8 @@
 import { Header } from "../Common";
 import Cell from "./Cell";
 
-function VerticalHeader({value}) {
-    return <Header value={value}/>;
+function VerticalHeader({label}) {
+    return <Header label={label}/>;
 }
 
 function TableBodyRow({nodeFrom, handlers}) {
@@ -12,7 +12,7 @@ function TableBodyRow({nodeFrom, handlers}) {
     const cells = handlers.getNodesList().map(getCell);
 
     return <tr>
-        <VerticalHeader value={nodeFrom.Value} />
+        <VerticalHeader label={handlers.getNodeLabel(nodeFrom)} />
         {cells}
         </tr>;
 }

@@ -1,10 +1,10 @@
-function NodeDeleteButton({index, deleteNode}) {
-    return <button data-testid={`delete-${index}`} onClick={() => deleteNode()}>X</button>
+function NodeDeleteButton({label, deleteNode}) {
+    return <button data-testid={`delete-${label}`} onClick={() => deleteNode()}>X</button>
 }
 
-export default function NodeDeleteButtonContainer({index, deleteNode, isDeletingNode}) {
+export default function NodeDeleteButtonContainer({label, deleteNode, isDeletingNode}) {
     if (isDeletingNode) {
-        return <NodeDeleteButton index={index} deleteNode={deleteNode} />;
+        return <NodeDeleteButton label={label} deleteNode={deleteNode} />;
     }
     
     return null;
