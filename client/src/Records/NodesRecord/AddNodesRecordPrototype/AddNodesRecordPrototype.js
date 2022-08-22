@@ -4,18 +4,12 @@ import { NodeRecord } from "../../NodeRecord/NodeRecord";
 
 export default function AddNodesRecordPrototype(NodesRecord) {
     NodesRecord.prototype.getEdge = function ({to, from}) {
-        const fromMap = this
+        return this
             .get("edgesRecord")
             .get("edgesFromRecord")
-            .get("fromMap");
-
-        const edgesToRecord = fromMap
-            .get(from);
-
-        const toMap = edgesToRecord
-            .get("toMap");
-
-        return toMap
+            .get("fromMap")
+            .get(from)
+            .get("toMap")
             .get(to);
     };
     
