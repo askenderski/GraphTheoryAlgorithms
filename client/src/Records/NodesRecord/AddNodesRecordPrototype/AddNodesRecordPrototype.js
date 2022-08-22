@@ -92,8 +92,23 @@ export default function AddNodesRecordPrototype(NodesRecord) {
         const nodesWithReversedDirected = this.set("isDirected", !wasDirected);
     
         if (wasDirected) {
-            console.log("he")
-            return nodesWithReversedDirected;
+            let res = nodesWithReversedDirected;
+            
+            nodesWithReversedDirected.edgesRecord._edges
+                .sort((edge1, edge2)=>{
+                    const edge1NodeIndex = this.nodes.findIndex(node=>node.id===edge1.from);
+                    const edge2NodeIndex = this.nodes.findIndex(node=>node.id===edge2.from);
+                    
+                    if (edge1NodeIndex > edge2NodeIndex) return 1;
+                    else return 0;
+                })
+                .forEach(edge=>{
+                    if (edge.value !== false && edge.value !== 0) {
+                        res = res.setEdge({to: edge.from, from: edge.to, value: edge.value});
+                    }
+                });
+
+            return res;
         }
     
         return nodesWithReversedDirected;
