@@ -1,6 +1,6 @@
 import { v4 } from "uuid";
 
-export default function Controller({setResult, setIsDone, time = 1500, setNodeStyle, setPointerLine}) {
+export default function Controller({setResult, setIsDone, graphTime = 4000, pointerTime = 700, setNodeStyle, setPointerLine}) {
     let isDone = false;
 
     const originalWaitToConsider = async (time) => new Promise((resolve) => setTimeout(() => resolve(), time));
@@ -30,15 +30,16 @@ export default function Controller({setResult, setIsDone, time = 1500, setNodeSt
 
         setNodeStyle(node, types[type]);
 
-        return handlers.waitToConsider(time);
+        return handlers.waitToConsider(graphTime);
     }
 
     async function considerPointerLine(pointerLine) {
         setPointerLine(pointerLine);
-        return;
+        return handlers.waitToConsider(pointerTime);
     }
 
     async function consider(type, ...args) {
+        console.log(type, ...args)
         switch (type) {
             case "graph":
                 return considerGraph(...args);

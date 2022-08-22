@@ -1,10 +1,9 @@
 import {useState, useContext} from "react";
 import BasicAlgorithmContext from "../../../../Contexts/Controller/BasicAlgorithmContext";
 import useEffectWithWaitForCleanup from "../../../../Hooks/useEffectWithWaitForCleanup";
-import useToggle from "../../../../Hooks/useToggle";
 
 export default function StartAlgorithmButton() {
-    const {handlers, setInvalidateAlgorithm, algorithmGetter, controller, setPointerLine} = useContext(BasicAlgorithmContext);
+    const {handlers, setInvalidateAlgorithm, algorithmGetter, controller} = useContext(BasicAlgorithmContext);
 
     const [isAlgorithmRunning, setIsAlgorithmRunning] = useState(false);
     const [isAlgorithmPaused, setIsAlgorithmPaused] = useState(false);
@@ -49,7 +48,7 @@ export default function StartAlgorithmButton() {
             setNodeStyle: (nodeId, style) => {
                 handlers.setNodeStyle(nodeId, style);
             },
-            setPointerLine
+            setPointerLine: handlers.setPointerLine
         }));
     }
 
