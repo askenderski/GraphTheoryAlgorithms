@@ -74,10 +74,6 @@ export default function AddNodesRecordPrototype(NodesRecord) {
         return this.set("edgesRecord", resEdgesRecord);
     }
     
-    NodesRecord.prototype.setEdgeByIndex = function({to, from}, {value}) {
-        return this.setEdge({to, from, value});
-    }
-    
     NodesRecord.prototype.toggleIsWeighted = function() {
         const wasWeighted = this.get("isWeighted");
         const nodesWithReversedWeight = this.set("isWeighted", !wasWeighted);

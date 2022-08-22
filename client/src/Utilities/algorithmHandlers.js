@@ -16,10 +16,6 @@ export function getNodesHandlers(nodesRecord, setNodes, {invalidateAlgorithm}) {
         setNodes(nodes => nodes.deleteNodeById(nodeId));
     }
 
-    function setEdgeByIndex({to, from}, val) {
-        setNodes(nodes => nodes.setEdgeByIndex({to, from}, val));
-    }
-
     function setEdge({to, from}, value) {
         setNodes(nodes => nodes.setEdge({to, from, value}));
     }
@@ -32,7 +28,7 @@ export function getNodesHandlers(nodesRecord, setNodes, {invalidateAlgorithm}) {
         setNodes(nodes => nodes.toggleIsWeighted());
     }
 
-    const nodeRecordHandlers = {addNode, setEdgeByIndex, toggleIsDirected, toggleIsWeighted, deleteNode, setEdge};
+    const nodeRecordHandlers = {addNode, toggleIsDirected, toggleIsWeighted, deleteNode, setEdge};
 
     function getNodesList() {
         return nodesRecord.get("nodes");
