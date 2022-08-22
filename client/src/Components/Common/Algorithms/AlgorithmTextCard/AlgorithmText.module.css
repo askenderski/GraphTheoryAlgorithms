@@ -1,0 +1,7 @@
+.algorithmText {
+    overflow: scroll;
+    resize: none;
+    flex-grow: 1;
+    display: block;
+    height: 100%;
+}

@@ -7,7 +7,7 @@ const defaultSize = {width: "200px", height: "300px"};
 export default function AlgorithmTextCard() {
     return (
         <Card headerContent={"Algorithm"} defaultPosition={defaultPosition} defaultSize={defaultSize}>
-            <div style={{flexGrow: 1}}><AlgorithmText/></div>
+            <div style={{overflow: "hidden"}}><AlgorithmText/></div>
         </Card>
     );
 }
