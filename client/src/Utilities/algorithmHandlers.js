@@ -1,9 +1,15 @@
+import { List } from "immutable";
 import { defaultNodeStyle } from "../Data/Algorithms/graph";
 import { edgesRecordToGraphRepresentation } from "./graphs";
+import { NodeRecord } from "../Records/NodeRecord/NodeRecord";
 
 export function getNodesHandlers(nodesRecord, setNodes, {invalidateAlgorithm}) {
+    let nodeValues = List(nodesRecord.nodes.map(node=>node.value)).sort();
+    console.log(nodeValues)
+
     function addNode() {
-        setNodes(nodes => nodes.addNode());
+        const value = nodeValues.find(val=>!nodeValues.includes(val+1))+1;
+        setNodes(nodes => nodes.addNode(NodeRecord({value, label: value.toString()})));
     }
 
     function deleteNode(nodeId) {
