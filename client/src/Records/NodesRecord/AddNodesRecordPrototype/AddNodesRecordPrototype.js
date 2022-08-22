@@ -88,21 +88,18 @@ export default function AddNodesRecordPrototype(NodesRecord) {
     }
 
     NodesRecord.prototype.deleteNodeById = function (nodeId) {
-        return this.deleteNodeByIndex(this.nodes.findIndex(node=>node.id === nodeId));
-    }
-
-    NodesRecord.prototype.getNodeById = function (nodeId) {
-        return this.nodes.find(node => node.id === nodeId);
-    }
-    
-    NodesRecord.prototype.deleteNodeByIndex = function (nodeIndex) {
         if (this.nodeCount <= 0) return this;
     
         const nodesWithNewCount = this.set("nodeCount", this.nodeCount - 1);
     
-        const newEdgesRecord = this.get("edgesRecord").deleteEdgesForNode(this.nodes.get(nodeIndex).get("id"));
+        const newEdgesRecord = this.get("edgesRecord").deleteEdgesForNode(nodeId);
 
-        return nodesWithNewCount.deleteIn(["nodes", nodeIndex]).set("edgesRecord", newEdgesRecord);
+        return nodesWithNewCount.set("nodes", this.nodes.filter(node=>node.id!==nodeId))
+            .set("edgesRecord", newEdgesRecord);
+    }
+
+    NodesRecord.prototype.getNodeById = function (nodeId) {
+        return this.nodes.find(node => node.id === nodeId);
     }
     
     NodesRecord.prototype.toggleIsDirected = function () {
