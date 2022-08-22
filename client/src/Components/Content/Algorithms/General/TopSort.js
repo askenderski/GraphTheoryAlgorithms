@@ -1,3 +1,4 @@
+import TopSortText from "../../../../Algorithms/General/TopSort/TopSortText";
 import { useState } from "react";
 import NodeContext from "../../../../Contexts/Controller/Node";
 import NodesCard from "../../../Common/Algorithms/NodesCard/NodesCard";
@@ -7,6 +8,9 @@ import GraphCard from "../../../Common/Algorithms/GraphCard/GraphCard";
 import GraphContext from "../../../../Contexts/Controller/Graph";
 import TopSortAlgorithmContext from "../.././../../Contexts/Controller/TopSort/Algorithm";
 import AlgorithmTextCard from "../../../Common/Algorithms/AlgorithmTextCard/AlgorithmTextCard";
+import AlgorithmTextContext from "../../../../Contexts/Controller/AlgorithmText";
+
+const algorithmText = TopSortText;
 
 export default function TopSort({nodesRecord, setNodesRecord}) {
     const [invalidateAlgorithm, setInvalidateAlgorithm] = useState(()=>{});
@@ -24,7 +28,9 @@ export default function TopSort({nodesRecord, setNodesRecord}) {
             value={{setInvalidateAlgorithm, handlers: startAlgorithmHandlers}}>
                 <AlgorithmControllerCard/>
             </TopSortAlgorithmContext.Provider>
-            <AlgorithmTextCard />
+            <AlgorithmTextContext.Provider value={{algorithmText}}>
+                <AlgorithmTextCard />
+            </AlgorithmTextContext.Provider>
             <GraphContext.Provider value={{nodesRecord, handlers: graphCardHandlers}}>
                 <GraphCard/>
             </GraphContext.Provider>

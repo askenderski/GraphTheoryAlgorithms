@@ -1,6 +1,4 @@
-const nodes = [0,1,2,3];
-const edgeList = [[{to: 1}, {to: 2}], [{to: 2}, {to: 3}], [], [{to: 2}]];
-
+const TopSortText = `
 function dfs(node) {
     if (visited[node]) {
         return;
@@ -21,3 +19,8 @@ const visited = [];
 for (let i = 0; i < nodes.length; i++) {
     if (!visited[i]) dfs(i);
 }
+`.trim();
+
+console.log(TopSortText)
+
+export default TopSortText;
