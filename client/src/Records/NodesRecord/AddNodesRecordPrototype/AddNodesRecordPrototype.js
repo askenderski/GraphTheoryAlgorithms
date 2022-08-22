@@ -65,31 +65,17 @@ export default function AddNodesRecordPrototype(NodesRecord) {
     }
 
     NodesRecord.prototype.setEdge = function({to, from, value}) {
-        const newEdgesRecord = this.get("edgesRecord").setEdge({to, from, value});
-        return this.set("edgesRecord", newEdgesRecord);   
+        let resEdgesRecord = this.get("edgesRecord").setEdge({to, from, value});
+        
+        if (!this.get("isDirected")) {
+            resEdgesRecord = resEdgesRecord.setEdge({from: to, to: from, value});
+        }
+    
+        return this.set("edgesRecord", resEdgesRecord);
     }
     
     NodesRecord.prototype.setEdgeByIndex = function({to, from}, {value}) {
-        if (!this.get("isDirected")) {
-            return this
-                .setEdge({
-                    to: this.nodes.get(to).get("id"),
-                    from: this.nodes.get(from).get("id"),
-                    value
-                })
-                .setEdge({
-                    from: this.nodes.get(to).get("id"),
-                    to: this.nodes.get(from).get("id"),
-                    value
-                });
-        }
-    
-        return this
-            .setEdge({
-                to: this.nodes.get(to).get("id"),
-                from: this.nodes.get(from).get("id"),
-                value
-            });
+        return this.setEdge({to, from, value});
     }
     
     NodesRecord.prototype.toggleIsWeighted = function() {
@@ -128,6 +114,7 @@ export default function AddNodesRecordPrototype(NodesRecord) {
         const nodesWithReversedDirected = this.set("isDirected", !wasDirected);
     
         if (wasDirected) {
+            console.log("he")
             return nodesWithReversedDirected;
         }
     
