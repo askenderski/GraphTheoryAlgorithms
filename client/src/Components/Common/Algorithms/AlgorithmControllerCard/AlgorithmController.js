@@ -5,14 +5,14 @@ import useEffectWithWaitForCleanup from "../../../../Hooks/useEffectWithWaitForC
 export default function StartAlgorithmButton() {
     const {handlers, setInvalidateAlgorithm, algorithm, getController} = useContext(BasicAlgorithmContext);
 
-    const [isAlgorithmRunning, setIsAlgorithmRunning] = useState(false);
-    const [isAlgorithmPaused, setIsAlgorithmPaused] = useState(false);
+    const [isRunning, setIsRunning] = useState(false);
+    const [isPaused, setIsPaused] = useState(false);
 
     const [algorithmController, setAlgorithmController] = useState({invalidate: ()=>{}, isMock: true});
 
     async function invalidateAlgorithm(algorithmController) {
-        setIsAlgorithmPaused(false);
-        setIsAlgorithmRunning(false);
+        setIsPaused(false);
+        setIsRunning(false);
         await algorithmController.invalidate();
         handlers.resetNodes();
     }
@@ -49,8 +49,8 @@ export default function StartAlgorithmButton() {
             
             if (algorithmController.isMock) return;
 
-            setIsAlgorithmRunning(true);
-            setIsAlgorithmPaused(false);
+            setIsRunning(true);
+            setIsPaused(false);
 
             algorithmController.run(
                 handlers.getNodesIdList(),
@@ -67,7 +67,7 @@ export default function StartAlgorithmButton() {
 
     async function startAlgorithm() {
         setAlgorithmController(getController({
-            setIsDone: () => setIsAlgorithmRunning(false),
+            setIsDone: () => setIsRunning(false),
             styleSetters: {
                 setNodeStyle: (nodeId, style) => {
                     handlers.setNodeStyle(nodeId, style);
@@ -80,13 +80,13 @@ export default function StartAlgorithmButton() {
     }
 
     function toggleAlgorithmPause() {
-        if (isAlgorithmPaused) {
+        if (isPaused) {
             algorithmController.unpause();
         } else {
             algorithmController.pause();
         }
 
-        setIsAlgorithmPaused(!isAlgorithmPaused);
+        setIsPaused(!isPaused);
     }
 
     async function stopAlgorithm() {
@@ -95,11 +95,11 @@ export default function StartAlgorithmButton() {
 
     return (
         <>
-            <button onClick={startAlgorithm}>{isAlgorithmRunning ? "Restart" : "Start"}</button>
-            <button onClick={toggleAlgorithmPause} disabled={!isAlgorithmRunning}>
-                {isAlgorithmPaused ? "Unpause" : "Pause"}
+            <button onClick={startAlgorithm}>{isRunning ? "Restart" : "Start"}</button>
+            <button onClick={toggleAlgorithmPause} disabled={!isRunning}>
+                {isPaused ? "Unpause" : "Pause"}
             </button>
-            <button onClick={stopAlgorithm} disabled={!isAlgorithmRunning}>Stop</button>
+            <button onClick={stopAlgorithm} disabled={!isRunning}>Stop</button>
         </>
     );
 }
