@@ -13,7 +13,7 @@ export default function AlgorithmControllerContainer() {
 
     function invalidateAlgorithm() {
         algorithmController.invalidate();
-        handlers.resetNodes();
+        handlers.reset();
     }
 
     useSettingController({getController, handlers, algorithm});

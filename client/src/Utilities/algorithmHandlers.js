@@ -88,12 +88,29 @@ export function getNodesHandlers(nodesRecord, setNodes, {invalidateAlgorithm}) {
     return nodeRecordHandlers;
 };
 
-export function getStartAlgorithmHandlers(nodesRecord, setNodes, {setPointerLine, setVariables}) {
+export function getStartAlgorithmHandlers(nodesRecord, setNodes, {setPointerLine, setVariables, variables}) {
     function resetNodes() {
         setNodes(nodesRecord => {
             const newNodes = nodesRecord.get("nodes").map(node=>node.set("style", defaultNodeStyle));
             return nodesRecord.set("nodes", newNodes);
         });
+    }
+
+    function resetPointerLine() {
+        setPointerLine(-1);
+    }
+
+    function resetVariables() {
+        const newVariables = Object.keys(variables)
+            .reduce((acc, varName)=>({...acc, [varName]: ""}), {})
+
+        setVariables(newVariables);
+    }
+
+    function reset() {
+        resetNodes();
+        resetPointerLine();
+        resetVariables();
     }
 
     function setNodesRecord(newRecord) {
@@ -122,7 +139,7 @@ export function getStartAlgorithmHandlers(nodesRecord, setNodes, {setPointerLine
     }
 
     return {
-        setNodesRecord, resetNodes, setNodeStyle,
+        setNodesRecord, reset, setNodeStyle,
         getNodesIdList, getEdgesRepresentation, setPointerLine, setVariable, setVariables
     };
 };

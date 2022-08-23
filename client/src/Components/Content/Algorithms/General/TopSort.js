@@ -22,7 +22,7 @@ export default function TopSort({nodesRecord, setNodesRecord}) {
 
     const nodesCardHandlers = getNodesHandlers(nodesRecord, setNodesRecord, {invalidateAlgorithm});
     const startAlgorithmHandlers = getStartAlgorithmHandlers(nodesRecord, setNodesRecord,
-        {setPointerLine, setVariables});
+        {setPointerLine, setVariables, variables});
     const graphCardHandlers = getGraphCardHandlers(nodesRecord, setNodesRecord);
 
     return (
