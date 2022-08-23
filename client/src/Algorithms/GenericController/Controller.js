@@ -6,8 +6,8 @@ export default function getController(args) {
     const {outsideControls, waitToConsider, setIsDone} =
         getAlgorithmRunningFunctionality({setIsDoneOutsideController});
     
-    const {waitTimes, setters, algorithm} = args;
-    const considers = getConsiderator({waitToConsider, setters, waitTimes});
+    const {waitTimes, styleSetters, algorithm} = args;
+    const considers = getConsiderator({waitToConsider, setters: styleSetters, waitTimes});
 
     const run = algorithm.getRun({setIsDone, considers});
     

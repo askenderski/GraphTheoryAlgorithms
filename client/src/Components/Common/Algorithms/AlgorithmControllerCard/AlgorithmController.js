@@ -28,7 +28,7 @@ export default function StartAlgorithmButton() {
                 graphTime: 0,
                 pointerTime: 0,
             },
-            setters: {
+            styleSetters: {
                 setNodeStyle: ()=>{},
                 setPointerLine: ()=>{},
                 setVariable: (variableName) => allVariables[variableName] = true
@@ -68,7 +68,7 @@ export default function StartAlgorithmButton() {
     async function startAlgorithm() {
         setAlgorithmController(getController({
             setIsDone: () => setIsAlgorithmRunning(false),
-            setters: {
+            styleSetters: {
                 setNodeStyle: (nodeId, style) => {
                     handlers.setNodeStyle(nodeId, style);
                 },
