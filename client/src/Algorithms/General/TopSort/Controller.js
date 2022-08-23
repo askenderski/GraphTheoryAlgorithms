@@ -1,4 +1,4 @@
-import getController from "../../Controller";
+import getController from "../../GenericController/Controller";
 
 const getTopSortController = getController;
 
