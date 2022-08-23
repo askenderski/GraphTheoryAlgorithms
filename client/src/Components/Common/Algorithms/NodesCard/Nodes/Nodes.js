@@ -1,7 +1,7 @@
 import { TableHead } from "./TableHead/TableHead";
 import { TableBody } from "./TableBody/TableBody";
 
-export default function Nodes({nodes: nodesRecord, handlers = {}, isDeletingNode}) {
+export default function Nodes({handlers = {}, isDeletingNode}) {
     return (
         <table>
             <TableHead isDeletingNode={isDeletingNode} handlers={handlers} />
