@@ -27,9 +27,11 @@ export default function StartAlgorithmButton() {
             },
             graphTime: 0,
             pointerTime: 0,
-            setNodeStyle: ()=>{},
-            setPointerLine: ()=>{},
-            setVariable: (variableName) => allVariables[variableName] = true
+            setters: {
+                setNodeStyle: ()=>{},
+                setPointerLine: ()=>{},
+                setVariable: (variableName) => allVariables[variableName] = true
+            }
         });
 
         const algorithm = algorithmGetter(oneTimeController);
@@ -67,11 +69,13 @@ export default function StartAlgorithmButton() {
         setAlgorithmController(controller({
             setResult: () => {},
             setIsDone: () => setIsAlgorithmRunning(false),
-            setNodeStyle: (nodeId, style) => {
-                handlers.setNodeStyle(nodeId, style);
-            },
-            setVariable: handlers.setVariable,
-            setPointerLine: handlers.setPointerLine
+            setters: {
+                setNodeStyle: (nodeId, style) => {
+                    handlers.setNodeStyle(nodeId, style);
+                },
+                setVariable: handlers.setVariable,
+                setPointerLine: handlers.setPointerLine
+            }
         }));
     }
 

@@ -51,10 +51,10 @@ function getIntegerConsiderator({setVariable}) {
     return considerInteger;
 }
 
-function getConsiderator({setNodeStyle, graphTime, setPointerLine, setVariable, pointerTime, handlers}) {
-    const considerGraph = getGraphConsiderator({setNodeStyle, graphTime, handlers});
-    const considerPointerLine = getPointerConsiderator({setPointerLine, pointerTime, handlers});
-    const considerInteger = getIntegerConsiderator({setVariable});
+function getConsiderator({setters, graphTime, pointerTime, handlers}) {
+    const considerGraph = getGraphConsiderator({setNodeStyle: setters.setNodeStyle, graphTime, handlers});
+    const considerPointerLine = getPointerConsiderator({setPointerLine: setters.setPointerLine, pointerTime, handlers});
+    const considerInteger = getIntegerConsiderator({setVariable: setters.setVariable});
 
     async function consider(type, ...args) {
         switch (type) {
@@ -71,7 +71,7 @@ function getConsiderator({setNodeStyle, graphTime, setPointerLine, setVariable, 
 }
 
 export default function Controller(
-    {setResult, setIsDone, graphTime = 4000, pointerTime = 700, setNodeStyle, setPointerLine, setVariable}
+    {setResult, setIsDone, graphTime = 4000, pointerTime = 700, setters}
     ) {
     let isDone = false;
 
@@ -81,7 +81,7 @@ export default function Controller(
         waitToConsider: originalWaitToConsider
     };
 
-    const {consider} = getConsiderator({handlers, setNodeStyle, setPointerLine, setVariable, pointerTime, graphTime});
+    const {consider} = getConsiderator({handlers, setters, pointerTime, graphTime});
 
     async function invalidate() {
         if (doUnpause) {
