@@ -1,7 +1,8 @@
-export default function GetTopSorter({consider, setIsDone}) {
-    return {
-        graphRepresentation: "adjacencyList",
-        algorithm: async function(nodesIds, edgeList) {
+const TopSort = {
+    graphRepresentation: "adjacencyList",
+    getRun: function({consider, setIsDone}) {
+        return async function(nodesIds, edgeList) {
+            console.log(nodesIds, edgeList)
             async function dfs(nodeId) {
                 await consider("integer", "i1", "remove");
                 await consider("pointerLine", 1);
@@ -94,5 +95,7 @@ export default function GetTopSorter({consider, setIsDone}) {
             setIsDone();
             return;
         }
-    };
-}
+    }
+};
+
+export default TopSort;

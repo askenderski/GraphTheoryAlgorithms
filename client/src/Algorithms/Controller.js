@@ -125,11 +125,14 @@ function getAlgorithmRunningFunctionality({setIsDoneOutsideController}) {
 }
 
 export default function Controller(
-    {setIsDone: setIsDoneOutsideController, graphTime = 4000, pointerTime = 700, setters}
+    {setIsDone: setIsDoneOutsideController, graphTime = 4000, pointerTime = 700, setters, algorithm}
     ) {
     const {pause, unpause, invalidate, waitToConsider, setIsDone} =
         getAlgorithmRunningFunctionality({setIsDoneOutsideController});
     const {consider} = getConsiderator({waitToConsider, setters, pointerTime, graphTime});
+
+    const run = algorithm.getRun({setIsDone, consider});
+    console.log(run)
     
-    return {consider, _id: v4(), pause, unpause, setIsDone, invalidate};
+    return {consider, run, _id: v4(), pause, unpause, setIsDone, invalidate};
 };
