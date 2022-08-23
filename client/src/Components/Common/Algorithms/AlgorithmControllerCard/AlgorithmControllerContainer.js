@@ -1,8 +1,9 @@
-import {useState, useContext, useEffect} from "react";
+import {useState, useContext} from "react";
 import BasicAlgorithmContext from "../../../../Contexts/Controller/BasicAlgorithmContext";
 import AlgorithmController from "./AlgorithmController";
 import useStateWithShallowMerge from "../../../../Hooks/useStateWithShallowMerge";
 import useSettingController from "../../../../Hooks/useSettingController";
+import useStartAlgorithmWithNewController from "./useStartAlgorithmWithNewController";
 
 export default function AlgorithmControllerContainer() {
     const {handlers, setInvalidateAlgorithm, algorithm, getController} = useContext(BasicAlgorithmContext);
@@ -18,19 +19,9 @@ export default function AlgorithmControllerContainer() {
 
     useSettingController({getController, handlers, algorithm});
 
-    useEffect(() => {
-        //this is needed as useState set functions execute function arguments
-        setInvalidateAlgorithm(()=>invalidateAlgorithm);
-        
-        if (algorithmController.isMock) return;
-
-        algorithmController.run(
-            handlers.getNodesIdList(),
-            handlers.getEdgesRepresentation(algorithm.graphRepresentation)
-        );
-        
-        return invalidateAlgorithm;
-    }, [algorithmController]);
+    useStartAlgorithmWithNewController({
+        setInvalidateAlgorithm, invalidateAlgorithm, algorithmController, handlers, algorithm
+    });
 
     function startAlgorithm() {
         setAlgorithmController(getController({
