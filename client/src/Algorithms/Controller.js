@@ -1,46 +1,43 @@
 import { v4 } from "uuid";
 
-export default function Controller(
-    {setResult, setIsDone, graphTime = 4000, pointerTime = 700, setNodeStyle, setPointerLine, setVariable}
-    ) {
-    let isDone = false;
-    console.log(setVariable)
+const defaultNodeTypes = {
+    current: {
+        color: "blue"
+    },
+    passed: {
+        color: "green"
+    },
+    done: {
+        color: "red"
+    },
+    current2: {
+        color: "yellow"
+    },
+    current3: {
+        color: "pink"
+    }
+};
 
-    const originalWaitToConsider = async (time) => new Promise((resolve) => setTimeout(() => resolve(), time));
-
-    const handlers = {
-        waitToConsider: originalWaitToConsider
-    };
-
+function getGraphConsiderator({nodeTypes=defaultNodeTypes, graphTime, setNodeStyle, handlers}) {
     async function considerGraph(node, type) {
-        const types = {
-            current: {
-                color: "blue"
-            },
-            passed: {
-                color: "green"
-            },
-            done: {
-                color: "red"
-            },
-            current2: {
-                color: "yellow"
-            },
-            current3: {
-                color: "pink"
-            }
-        };
-
-        setNodeStyle(node, types[type]);
+        setNodeStyle(node, nodeTypes[type]);
 
         return handlers.waitToConsider(graphTime);
     }
 
+    return considerGraph;
+}
+
+function getPointerConsiderator({setPointerLine, pointerTime, handlers}) {
     async function considerPointerLine(pointerLine) {
         setPointerLine(pointerLine);
         return handlers.waitToConsider(pointerTime);
     }
 
+    return considerPointerLine;
+}
+
+function getIntegerConsiderator({setVariable}) {
     async function considerInteger(integer, considerationType, value) {
         if (considerationType === "remove") {
             setVariable(integer, "");
@@ -50,6 +47,14 @@ export default function Controller(
         setVariable(integer, value);
         return;
     }
+
+    return considerInteger;
+}
+
+function getConsiderator({setNodeStyle, graphTime, setPointerLine, setVariable, pointerTime, handlers}) {
+    const considerGraph = getGraphConsiderator({setNodeStyle, graphTime, handlers});
+    const considerPointerLine = getPointerConsiderator({setPointerLine, pointerTime, handlers});
+    const considerInteger = getIntegerConsiderator({setVariable});
 
     async function consider(type, ...args) {
         switch (type) {
@@ -61,6 +66,22 @@ export default function Controller(
                 return considerInteger(...args)
         }
     }
+
+    return {consider, considerGraph, considerInteger, considerPointerLine}
+}
+
+export default function Controller(
+    {setResult, setIsDone, graphTime = 4000, pointerTime = 700, setNodeStyle, setPointerLine, setVariable}
+    ) {
+    let isDone = false;
+
+    const originalWaitToConsider = async (time) => new Promise((resolve) => setTimeout(() => resolve(), time));
+
+    const handlers = {
+        waitToConsider: originalWaitToConsider
+    };
+
+    const {consider} = getConsiderator({handlers, setNodeStyle, setPointerLine, setVariable, pointerTime, graphTime});
 
     async function invalidate() {
         if (doUnpause) {
