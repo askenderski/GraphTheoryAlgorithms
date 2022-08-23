@@ -1,4 +1,7 @@
-export function getAlgorithmRunningFunctionality({ setIsDoneOutsideController }) {
+export function getAlgorithmRunningFunctionality({ setIsDoneOutsideController, setAlgorithmState }) {
+    const setIsPaused = isPaused=>setAlgorithmState({isPaused});
+    const setIsRunning = isRunning=>setAlgorithmState({isRunning});
+
     let isDone = false;
     let isPaused = false;
 
@@ -24,6 +27,9 @@ export function getAlgorithmRunningFunctionality({ setIsDoneOutsideController })
         isDone = true;
         setIsDone(true);
 
+        setIsRunning(false);
+        setIsPaused(false);
+
         return;
     }
 
@@ -36,10 +42,13 @@ export function getAlgorithmRunningFunctionality({ setIsDoneOutsideController })
 
         doAlgorithmUnpause();
         isPaused = false;
+        
+        setIsPaused(false);
     }
 
     function pause() {
         isPaused = true;
+        setIsPaused(true);
     }
 
     function setIsDone(...args) {
