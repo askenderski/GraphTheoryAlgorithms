@@ -1,5 +1,5 @@
 import Controller from "../../Controller";
 
-export default function TopSortController({setResult, ...restProps}) {
-    return Controller({setResult, ...restProps});
-}
+const TopSortController = Controller;
+
+export default TopSortController;
