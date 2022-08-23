@@ -132,7 +132,6 @@ export default function getController(
     const {consider} = getConsiderator({waitToConsider, setters, pointerTime, graphTime});
 
     const run = algorithm.getRun({setIsDone, consider});
-    console.log(run)
     
-    return {consider, run, _id: v4(), pause, unpause, setIsDone, invalidate};
+    return {run, pause, unpause, invalidate};
 };
