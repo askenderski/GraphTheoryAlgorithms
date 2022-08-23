@@ -3,7 +3,7 @@ import BasicAlgorithmContext from "../../../../Contexts/Controller/BasicAlgorith
 import useEffectWithWaitForCleanup from "../../../../Hooks/useEffectWithWaitForCleanup";
 
 export default function StartAlgorithmButton() {
-    const {handlers, setInvalidateAlgorithm, algorithmGetter: algorithm, controller: getController} = useContext(BasicAlgorithmContext);
+    const {handlers, setInvalidateAlgorithm, algorithm, getController} = useContext(BasicAlgorithmContext);
 
     const [isAlgorithmRunning, setIsAlgorithmRunning] = useState(false);
     const [isAlgorithmPaused, setIsAlgorithmPaused] = useState(false);

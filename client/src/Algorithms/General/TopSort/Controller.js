@@ -1,5 +1,5 @@
-import Controller from "../../Controller";
+import getController from "../../Controller";
 
-const TopSortController = Controller;
+const getTopSortController = getController;
 
-export default TopSortController;
+export default getTopSortController;

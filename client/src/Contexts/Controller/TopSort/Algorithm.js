@@ -1,14 +1,14 @@
 import React from "react";
 import BasicAlgorithmContext from "../BasicAlgorithmContext";
-import {default as algorithmGetter} from "../../../Algorithms/General/TopSort/TopSort";
-import {default as controller} from "../../../Algorithms/General/TopSort/Controller";
+import algorithm from "../../../Algorithms/General/TopSort/TopSort";
+import getController from "../../../Algorithms/General/TopSort/Controller";
 
 const AlgorithmContext = React.createContext();
 
 const OriginalProvider = AlgorithmContext.Provider;
 
 AlgorithmContext.Provider = function({value, children}) {
-    const contextValue = {...value, algorithmGetter, controller};
+    const contextValue = {...value, algorithm, getController};
 
     return (
         <BasicAlgorithmContext.Provider value={contextValue}>

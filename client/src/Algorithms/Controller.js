@@ -124,7 +124,7 @@ function getAlgorithmRunningFunctionality({setIsDoneOutsideController}) {
     return {setIsDone, pause, unpause, invalidate, waitToConsider};
 }
 
-export default function Controller(
+export default function getController(
     {setIsDone: setIsDoneOutsideController, graphTime = 4000, pointerTime = 700, setters, algorithm}
     ) {
     const {pause, unpause, invalidate, waitToConsider, setIsDone} =
