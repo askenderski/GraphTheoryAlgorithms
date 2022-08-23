@@ -121,17 +121,17 @@ function getAlgorithmRunningFunctionality({setIsDoneOutsideController}) {
         return setIsDoneOutsideController(...args);
     }
 
-    return {setIsDone, pause, unpause, invalidate, waitToConsider};
+    return {setIsDone, outsideControls: {pause, unpause, invalidate}, waitToConsider};
 }
 
 export default function getController(
     {setIsDone: setIsDoneOutsideController, graphTime = 4000, pointerTime = 700, setters, algorithm}
     ) {
-    const {pause, unpause, invalidate, waitToConsider, setIsDone} =
+    const {outsideControls, waitToConsider, setIsDone} =
         getAlgorithmRunningFunctionality({setIsDoneOutsideController});
     const considers = getConsiderator({waitToConsider, setters, pointerTime, graphTime});
 
     const run = algorithm.getRun({setIsDone, considers});
     
-    return {run, pause, unpause, invalidate};
+    return {...outsideControls, run};
 };
