@@ -55,7 +55,7 @@ export default function AlgorithmControllerContainer() {
         }
     }
 
-    const stopAlgorithm = invalidateAlgorithm;
+    const stopAlgorithm = algorithmController.invalidate;
 
     return <AlgorithmController
             algorithmHandlers={{startAlgorithm, toggleAlgorithmPause, stopAlgorithm}}
