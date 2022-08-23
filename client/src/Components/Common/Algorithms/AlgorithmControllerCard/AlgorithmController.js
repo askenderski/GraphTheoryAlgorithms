@@ -10,10 +10,10 @@ export default function StartAlgorithmButton() {
 
     const [algorithmController, setAlgorithmController] = useState({invalidate: ()=>{}, isMock: true});
 
-    async function invalidateAlgorithm() {
+    function invalidateAlgorithm() {
         setIsPaused(false);
         setIsRunning(false);
-        await algorithmController.invalidate();
+        algorithmController.invalidate();
         handlers.resetNodes();
     }
 
@@ -42,30 +42,24 @@ export default function StartAlgorithmButton() {
         );
     }, []);
 
-    useEffectWithWaitForCleanup(() => {
-        async function main() {
-            //this is needed as useState set functions execute function arguments
-            setInvalidateAlgorithm(()=>invalidateAlgorithm);
-            
-            if (algorithmController.isMock) return;
-
-            setIsRunning(true);
-            setIsPaused(false);
-
-            algorithmController.run(
-                handlers.getNodesIdList(),
-                handlers.getEdgesRepresentation(algorithm.graphRepresentation)
-            );
-        }
+    useEffect(() => {
+        //this is needed as useState set functions execute function arguments
+        setInvalidateAlgorithm(()=>invalidateAlgorithm);
         
-        main();
+        if (algorithmController.isMock) return;
 
-        return async () => {
-            await invalidateAlgorithm();
-        };
+        setIsRunning(true);
+        setIsPaused(false);
+
+        algorithmController.run(
+            handlers.getNodesIdList(),
+            handlers.getEdgesRepresentation(algorithm.graphRepresentation)
+        );
+        
+        return invalidateAlgorithm;
     }, [algorithmController]);
 
-    async function startAlgorithm() {
+    function startAlgorithm() {
         setAlgorithmController(getController({
             setIsDone: () => setIsRunning(false),
             styleSetters: {
@@ -89,8 +83,8 @@ export default function StartAlgorithmButton() {
         setIsPaused(!isPaused);
     }
 
-    async function stopAlgorithm() {
-        await invalidateAlgorithm();
+    function stopAlgorithm() {
+        invalidateAlgorithm();
     }
 
     return (
