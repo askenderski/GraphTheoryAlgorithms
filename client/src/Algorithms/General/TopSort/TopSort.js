@@ -2,14 +2,14 @@ export default function GetTopSorter({consider, setIsDone, setResult}) {
     return {
         graphRepresentation: "adjacencyList",
         algorithm: async function(nodesIds, edgeList) {
-            async function dfs(nodeId, index) {
+            async function dfs(nodeId) {
                 await consider("integer", "i1", "remove");
                 await consider("pointerLine", 1);
                 //if the node has already been visited, we do not go through it again
                 // done nodes (below) have been visited, too, so once again we do not need to go through them
 
                 await consider("pointerLine", 2);
-                if (done[index]) {
+                if (done[nodeId]) {
                     //the node is marked as current2, aka we've already been through it but we are visiting it again
                     // just for visual effect
                     await consider("graph", nodeId, "current2");
@@ -19,7 +19,7 @@ export default function GetTopSorter({consider, setIsDone, setResult}) {
                     return;
                 }
 
-                if (visited[index]) {
+                if (visited[nodeId]) {
                     //if the node has been visited but is not done, that means it's still part of the current
                     // dfs and we will return to it; we use current2 to mark it as something we've already been
                     // through, then we return it to passed (it must be in passed status if it's down the
@@ -35,7 +35,7 @@ export default function GetTopSorter({consider, setIsDone, setResult}) {
                 //the node is marked as the current one
                 await consider("graph", nodeId, "current");
 
-                visited[index] = true;
+                visited[nodeId] = true;
 
                 await consider("pointerLine", 8);
                 await consider("integer", "i1", "add", 0);
@@ -56,7 +56,7 @@ export default function GetTopSorter({consider, setIsDone, setResult}) {
                     }
 
                     await consider("graph", nodeId, "passed");
-                    await dfs(nextNodeId, nodesIds.findIndex(nodeId=>nodeId===nextNodeId));
+                    await dfs(nextNodeId);
                     await consider("graph", nodeId, "current");
                     await consider("pointerLine", 8);
                 }
@@ -64,29 +64,29 @@ export default function GetTopSorter({consider, setIsDone, setResult}) {
                 await consider("pointerLine", 10);
 
                 await consider("graph", nodeId, "done");
-                done[index] = true;
+                done[nodeId] = true;
 
                 await consider("pointerLine", 12);
-                nodesTopSorted.unshift(index);
+                nodesTopSorted.unshift(nodeId);
                 setResult(nodesTopSorted);
             }
 
             await consider("pointerLine", 15);
             const nodesTopSorted = [];
             await consider("pointerLine", 16);
-            const visited = [];
+            const visited = {};
 
             //done is used purely for styling purposes, it contains visited nodes that have also been completely
             // dfs-ed, so if we hit a simply visited node, it means it's still down the dfs chain (and done ones
             // aren't)
-            const done = [];
+            const done = {};
 
             await consider("pointerLine", 18);
             await consider("integer", "i", "add", 0);
             for (let i = 0; i < nodesIds.size; i++) {
                 await consider("integer", "i", "set", i);
                 await consider("pointerLine", 19);
-                if (!visited[i]) await dfs(nodesIds.get(i), i);
+                if (!visited[i]) await dfs(nodesIds.get(i));
                 await consider("pointerLine", 18);
             }
             await consider("pointerLine", 20);
