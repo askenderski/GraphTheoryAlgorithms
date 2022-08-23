@@ -2,6 +2,7 @@ import {useState, useContext, useEffect} from "react";
 import BasicAlgorithmContext from "../../../../Contexts/Controller/BasicAlgorithmContext";
 import AlgorithmController from "./AlgorithmController";
 import useStateWithShallowMerge from "../../../../Hooks/useStateWithShallowMerge";
+import useSettingController from "../../../../Hooks/useSettingController";
 
 export default function AlgorithmControllerContainer() {
     const {handlers, setInvalidateAlgorithm, algorithm, getController} = useContext(BasicAlgorithmContext);
@@ -15,30 +16,7 @@ export default function AlgorithmControllerContainer() {
         handlers.resetNodes();
     }
 
-    useEffect(()=>{
-        const allVariables = {};
-
-        const oneTimeController = getController({
-            setIsDone: () => {
-                handlers.setVariables(allVariables)
-            },
-            waitTimes: {
-                graphTime: 0,
-                pointerTime: 0,
-            },
-            styleSetters: {
-                setNodeStyle: ()=>{},
-                setPointerLine: ()=>{},
-                setVariable: (variableName) => allVariables[variableName] = true
-            },
-            algorithm
-        });
-
-        oneTimeController.run(
-            handlers.getNodesIdList(),
-            handlers.getEdgesRepresentation(algorithm.graphRepresentation)
-        );
-    }, []);
+    useSettingController({getController, handlers, algorithm});
 
     useEffect(() => {
         //this is needed as useState set functions execute function arguments
