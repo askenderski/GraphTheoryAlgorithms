@@ -46,7 +46,9 @@ function getIntegerConsiderator({ setVariable }) {
     return considerInteger;
 }
 
-export default function getConsiderator({ setters, waitTimes, waitToConsider }) {
+const defaultWaitTimes = {graphTime: 4000, pointerTime: 700};
+
+export default function getConsiderator({setters, waitTimes = defaultWaitTimes, waitToConsider }) {
     const considerGraph = getGraphConsiderator({
         setNodeStyle: setters.setNodeStyle, waitToConsider: waitToConsider.bind(undefined, waitTimes.graphTime)
     });
