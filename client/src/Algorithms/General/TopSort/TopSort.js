@@ -1,4 +1,4 @@
-export default function GetTopSorter({consider, setIsDone, setResult}) {
+export default function GetTopSorter({consider, setIsDone}) {
     return {
         graphRepresentation: "adjacencyList",
         algorithm: async function(nodesIds, edgeList) {
@@ -68,7 +68,6 @@ export default function GetTopSorter({consider, setIsDone, setResult}) {
 
                 await consider("pointerLine", 12);
                 nodesTopSorted.unshift(nodeId);
-                setResult(nodesTopSorted);
             }
 
             await consider("pointerLine", 15);

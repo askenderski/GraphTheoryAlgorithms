@@ -18,20 +18,20 @@ const defaultNodeTypes = {
     }
 };
 
-function getGraphConsiderator({nodeTypes=defaultNodeTypes, graphTime, setNodeStyle, handlers}) {
+function getGraphConsiderator({nodeTypes=defaultNodeTypes, setNodeStyle, waitToConsider}) {
     async function considerGraph(node, type) {
         setNodeStyle(node, nodeTypes[type]);
 
-        return handlers.waitToConsider(graphTime);
+        return waitToConsider();
     }
 
     return considerGraph;
 }
 
-function getPointerConsiderator({setPointerLine, pointerTime, handlers}) {
+function getPointerConsiderator({setPointerLine, pointerTime, waitToConsider}) {
     async function considerPointerLine(pointerLine) {
         setPointerLine(pointerLine);
-        return handlers.waitToConsider(pointerTime);
+        return waitToConsider(pointerTime);
     }
 
     return considerPointerLine;
@@ -51,9 +51,13 @@ function getIntegerConsiderator({setVariable}) {
     return considerInteger;
 }
 
-function getConsiderator({setters, graphTime, pointerTime, handlers}) {
-    const considerGraph = getGraphConsiderator({setNodeStyle: setters.setNodeStyle, graphTime, handlers});
-    const considerPointerLine = getPointerConsiderator({setPointerLine: setters.setPointerLine, pointerTime, handlers});
+function getConsiderator({setters, graphTime, pointerTime, waitToConsider}) {
+    const considerGraph = getGraphConsiderator({
+        setNodeStyle: setters.setNodeStyle, waitToConsider: waitToConsider.bind(undefined, graphTime)
+    });
+    const considerPointerLine = getPointerConsiderator({
+        setPointerLine: setters.setPointerLine, waitToConsider: waitToConsider.bind(undefined, pointerTime)
+    });
     const considerInteger = getIntegerConsiderator({setVariable: setters.setVariable});
 
     async function consider(type, ...args) {
@@ -70,46 +74,62 @@ function getConsiderator({setters, graphTime, pointerTime, handlers}) {
     return {consider, considerGraph, considerInteger, considerPointerLine}
 }
 
-export default function Controller(
-    {setIsDone, graphTime = 4000, pointerTime = 700, setters}
-    ) {
+function getAlgorithmRunningFunctionality({setIsDoneOutsideController}) {
     let isDone = false;
+    let isPaused = false;
 
-    const originalWaitToConsider = async (time) => new Promise((resolve) => setTimeout(() => resolve(), time));
+    const waitToConsider = async (time) => {
+        return new Promise((resolve, reject) => {
+            doAlgorithmUnpause = resolve;
+            doStopAlgorithm = reject;
 
-    const handlers = {
-        waitToConsider: originalWaitToConsider
+            setTimeout(() => {
+                if (isPaused) return;
+
+                resolve();
+            }, time);
+        });
     };
 
-    const {consider} = getConsiderator({handlers, setters, pointerTime, graphTime});
-
-    async function invalidate() {
-        if (doUnpause) {
-            isDone = true;
-            return;
+    function invalidate() {
+        if (!isPaused && !isDone) {
+            doStopAlgorithm();
         }
 
-        return new Promise(resolve=>{
-            if (isDone) return resolve();
-            
-            handlers.waitToConsider = () => Promise.reject().finally(()=>{
-                isDone = true;
-                resolve();
-            });
-        });
+        isDone = true;
+        setIsDone(true);
+
+        return;
     }
+
+    let doAlgorithmUnpause;
+    let doStopAlgorithm;
     
-    let doUnpause;
+    function unpause() {
+        if (!isPaused) return;
+
+        doAlgorithmUnpause();
+        isPaused = false;
+    }
 
     function pause() {
-        handlers.waitToConsider = () => new Promise((resolve) => {
-            doUnpause = () => {
-                resolve();
-                handlers.waitToConsider = originalWaitToConsider;
-                doUnpause = undefined;
-            };
-        });
+        isPaused = true;
     }
 
-    return {consider, _id: v4(), pause, unpause: () => doUnpause(), setIsDone: (...args)=>{isDone = true; setIsDone(...args)}, invalidate};
+    function setIsDone(...args) {
+        isDone = true;
+        return setIsDoneOutsideController(...args);
+    }
+
+    return {setIsDone, pause, unpause, invalidate, waitToConsider};
+}
+
+export default function Controller(
+    {setIsDone: setIsDoneOutsideController, graphTime = 4000, pointerTime = 700, setters}
+    ) {
+    const {pause, unpause, invalidate, waitToConsider, setIsDone} =
+        getAlgorithmRunningFunctionality({setIsDoneOutsideController});
+    const {consider} = getConsiderator({waitToConsider, setters, pointerTime, graphTime});
+    
+    return {consider, _id: v4(), pause, unpause, setIsDone, invalidate};
 };
