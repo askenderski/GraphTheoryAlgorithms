@@ -51,12 +51,12 @@ function getIntegerConsiderator({setVariable}) {
     return considerInteger;
 }
 
-function getConsiderator({setters, graphTime, pointerTime, waitToConsider}) {
+function getConsiderator({setters, waitTimes, waitToConsider}) {
     const considerGraph = getGraphConsiderator({
-        setNodeStyle: setters.setNodeStyle, waitToConsider: waitToConsider.bind(undefined, graphTime)
+        setNodeStyle: setters.setNodeStyle, waitToConsider: waitToConsider.bind(undefined, waitTimes.graphTime)
     });
     const considerPointerLine = getPointerConsiderator({
-        setPointerLine: setters.setPointerLine, waitToConsider: waitToConsider.bind(undefined, pointerTime)
+        setPointerLine: setters.setPointerLine, waitToConsider: waitToConsider.bind(undefined, waitTimes.pointerTime)
     });
     const considerInteger = getIntegerConsiderator({setVariable: setters.setVariable});
 
@@ -125,11 +125,11 @@ function getAlgorithmRunningFunctionality({setIsDoneOutsideController}) {
 }
 
 export default function getController(
-    {setIsDone: setIsDoneOutsideController, graphTime = 4000, pointerTime = 700, setters, algorithm}
+    {setIsDone: setIsDoneOutsideController, waitTimes = {graphTime: 4000, pointerTime: 700}, setters, algorithm}
     ) {
     const {outsideControls, waitToConsider, setIsDone} =
         getAlgorithmRunningFunctionality({setIsDoneOutsideController});
-    const considers = getConsiderator({waitToConsider, setters, pointerTime, graphTime});
+    const considers = getConsiderator({waitToConsider, setters, waitTimes});
 
     const run = algorithm.getRun({setIsDone, considers});
     

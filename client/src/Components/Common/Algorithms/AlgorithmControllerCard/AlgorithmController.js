@@ -24,8 +24,10 @@ export default function StartAlgorithmButton() {
             setIsDone: () => {
                 handlers.setVariables(allVariables)
             },
-            graphTime: 0,
-            pointerTime: 0,
+            waitTimes: {
+                graphTime: 0,
+                pointerTime: 0,
+            },
             setters: {
                 setNodeStyle: ()=>{},
                 setPointerLine: ()=>{},
