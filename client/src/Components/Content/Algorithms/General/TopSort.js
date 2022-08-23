@@ -9,15 +9,20 @@ import GraphContext from "../../../../Contexts/Controller/Graph";
 import TopSortAlgorithmContext from "../.././../../Contexts/Controller/TopSort/Algorithm";
 import AlgorithmTextCard from "../../../Common/Algorithms/AlgorithmTextCard/AlgorithmTextCard";
 import AlgorithmTextContext from "../../../../Contexts/Controller/AlgorithmText";
+import VariablesContext from "../../../../Contexts/Controller/Variables";
+import IntegerVariableCard from "../../../Common/Algorithms/IntegerVariableCard/IntegerVariableCard";
+import useStateWithShallowMerge from "../../../../Hooks/useStateWithShallowMerge";
 
 const algorithmText = TopSortText;
 
 export default function TopSort({nodesRecord, setNodesRecord}) {
     const [invalidateAlgorithm, setInvalidateAlgorithm] = useState(()=>{});
     const [pointerLine, setPointerLine] = useState();
+    const [variables, setVariables] = useStateWithShallowMerge({});
 
     const nodesCardHandlers = getNodesHandlers(nodesRecord, setNodesRecord, {invalidateAlgorithm});
-    const startAlgorithmHandlers = getStartAlgorithmHandlers(nodesRecord, setNodesRecord, {setPointerLine});
+    const startAlgorithmHandlers = getStartAlgorithmHandlers(nodesRecord, setNodesRecord,
+        {setPointerLine, setVariables});
     const graphCardHandlers = getGraphCardHandlers(nodesRecord, setNodesRecord);
 
     return (
@@ -35,6 +40,9 @@ export default function TopSort({nodesRecord, setNodesRecord}) {
             <GraphContext.Provider value={{nodesRecord, handlers: graphCardHandlers}}>
                 <GraphCard/>
             </GraphContext.Provider>
+            <VariablesContext.Provider value={{variables}}>
+                {Object.keys(variables).map(variableName=><IntegerVariableCard variableName={variableName} />)}
+            </VariablesContext.Provider>
         </>
     );
 }

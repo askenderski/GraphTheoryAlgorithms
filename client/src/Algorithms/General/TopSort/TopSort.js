@@ -68,10 +68,8 @@ export default function GetTopSorter({consider, setIsDone, setResult}) {
             }
 
             await consider("pointerLine", 15);
-            console.log("consider line 15")
             const nodesTopSorted = [];
             await consider("pointerLine", 16);
-            console.log("considering line 16")
             const visited = [];
 
             //done is used purely for styling purposes, it contains visited nodes that have also been completely
@@ -81,6 +79,7 @@ export default function GetTopSorter({consider, setIsDone, setResult}) {
 
             await consider("pointerLine", 18);
             for (let i = 0; i < nodesIds.size; i++) {
+                console.log("new node")
                 await consider("pointerLine", 19);
                 if (!visited[i]) await dfs(nodesIds.get(i), i);
                 await consider("pointerLine", 18);

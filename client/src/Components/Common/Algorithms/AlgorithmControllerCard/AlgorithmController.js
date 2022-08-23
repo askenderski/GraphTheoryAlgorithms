@@ -1,4 +1,4 @@
-import {useState, useContext} from "react";
+import {useState, useContext, useEffect} from "react";
 import BasicAlgorithmContext from "../../../../Contexts/Controller/BasicAlgorithmContext";
 import useEffectWithWaitForCleanup from "../../../../Hooks/useEffectWithWaitForCleanup";
 
@@ -17,10 +17,32 @@ export default function StartAlgorithmButton() {
         handlers.resetNodes();
     }
 
+    useEffect(()=>{
+        const allVariables = {};
+
+        const oneTimeController = controller({
+            setResult: () => {},
+            setIsDone: () => {
+                handlers.setVariables(allVariables)
+            },
+            graphTime: 0,
+            pointerTime: 0,
+            setNodeStyle: ()=>{},
+            setPointerLine: ()=>{},
+            setVariable: (variableName) => allVariables[variableName] = true
+        });
+
+        const algorithm = algorithmGetter(oneTimeController);
+        algorithm.algorithm(
+            handlers.getNodesIdList(),
+            handlers.getEdgesRepresentation(algorithm.graphRepresentation)
+        );
+    }, []);
+
     useEffectWithWaitForCleanup(() => {
         async function main() {
             //this is needed as useState set functions execute function arguments
-            setInvalidateAlgorithm(()=>invalidateAlgorithm.bind(undefined, algorithmController));
+            setInvalidateAlgorithm(()=>invalidateAlgorithm.bind(undefined));
             
             if (algorithmController.isMock) return;
 
