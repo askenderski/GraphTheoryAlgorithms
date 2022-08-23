@@ -71,7 +71,7 @@ function getConsiderator({setters, graphTime, pointerTime, handlers}) {
 }
 
 export default function Controller(
-    {setResult, setIsDone, graphTime = 4000, pointerTime = 700, setters}
+    {setIsDone, graphTime = 4000, pointerTime = 700, setters}
     ) {
     let isDone = false;
 
@@ -111,5 +111,5 @@ export default function Controller(
         });
     }
 
-    return {consider, _id: v4(), pause, unpause: () => doUnpause(), setIsDone: (...args)=>{isDone = true; setIsDone(...args)}, setResult, invalidate};
+    return {consider, _id: v4(), pause, unpause: () => doUnpause(), setIsDone: (...args)=>{isDone = true; setIsDone(...args)}, invalidate};
 };

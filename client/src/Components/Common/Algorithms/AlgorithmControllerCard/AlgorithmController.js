@@ -21,7 +21,6 @@ export default function StartAlgorithmButton() {
         const allVariables = {};
 
         const oneTimeController = controller({
-            setResult: () => {},
             setIsDone: () => {
                 handlers.setVariables(allVariables)
             },
@@ -67,7 +66,6 @@ export default function StartAlgorithmButton() {
 
     async function startAlgorithm() {
         setAlgorithmController(controller({
-            setResult: () => {},
             setIsDone: () => setIsAlgorithmRunning(false),
             setters: {
                 setNodeStyle: (nodeId, style) => {
