@@ -27,9 +27,7 @@ export default function AlgorithmControllerContainer() {
         setAlgorithmController(getController({
             setIsDone: () => {},
             styleSetters: {
-                setNodeStyle: (nodeId, style) => {
-                    handlers.setNodeStyle(nodeId, style);
-                },
+                setNodeStyle: handlers.setNodeStyle,
                 setVariable: handlers.setVariable,
                 setPointerLine: handlers.setPointerLine
             },
