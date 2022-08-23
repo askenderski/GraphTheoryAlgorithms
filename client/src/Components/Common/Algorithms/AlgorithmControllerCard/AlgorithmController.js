@@ -3,7 +3,7 @@ import BasicAlgorithmContext from "../../../../Contexts/Controller/BasicAlgorith
 import useEffectWithWaitForCleanup from "../../../../Hooks/useEffectWithWaitForCleanup";
 
 export default function StartAlgorithmButton() {
-    const {handlers, setInvalidateAlgorithm, algorithmGetter: algorithm, controller} = useContext(BasicAlgorithmContext);
+    const {handlers, setInvalidateAlgorithm, algorithmGetter: algorithm, controller: getController} = useContext(BasicAlgorithmContext);
 
     const [isAlgorithmRunning, setIsAlgorithmRunning] = useState(false);
     const [isAlgorithmPaused, setIsAlgorithmPaused] = useState(false);
@@ -20,7 +20,7 @@ export default function StartAlgorithmButton() {
     useEffect(()=>{
         const allVariables = {};
 
-        const oneTimeController = controller({
+        const oneTimeController = getController({
             setIsDone: () => {
                 handlers.setVariables(allVariables)
             },
@@ -64,7 +64,7 @@ export default function StartAlgorithmButton() {
     }, [algorithmController]);
 
     async function startAlgorithm() {
-        setAlgorithmController(controller({
+        setAlgorithmController(getController({
             setIsDone: () => setIsAlgorithmRunning(false),
             setters: {
                 setNodeStyle: (nodeId, style) => {
