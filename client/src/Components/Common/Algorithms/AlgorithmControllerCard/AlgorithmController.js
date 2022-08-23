@@ -70,6 +70,7 @@ export default function StartAlgorithmButton() {
             setNodeStyle: (nodeId, style) => {
                 handlers.setNodeStyle(nodeId, style);
             },
+            setVariable: handlers.setVariable,
             setPointerLine: handlers.setPointerLine
         }));
     }

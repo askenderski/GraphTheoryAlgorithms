@@ -117,8 +117,13 @@ export function getStartAlgorithmHandlers(nodesRecord, setNodes, {setPointerLine
         return edgesRecordToGraphRepresentation(nodesRecord.get("edgesRecord"), edgesRepresentation);
     }
 
+    function setVariable(name, value) {
+        setVariables({[name]: value});
+    }
+
     return {
-        setNodesRecord, resetNodes, setNodeStyle, getNodesIdList, getEdgesRepresentation, setPointerLine, setVariables
+        setNodesRecord, resetNodes, setNodeStyle,
+        getNodesIdList, getEdgesRepresentation, setPointerLine, setVariable, setVariables
     };
 };
 
