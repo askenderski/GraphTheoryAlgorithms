@@ -1,22 +1,23 @@
 const TopSort = {
     graphRepresentation: "adjacencyList",
-    getRun: function({consider, setIsDone}) {
+    getRun: function({considers, setIsDone}) {
+        const {considerGraph, considerInteger, considerPointerLine} = considers;
+
         return async function(nodesIds, edgeList) {
-            console.log(nodesIds, edgeList)
             async function dfs(nodeId) {
-                await consider("integer", "i1", "remove");
-                await consider("pointerLine", 1);
+                await considerInteger("i1", "remove");
+                await considerPointerLine(1);
                 //if the node has already been visited, we do not go through it again
                 // done nodes (below) have been visited, too, so once again we do not need to go through them
 
-                await consider("pointerLine", 2);
+                await considerPointerLine(2);
                 if (done[nodeId]) {
                     //the node is marked as current2, aka we've already been through it but we are visiting it again
                     // just for visual effect
-                    await consider("graph", nodeId, "current2");
+                    await considerGraph(nodeId, "current2");
                     //we return the node to "done" status
-                    await consider("graph", nodeId, "done");
-                    await consider("pointerLine", 3);
+                    await considerGraph(nodeId, "done");
+                    await considerPointerLine(3);
                     return;
                 }
 
@@ -25,55 +26,55 @@ const TopSort = {
                     // dfs and we will return to it; we use current2 to mark it as something we've already been
                     // through, then we return it to passed (it must be in passed status if it's down the
                     // dfs stack)
-                    await consider("graph", nodeId, "current2");
-                    await consider("graph", nodeId, "passed");
-                    await consider("pointerLine", 3);
+                    await considerGraph(nodeId, "current2");
+                    await considerGraph(nodeId, "passed");
+                    await considerPointerLine(3);
                     return;
                 }
 
-                await consider("pointerLine", 6);
+                await considerPointerLine(6);
 
                 //the node is marked as the current one
-                await consider("graph", nodeId, "current");
+                await considerGraph(nodeId, "current");
 
                 visited[nodeId] = true;
 
-                await consider("pointerLine", 8);
-                await consider("integer", "i1", "add", 0);
+                await considerPointerLine(8);
+                await considerInteger("i1", "add", 0);
                 for (let i1 = 0; i1 < edgeList.get(nodeId).size; i1++) {
-                    await consider("integer", "i1", "set", i1);
-                    await consider("pointerLine", 9);
+                    await considerInteger("i1", "set", i1);
+                    await considerPointerLine(9);
                     const nextNodeId = edgeList.get(nodeId).get(i1).to;
 
                     //if we are going to the same node, we only show it through "current3" and then return it
                     // to current as we're either going to a new node or are done with this node
                     if (nextNodeId === nodeId) {
-                        await consider("pointerLine", 2);
-                        await consider("graph", nodeId, "current3");
-                        await consider("pointerLine", 3);
-                        await consider("graph", nodeId, "current");
-                        await consider("pointerLine", 8);
+                        await considerPointerLine(2);
+                        await considerGraph(nodeId, "current3");
+                        await considerPointerLine(3);
+                        await considerGraph(nodeId, "current");
+                        await considerPointerLine(8);
                         continue;
                     }
 
-                    await consider("graph", nodeId, "passed");
+                    await considerGraph(nodeId, "passed");
                     await dfs(nextNodeId);
-                    await consider("graph", nodeId, "current");
-                    await consider("pointerLine", 8);
+                    await considerGraph(nodeId, "current");
+                    await considerPointerLine(8);
                 }
-                await consider("integer", "i1", "remove");
-                await consider("pointerLine", 10);
+                await considerInteger("i1", "remove");
+                await considerPointerLine(10);
 
-                await consider("graph", nodeId, "done");
+                await considerGraph(nodeId, "done");
                 done[nodeId] = true;
 
-                await consider("pointerLine", 12);
+                await considerPointerLine(12);
                 nodesTopSorted.unshift(nodeId);
             }
 
-            await consider("pointerLine", 15);
+            await considerPointerLine(15);
             const nodesTopSorted = [];
-            await consider("pointerLine", 16);
+            await considerPointerLine(16);
             const visited = {};
 
             //done is used purely for styling purposes, it contains visited nodes that have also been completely
@@ -81,16 +82,16 @@ const TopSort = {
             // aren't)
             const done = {};
 
-            await consider("pointerLine", 18);
-            await consider("integer", "i", "add", 0);
+            await considerPointerLine(18);
+            await considerInteger("i", "add", 0);
             for (let i = 0; i < nodesIds.size; i++) {
-                await consider("integer", "i", "set", i);
-                await consider("pointerLine", 19);
+                await considerInteger("i", "set", i);
+                await considerPointerLine(19);
                 if (!visited[i]) await dfs(nodesIds.get(i));
-                await consider("pointerLine", 18);
+                await considerPointerLine(18);
             }
-            await consider("pointerLine", 20);
-            await consider("integer", "i", "remove");
+            await considerPointerLine(20);
+            await considerInteger("i", "remove");
 
             setIsDone();
             return;

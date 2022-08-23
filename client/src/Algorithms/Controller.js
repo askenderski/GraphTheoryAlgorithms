@@ -129,9 +129,9 @@ export default function getController(
     ) {
     const {pause, unpause, invalidate, waitToConsider, setIsDone} =
         getAlgorithmRunningFunctionality({setIsDoneOutsideController});
-    const {consider} = getConsiderator({waitToConsider, setters, pointerTime, graphTime});
+    const considers = getConsiderator({waitToConsider, setters, pointerTime, graphTime});
 
-    const run = algorithm.getRun({setIsDone, consider});
+    const run = algorithm.getRun({setIsDone, considers});
     
     return {run, pause, unpause, invalidate};
 };
