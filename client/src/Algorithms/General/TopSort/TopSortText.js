@@ -6,8 +6,8 @@ function dfs(node) {
 
     visited[node] = true;
 
-    for (let i = 0; i < edgeList[node].length; i++) {
-        dfs(edgeList[node][i].to);
+    for (let i1 = 0; i1 < edgeList[node].length; i1++) {
+        dfs(edgeList[node][i1].to);
     }
 
     nodesTopSorted.unshift(node);
