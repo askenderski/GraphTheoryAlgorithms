@@ -10,8 +10,9 @@ import TopSortAlgorithmContext from "../.././../../Contexts/Controller/TopSort/A
 import AlgorithmTextCard from "../../../Common/Algorithms/AlgorithmTextCard/AlgorithmTextCard";
 import AlgorithmTextContext from "../../../../Contexts/Controller/AlgorithmText";
 import VariablesContext from "../../../../Contexts/Controller/Variables";
-import IntegerVariableCard from "../../../Common/Algorithms/IntegerVariableCard/IntegerVariableCard";
+import IntegerVariableCard from "../../../Common/Algorithms/VariablesControllerCard/IntegerVariableCard/IntegerVariableCard";
 import useStateWithShallowMerge from "../../../../Hooks/useStateWithShallowMerge";
+import VariablesControllerCard from "../../../Common/Algorithms/VariablesControllerCard/VariablesControllerCard";
 
 const algorithmText = TopSortText;
 
@@ -41,7 +42,7 @@ export default function TopSort({nodesRecord, setNodesRecord}) {
                 <GraphCard/>
             </GraphContext.Provider>
             <VariablesContext.Provider value={{variables}}>
-                {Object.keys(variables).map(variableName=><IntegerVariableCard variableName={variableName} />)}
+                <VariablesControllerCard/>
             </VariablesContext.Provider>
         </>
     );
