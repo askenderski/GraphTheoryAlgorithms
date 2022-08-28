@@ -88,7 +88,8 @@ export function getNodesHandlers(nodesRecord, setNodes, {invalidateAlgorithm}) {
     return nodeRecordHandlers;
 };
 
-export function getStartAlgorithmHandlers(nodesRecord, setNodes, {setPointerLine, setVariables, variables}) {
+export function getStartAlgorithmHandlers(nodesRecord, setNodes,
+    {setPointerLine, setVariables, variables, setCurrentController}) {
     function resetNodes() {
         setNodes(nodesRecord => {
             const newNodes = nodesRecord.get("nodes").map(node=>node.set("style", defaultNodeStyle));
@@ -140,7 +141,8 @@ export function getStartAlgorithmHandlers(nodesRecord, setNodes, {setPointerLine
 
     return {
         setNodesRecord, reset, setNodeStyle,
-        getNodesIdList, getEdgesRepresentation, setPointerLine, setVariable, setVariables
+        getNodesIdList, getEdgesRepresentation, setPointerLine, setVariable, setVariables,
+        setCurrentController
     };
 };
 

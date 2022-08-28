@@ -1,4 +1,4 @@
-import {useState, useContext} from "react";
+import {useState, useContext, useEffect} from "react";
 import BasicAlgorithmContext from "../../../../Contexts/Controller/BasicAlgorithmContext";
 import AlgorithmController from "./AlgorithmController";
 import useStateWithShallowMerge from "../../../../Hooks/useStateWithShallowMerge";
@@ -22,6 +22,10 @@ export default function AlgorithmControllerContainer() {
     useStartAlgorithmWithNewController({
         setInvalidateAlgorithm, invalidateAlgorithm, algorithmController, handlers, algorithm
     });
+
+    useEffect(()=>{
+        handlers.setCurrentController(algorithmController);
+    }, [algorithmController]);
 
     function startAlgorithm() {
         setAlgorithmController(getController({

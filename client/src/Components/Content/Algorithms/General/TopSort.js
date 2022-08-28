@@ -20,10 +20,11 @@ export default function TopSort({nodesRecord, setNodesRecord}) {
     const [invalidateAlgorithm, setInvalidateAlgorithm] = useState(()=>{});
     const [pointerLine, setPointerLine] = useState();
     const [variables, setVariables] = useStateWithShallowMerge({});
+    const [currentController, setCurrentController] = useState();
 
     const nodesCardHandlers = getNodesHandlers(nodesRecord, setNodesRecord, {invalidateAlgorithm});
     const startAlgorithmHandlers = getStartAlgorithmHandlers(nodesRecord, setNodesRecord,
-        {setPointerLine, setVariables, variables});
+        {setPointerLine, setVariables, variables, setCurrentController});
     const graphCardHandlers = getGraphCardHandlers(nodesRecord, setNodesRecord);
 
     return (
@@ -32,7 +33,7 @@ export default function TopSort({nodesRecord, setNodesRecord}) {
                 <NodesCard/>
             </NodeContext.Provider>
             <TopSortAlgorithmContext.Provider
-            value={{setInvalidateAlgorithm, handlers: startAlgorithmHandlers}}>
+            value={{setInvalidateAlgorithm, currentController, handlers: startAlgorithmHandlers}}>
                 <AlgorithmControllerCard/>
             </TopSortAlgorithmContext.Provider>
             <AlgorithmTextContext.Provider value={{algorithmText, pointerLine}}>
