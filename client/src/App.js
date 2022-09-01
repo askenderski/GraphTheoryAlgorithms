@@ -6,6 +6,8 @@ import Content from "./Components/Content/Content";
 import {BrowserRouter} from "react-router-dom";
 import UserContext from "./Contexts/User";
 import {getUser} from "./Services/authenticationService";
+import store from './Store/store';
+import { Provider } from 'react-redux';
 
 function App() {
     const [user, setUser] = useState();
@@ -18,12 +20,14 @@ function App() {
     }, []);
 
     return (
-        <BrowserRouter>
-            <UserContext.Provider value={{user, setUser}}>
-                <Header/>
-                <Content routes={Routes}/>
-            </UserContext.Provider>
-        </BrowserRouter>
+        <Provider store={store}>
+            <BrowserRouter>
+                <UserContext.Provider value={{user, setUser}}>
+                    <Header/>
+                    <Content routes={Routes}/>
+                </UserContext.Provider>
+            </BrowserRouter>
+        </Provider>
     );
 }
 
