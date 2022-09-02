@@ -10,17 +10,21 @@ import TopSortAlgorithmContext from "../.././../../Contexts/Controller/TopSort/A
 import AlgorithmTextCard from "../../../Common/Algorithms/AlgorithmTextCard/AlgorithmTextCard";
 import AlgorithmTextContext from "../../../../Contexts/Controller/AlgorithmText";
 import VariablesContext from "../../../../Contexts/Controller/Variables";
-import IntegerVariableCard from "../../../Common/Algorithms/VariablesControllerCard/IntegerVariableCard/IntegerVariableCard";
-import useStateWithShallowMerge from "../../../../Hooks/useStateWithShallowMerge";
 import VariablesControllerCard from "../../../Common/Algorithms/VariablesControllerCard/VariablesControllerCard";
+import { selectVariables, setVariables as setVariablesAction } from "../../../../Store/algorithm/algorithmSlice";
+import {useDispatch, useSelector} from "react-redux";
 
 const algorithmText = TopSortText;
 
 export default function TopSort({nodesRecord, setNodesRecord}) {
+    const dispatch = useDispatch();
+
+    const variables = useSelector(selectVariables);
+    const setVariables = variables => dispatch(setVariablesAction(variables));
+  
     const [invalidateAlgorithm, setInvalidateAlgorithm] = useState(()=>{});
     const [pointerLine, setPointerLine] = useState();
-    const [variables, setVariables] = useStateWithShallowMerge({});
-    const [currentController, setCurrentController] = useState();
+    const [currentController, setCurrentController] = useState();    
 
     const nodesCardHandlers = getNodesHandlers(nodesRecord, setNodesRecord, {invalidateAlgorithm});
     const startAlgorithmHandlers = getStartAlgorithmHandlers(nodesRecord, setNodesRecord,
