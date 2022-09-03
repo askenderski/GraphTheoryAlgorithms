@@ -7,6 +7,7 @@ import useStartAlgorithmWithNewController from "./useStartAlgorithmWithNewContro
 
 export default function AlgorithmControllerContainer() {
     const {handlers, setInvalidateAlgorithm, algorithm, getController} = useContext(BasicAlgorithmContext);
+    console.log("new thing")
 
     const [algorithmState, setAlgorithmState] = useStateWithShallowMerge({isPaused: false, isRunning: false});
 

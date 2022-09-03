@@ -1,5 +1,7 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
+import { NodesRecord } from "../../Records/NodesRecord/NodesRecord";
 import { mergeIn, setIn } from "../Utilities/reducerFunctions";
+import { defaultNodeStyle } from "../../Data/Algorithms/graph";
 
 const algorithmSlice = createSlice({
   name: 'algorithm',
@@ -7,7 +9,8 @@ const algorithmSlice = createSlice({
     variables: {},
     pointerLine: -1,
     currentController: {},
-    invalidateAlgorithm: ()=>{}
+    invalidateAlgorithm: ()=>{},
+    nodesRecord: NodesRecord()
   },
   reducers: {
     setVariables: (state, {payload}) => {
@@ -20,8 +23,15 @@ const algorithmSlice = createSlice({
       return setIn(state, ["currentController"], payload);
     },
     setInvalidateAlgorithm: (state, {payload}) => {
-      console.log(payload)
       return setIn(state, ["invalidateAlgorithm"], payload);
+    },
+    setNodesRecord: (state, {payload})=>{
+      return setIn(state, ["nodesRecord"], payload);
+    },
+    resetNodesStyle: (state) => {
+      const newNodes = state.nodesRecord.get("nodes").map(node=>node.set("style", defaultNodeStyle));
+      const newNodesRecord = state.nodesRecord.set("nodes", newNodes);
+      return setIn(state, ["nodesRecord"], newNodesRecord);
     }
   }
 });
@@ -29,12 +39,13 @@ const algorithmSlice = createSlice({
 const selectAlgorithm = state => state.algorithm;
 
 export const selectVariables = createSelector(selectAlgorithm, algorithm => algorithm.variables);
-//for some reason invalidate algorithm is saved as ()=>invalidateAlgorithm, idk why or how this happened
-//TODO: fix this
-export const selectInvalidateAlgorithm = createSelector(selectAlgorithm, algorithm => algorithm.invalidateAlgorithm());
+export const selectInvalidateAlgorithm = createSelector(selectAlgorithm, algorithm => algorithm.invalidateAlgorithm);
 export const selectPointerLine = createSelector(selectAlgorithm, algorithm => algorithm.pointerLine);
 export const selectCurrentController = createSelector(selectAlgorithm, algorithm => algorithm.currentController);
+export const selectNodesRecord = createSelector(selectAlgorithm, algorithm => algorithm.nodesRecord);
 
-export const {setVariables, setPointerLine, setCurrentController, setInvalidateAlgorithm} = algorithmSlice.actions;
+export const {
+  setVariables, setPointerLine, setCurrentController, setInvalidateAlgorithm, setNodesRecord, resetNodesStyle
+} = algorithmSlice.actions;
 
 export const reducer = algorithmSlice.reducer;

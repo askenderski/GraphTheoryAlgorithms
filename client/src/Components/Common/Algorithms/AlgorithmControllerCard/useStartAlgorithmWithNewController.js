@@ -5,7 +5,7 @@ export default function useStartAlgorithmWithNewController({
 }) {
     useEffect(() => {
         //this is needed as useState set functions execute function arguments
-        setInvalidateAlgorithm(() => invalidateAlgorithm);
+        setInvalidateAlgorithm(invalidateAlgorithm);
 
         if (algorithmController.isMock)
             return;

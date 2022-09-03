@@ -2,10 +2,17 @@ import React, {useState, useMemo, Suspense} from "react";
 import {NodesRecord} from "../../../Records/NodesRecord/NodesRecord";
 import useSetGraph from "./Hooks/useSetGraph";
 import Loading from "../../Common/Loading/Loading";
+import { useDispatch, useSelector } from "react-redux";
+import { selectNodesRecord, setNodesRecord as setNodesRecordAction } from "../../../Store/algorithm/algorithmSlice";
 
 export default function AlgorithmRouting({match: {params}}) {
     const { algorithmType, algorithmTitle, graphId } = params;
-    const [nodesRecord, setNodesRecord] = useState(NodesRecord());
+    
+    const dispatch = useDispatch();
+
+    const nodesRecord = useSelector(selectNodesRecord);
+    const setNodesRecord = nodesRecord => dispatch(setNodesRecordAction(nodesRecord));
+    
     const [doesGraphExist, setDoesGraphExist] = useState(true);
     const [doesAlgorithmExist, setDoesAlgorithmExist] = useState(true);
 

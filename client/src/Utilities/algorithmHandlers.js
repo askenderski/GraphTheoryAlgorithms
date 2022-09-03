@@ -5,27 +5,26 @@ import { NodeRecord } from "../Records/NodeRecord/NodeRecord";
 
 export function getNodesHandlers(nodesRecord, setNodes, {invalidateAlgorithm}) {
     let nodeValues = List(nodesRecord.nodes.map(node=>node.value)).sort();
-    console.log(nodeValues)
 
     function addNode() {
         const value = nodeValues.find(val=>!nodeValues.includes(val+1))+1;
-        setNodes(nodes => nodes.addNode(NodeRecord({value, label: value.toString()})));
+        setNodes(nodesRecord.addNode(NodeRecord({value, label: value.toString()})));
     }
 
     function deleteNode(nodeId) {
-        setNodes(nodes => nodes.deleteNodeById(nodeId));
+        setNodes(nodesRecord.deleteNodeById(nodeId));
     }
 
     function setEdge({to, from}, value) {
-        setNodes(nodes => nodes.setEdge({to, from, value}));
+        setNodes(nodesRecord.setEdge({to, from, value}));
     }
 
     function toggleIsDirected() {
-        setNodes(nodes => nodes.toggleIsDirected());
+        setNodes(nodesRecord.toggleIsDirected());
     }
 
     function toggleIsWeighted() {
-        setNodes(nodes => nodes.toggleIsWeighted());
+        setNodes(nodesRecord.toggleIsWeighted());
     }
 
     const nodeRecordHandlers = {addNode, toggleIsDirected, toggleIsWeighted, deleteNode, setEdge};
@@ -89,14 +88,7 @@ export function getNodesHandlers(nodesRecord, setNodes, {invalidateAlgorithm}) {
 };
 
 export function getStartAlgorithmHandlers(nodesRecord, setNodes,
-    {setPointerLine, setVariables, variables, setCurrentController}) {
-    function resetNodes() {
-        setNodes(nodesRecord => {
-            const newNodes = nodesRecord.get("nodes").map(node=>node.set("style", defaultNodeStyle));
-            return nodesRecord.set("nodes", newNodes);
-        });
-    }
-
+    {setPointerLine, setVariables, variables, setCurrentController, resetNodes}) {
     function resetPointerLine() {
         setPointerLine(-1);
     }
@@ -119,12 +111,12 @@ export function getStartAlgorithmHandlers(nodesRecord, setNodes,
     }
 
     function setNodeStyle(nodeId, style) {
-        setNodesRecord(oldNodesRecord => {
+        setNodesRecord((oldNodesRecord => {
             const nodeIndex = oldNodesRecord.get("nodes").findIndex(node=>node.id===nodeId);
             console.log(nodeIndex, style)
 
             return oldNodesRecord.setIn(["nodes", nodeIndex, "style"], style);
-        });
+        })(nodesRecord));
     }
 
     function getNodesIdList() {
