@@ -17,7 +17,7 @@ export const setIn = (oldObj, path, val) => {
         curObj = {[path[i]]: getIn(oldObj, path.slice(0, i+1)), ...curObj};
     }
 
-    return curObj;
+    return {...oldObj, ...curObj};
 };
 
 export const mergeIn = (oldObj, path, val) => {
@@ -27,7 +27,7 @@ export const mergeIn = (oldObj, path, val) => {
         return setIn(oldObj, path, val);
     }
 
-    let mergedVals = {[path[path.length-1]]: {...curVal, ...val}};
+    let mergedVals = {...curVal, ...val};
     
-    return setIn(oldObj, path.slice(0, path.length-1), mergedVals);
+    return setIn(oldObj, path, mergedVals);
 };

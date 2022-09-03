@@ -1,5 +1,6 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
-import { mergeIn } from "../Utilities/reducerFunctions";
+import { mergeIn, setIn } from "../Utilities/reducerFunctions";
+import { functionStore } from "../Middlewares/functionHandler";
 
 const algorithmSlice = createSlice({
   name: 'algorithm',
@@ -8,7 +9,8 @@ const algorithmSlice = createSlice({
   },
   reducers: {
     setVariables: (state, {payload}) => {
-      return mergeIn(state, ["variables"], payload);
+      const newObj = mergeIn(state, ["variables"], payload);
+      return newObj;
     }
   }
 });
@@ -16,7 +18,9 @@ const algorithmSlice = createSlice({
 const selectAlgorithm = state => state.algorithm;
 
 export const selectVariables = createSelector(selectAlgorithm, algorithm => algorithm.variables);
+export const selectInvalidateAlgorithm = ()=>functionStore.invalidateAlgorithm();
 
 export const {setVariables} = algorithmSlice.actions;
+export const setInvalidateAlgorithm = payload => ({type: "algorithm/setInvalidateAlgorithm", payload});
 
 export const reducer = algorithmSlice.reducer;
