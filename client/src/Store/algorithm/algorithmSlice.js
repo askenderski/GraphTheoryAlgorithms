@@ -1,22 +1,27 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 import { mergeIn, setIn } from "../Utilities/reducerFunctions";
-import { functionStore } from "../Middlewares/functionHandler";
 
 const algorithmSlice = createSlice({
   name: 'algorithm',
   initialState: {
     variables: {},
-    pointerLine: -1
+    pointerLine: -1,
+    currentController: {},
+    invalidateAlgorithm: ()=>{}
   },
   reducers: {
     setVariables: (state, {payload}) => {
       return mergeIn(state, ["variables"], payload);
     },
     setPointerLine: (state, {payload}) => {
+      return setIn(state, ["pointerLine"], payload);
+    },
+    setCurrentController: (state, {payload}) => {
+      return setIn(state, ["currentController"], payload);
+    },
+    setInvalidateAlgorithm: (state, {payload}) => {
       console.log(payload)
-      const newObj = setIn(state, ["pointerLine"], payload);
-      console.log(newObj);
-      return newObj;
+      return setIn(state, ["invalidateAlgorithm"], payload);
     }
   }
 });
@@ -24,10 +29,12 @@ const algorithmSlice = createSlice({
 const selectAlgorithm = state => state.algorithm;
 
 export const selectVariables = createSelector(selectAlgorithm, algorithm => algorithm.variables);
-export const selectInvalidateAlgorithm = ()=>functionStore.invalidateAlgorithm();
+//for some reason invalidate algorithm is saved as ()=>invalidateAlgorithm, idk why or how this happened
+//TODO: fix this
+export const selectInvalidateAlgorithm = createSelector(selectAlgorithm, algorithm => algorithm.invalidateAlgorithm());
 export const selectPointerLine = createSelector(selectAlgorithm, algorithm => algorithm.pointerLine);
+export const selectCurrentController = createSelector(selectAlgorithm, algorithm => algorithm.currentController);
 
-export const {setVariables, setPointerLine} = algorithmSlice.actions;
-export const setInvalidateAlgorithm = payload => ({type: "algorithm/setInvalidateAlgorithm", payload});
+export const {setVariables, setPointerLine, setCurrentController, setInvalidateAlgorithm} = algorithmSlice.actions;
 
 export const reducer = algorithmSlice.reducer;

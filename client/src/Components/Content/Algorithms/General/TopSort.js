@@ -14,6 +14,7 @@ import VariablesControllerCard from "../../../Common/Algorithms/VariablesControl
 import { selectVariables, setVariables as setVariablesAction } from "../../../../Store/algorithm/algorithmSlice";
 import { selectInvalidateAlgorithm, setInvalidateAlgorithm as setInvalidateAlgorithmAction } from "../../../../Store/algorithm/algorithmSlice";
 import { selectPointerLine, setPointerLine as setPointerLineAction } from "../../../../Store/algorithm/algorithmSlice";
+import { selectCurrentController, setCurrentController as setCurrentControllerAction } from "../../../../Store/algorithm/algorithmSlice";
 import {useDispatch, useSelector} from "react-redux";
 
 const algorithmText = TopSortText;
@@ -28,13 +29,10 @@ export default function TopSort({nodesRecord, setNodesRecord}) {
     const setInvalidateAlgorithm = invalidate => dispatch(setInvalidateAlgorithmAction(invalidate));
   
     const pointerLine = useSelector(selectPointerLine);
-    const setPointerLine = pointerLine => {
-        const action = setPointerLineAction(pointerLine);
-        console.log(action)
-        dispatch(action);
-    };
+    const setPointerLine = pointerLine => dispatch(setPointerLineAction(pointerLine));
 
-    const [currentController, setCurrentController] = useState();    
+    const currentController = useSelector(selectCurrentController);
+    const setCurrentController = currentController => dispatch(setCurrentControllerAction(currentController));
 
     const nodesCardHandlers = getNodesHandlers(nodesRecord, setNodesRecord, {invalidateAlgorithm});
     const startAlgorithmHandlers = getStartAlgorithmHandlers(nodesRecord, setNodesRecord,
