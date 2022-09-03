@@ -5,8 +5,9 @@ export const functionStore = {
 export const functionHandler = store => next => action => {
     switch(action.type){ 
         case 'algorithm/setInvalidateAlgorithm':
-        functionStore.invalidateAlgorithm = action.payload;
+            functionStore.invalidateAlgorithm = action.payload;
+            return next({type: action.type});
     }
     
-    return next({type: action.type});
+    return next(action);
 };
