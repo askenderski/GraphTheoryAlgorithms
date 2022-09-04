@@ -18,21 +18,31 @@ export default function useNodesHandlers() {
 
     const addNode = ()=>dispatch(changeNodesRecordAction(addNodeFunc));
 
-    function deleteNode(nodeId) {
-        setNodesRecord(nodesRecord.deleteNodeById(nodeId));
+    function getDeleteNodeFunc(nodeId) {
+        return function deleteNodeFunc(nodesRecord) {
+            return nodesRecord.deleteNodeById(nodeId);
+        };
     }
 
-    function setEdge({to, from}, value) {
-        setNodesRecord(nodesRecord.setEdge({to, from, value}));
+    const deleteNode = nodeId => dispatch(changeNodesRecordAction(getDeleteNodeFunc(nodeId)));
+
+    function getSetEdgeFunc({to, from}, value) {
+        return nodesRecord => nodesRecord.setEdge({to, from, value});
     }
 
-    function toggleIsDirected() {
-        setNodesRecord(nodesRecord.toggleIsDirected());
+    const setEdge = ({to, from}, value) => dispatch(changeNodesRecordAction(getSetEdgeFunc({to, from}, value)));
+
+    function toggleIsDirectedFunc(nodesRecord) {
+        return nodesRecord.toggleIsDirected();
     }
 
-    function toggleIsWeighted() {
-        setNodesRecord(nodesRecord.toggleIsWeighted());
+    const toggleIsDirected = ()=>dispatch(changeNodesRecordAction(toggleIsDirectedFunc));
+
+    function toggleIsWeightedFunc(nodesRecord) {
+        return nodesRecord.toggleIsWeighted();
     }
+
+    const toggleIsWeighted = ()=>dispatch(changeNodesRecordAction(toggleIsWeightedFunc));
 
     const nodeRecordHandlers = {addNode, toggleIsDirected, toggleIsWeighted, deleteNode, setEdge};
 
