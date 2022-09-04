@@ -29,8 +29,10 @@ const algorithmSlice = createSlice({
       return setIn(state, ["nodesRecord"], payload);
     },
     resetNodesStyle: (state) => {
+      console.log("resetting style")
       const newNodes = state.nodesRecord.get("nodes").map(node=>node.set("style", defaultNodeStyle));
       const newNodesRecord = state.nodesRecord.set("nodes", newNodes);
+      console.log(newNodesRecord)
       return setIn(state, ["nodesRecord"], newNodesRecord);
     }
   }

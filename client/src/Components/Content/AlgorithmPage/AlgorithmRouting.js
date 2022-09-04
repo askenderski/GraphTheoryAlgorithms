@@ -11,6 +11,7 @@ export default function AlgorithmRouting({match: {params}}) {
     const dispatch = useDispatch();
 
     const nodesRecord = useSelector(selectNodesRecord);
+    console.log(nodesRecord)
     const setNodesRecord = nodesRecord => dispatch(setNodesRecordAction(nodesRecord));
     
     const [doesGraphExist, setDoesGraphExist] = useState(true);
