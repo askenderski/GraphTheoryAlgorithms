@@ -3,13 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import {selectNodesRecord, selectVariables,
     setPointerLine as setPointerLineAction, setVariables as setVariablesAction,
     setNodesRecord as setNodesRecordAction, setCurrentController as setCurrentControllerAction,
-    resetNodesStyle as resetNodesStyleAction
+    resetNodesStyle as resetNodesStyleAction, setNodeStyle as setNodeStyleAction
 }
     from "../Store/algorithm/algorithmSlice";
 import { edgesRecordToGraphRepresentation } from "../Utilities/graphs";
 
 function getStartAlgorithmHandlers(nodesRecord, setNodes,
-    {setPointerLine, setVariables, variables, setCurrentController, resetNodes}) {
+    {setPointerLine, setVariables, variables, setCurrentController, resetNodes, setNodeStyle}) {
     function resetPointerLine() {
         setPointerLine(-1);
     }
@@ -29,15 +29,6 @@ function getStartAlgorithmHandlers(nodesRecord, setNodes,
 
     function setNodesRecord(newRecord) {
         setNodes(newRecord);
-    }
-
-    function setNodeStyle(nodeId, style) {
-        setNodesRecord((oldNodesRecord => {
-            const nodeIndex = oldNodesRecord.get("nodes").findIndex(node=>node.id===nodeId);
-            console.log(nodeIndex, style)
-
-            return oldNodesRecord.setIn(["nodes", nodeIndex, "style"], style);
-        })(nodesRecord));
     }
 
     function getNodesIdList() {
@@ -68,10 +59,11 @@ export default function useAlgorithmHandlers() {
     const setNodesRecord = nodesRecord => dispatch(setNodesRecordAction(nodesRecord));
     const resetNodesStyle = ()=>dispatch(resetNodesStyleAction());
     const setCurrentController = controller => dispatch(setCurrentControllerAction(controller));
+    const setNodeStyle = (nodeId, style) => dispatch(setNodeStyleAction({nodeId, style}));
 
     const startAlgorithmHandlers = useMemo(()=>getStartAlgorithmHandlers(
         nodesRecord, setNodesRecord,
-        {setPointerLine, setVariables, variables, resetNodes: resetNodesStyle, setCurrentController}
+        {setPointerLine, setVariables, variables, resetNodes: resetNodesStyle, setCurrentController, setNodeStyle}
     ), []);
 
     return startAlgorithmHandlers;

@@ -29,11 +29,20 @@ const algorithmSlice = createSlice({
       return setIn(state, ["nodesRecord"], payload);
     },
     resetNodesStyle: (state) => {
-      console.log("resetting style")
       const newNodes = state.nodesRecord.get("nodes").map(node=>node.set("style", defaultNodeStyle));
       const newNodesRecord = state.nodesRecord.set("nodes", newNodes);
-      console.log(newNodesRecord)
       return setIn(state, ["nodesRecord"], newNodesRecord);
+    },
+    setNodeStyle: (state, {payload, asyncDispatch}) => {
+      const {nodeId, style} = payload;
+      const nodesRecord = state.nodesRecord;
+
+      const nodeIndex = nodesRecord.get("nodes").findIndex(node=>node.id===nodeId);
+      const newRecord = nodesRecord.setIn(["nodes", nodeIndex, "style"], style);
+
+      asyncDispatch({type: "setNodesRecord", payload: newRecord});
+
+      return state;
     }
   }
 });
@@ -47,7 +56,8 @@ export const selectCurrentController = createSelector(selectAlgorithm, algorithm
 export const selectNodesRecord = createSelector(selectAlgorithm, algorithm => algorithm.nodesRecord);
 
 export const {
-  setVariables, setPointerLine, setCurrentController, setInvalidateAlgorithm, setNodesRecord, resetNodesStyle
+  setVariables, setPointerLine, setCurrentController, setInvalidateAlgorithm, setNodesRecord, resetNodesStyle,
+  setNodeStyle
 } = algorithmSlice.actions;
 
 export const reducer = algorithmSlice.reducer;
