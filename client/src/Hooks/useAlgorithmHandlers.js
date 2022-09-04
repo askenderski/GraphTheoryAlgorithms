@@ -1,31 +1,12 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
-    selectNodesRecord,
     setPointerLine as setPointerLineAction, setVariables as setVariablesAction,
-    setNodesRecord as setNodesRecordAction, setCurrentController as setCurrentControllerAction,
+    setCurrentController as setCurrentControllerAction,
     setNodeStyle as setNodeStyleAction
 }
     from "../Store/algorithm/algorithmSlice";
-import { edgesRecordToGraphRepresentation } from "../Utilities/graphs";
 import { useReset } from "./useReset";
-
-function getAlgorithmHandlers(nodesRecord, setNodesRecord, {setVariables}) {
-    function getNodesIdList() {
-        return nodesRecord.get("nodes").map(node=>node.id);
-    }
-
-    function getEdgesRepresentation(edgesRepresentation) {
-        return edgesRecordToGraphRepresentation(nodesRecord.get("edgesRecord"), edgesRepresentation);
-    }
-
-    function setVariable(name, value) {
-        setVariables({[name]: value});
-    }
-
-    return {
-        getNodesIdList, getEdgesRepresentation, setVariable
-    };
-}
+import { useSpecificAlgorithmHandlers } from "./useSpecificAlgorithmHandlers";
 
 export default function useAlgorithmHandlers() {
     const dispatch = useDispatch();
@@ -34,18 +15,13 @@ export default function useAlgorithmHandlers() {
     
     const setVariables = variables => dispatch(setVariablesAction(variables));
     
-    const nodesRecord = useSelector(selectNodesRecord);
-    const setNodesRecord = nodesRecord => dispatch(setNodesRecordAction(nodesRecord));
-    
     const setCurrentController = controller => dispatch(setCurrentControllerAction(controller));
     
     const setNodeStyle = (nodeId, style) => dispatch(setNodeStyleAction({nodeId, style}));
 
-    const startAlgorithmHandlers = getAlgorithmHandlers(
-        nodesRecord, setNodesRecord, {setPointerLine, setVariables}
-    );
+    const specificAlgorithmHandlers = useSpecificAlgorithmHandlers();
 
     const reset = useReset();
 
-    return {...startAlgorithmHandlers, setVariables, setNodeStyle, setPointerLine, setCurrentController, reset};
+    return {...specificAlgorithmHandlers, setVariables, setNodeStyle, setPointerLine, setCurrentController, reset};
 }
