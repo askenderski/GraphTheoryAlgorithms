@@ -9,7 +9,7 @@ import {
 import { edgesRecordToGraphRepresentation } from "../Utilities/graphs";
 import { useReset } from "./useReset";
 
-function getAlgorithmHandlers(nodesRecord, setNodesRecord, {setPointerLine, setVariables}) {
+function getAlgorithmHandlers(nodesRecord, setNodesRecord, {setVariables}) {
     function getNodesIdList() {
         return nodesRecord.get("nodes").map(node=>node.id);
     }
@@ -23,7 +23,7 @@ function getAlgorithmHandlers(nodesRecord, setNodesRecord, {setPointerLine, setV
     }
 
     return {
-        getNodesIdList, getEdgesRepresentation, setPointerLine, setVariable, setVariables
+        getNodesIdList, getEdgesRepresentation, setVariable
     };
 }
 
@@ -47,5 +47,5 @@ export default function useAlgorithmHandlers() {
 
     const reset = useReset();
 
-    return {...startAlgorithmHandlers, setNodeStyle, setCurrentController, reset};
+    return {...startAlgorithmHandlers, setVariables, setNodeStyle, setPointerLine, setCurrentController, reset};
 }
