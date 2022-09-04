@@ -44,21 +44,12 @@ const algorithmSlice = createSlice({
       console.log("setting nodes record")
       return setIn(state, ["nodesRecord"], payload);
     },
-    resetNodesStyle: (state) => {
-      const newNodes = state.nodesRecord.get("nodes").map(node=>node.set("style", defaultNodeStyle));
-      const newNodesRecord = state.nodesRecord.set("nodes", newNodes);
-      return setIn(state, ["nodesRecord"], newNodesRecord);
-    },
-    setNodeStyle: (state, {payload, asyncDispatch}) => {
-      const {nodeId, style} = payload;
-      const nodesRecord = state.nodesRecord;
+    changeNodesRecord: (state, {payload, asyncDispatch}) => {
+      const currentNodesRecord = selectNodesRecordFromAlgorithm(state);
+      const newNodesRecord = payload(currentNodesRecord);
+      const newNodesRecordAction = setNodesRecord(newNodesRecord);
 
-      const nodeIndex = nodesRecord.get("nodes").findIndex(node=>node.id===nodeId);
-      const newRecord = nodesRecord.setIn(["nodes", nodeIndex, "style"], style);
-
-      asyncDispatch({type: "algorithm/setNodesRecord", payload: newRecord});
-
-      return state;
+      return asyncDispatch(newNodesRecordAction);
     }
   }
 });
@@ -69,13 +60,14 @@ export const selectVariables = createSelector(selectAlgorithm, algorithm => algo
 export const selectInvalidateAlgorithm = createSelector(selectAlgorithm, algorithm => algorithm.invalidateAlgorithm);
 export const selectPointerLine = createSelector(selectAlgorithm, algorithm => algorithm.pointerLine);
 export const selectCurrentController = createSelector(selectAlgorithm, algorithm => algorithm.currentController);
-export const selectNodesRecord = createSelector(selectAlgorithm, algorithm => algorithm.nodesRecord);
+const selectNodesRecordFromAlgorithm = algorithm => algorithm.nodesRecord;
+export const selectNodesRecord = createSelector(selectAlgorithm, selectNodesRecordFromAlgorithm);
 export const selectAlgorithmObject = createSelector(selectAlgorithm, algorithm => algorithm.algorithm);
 export const selectGetController = createSelector(selectAlgorithm, algorithm => algorithm.getController);
 
 export const {
-  setVariables, setPointerLine, setCurrentController, setInvalidateAlgorithm, setNodesRecord, resetNodesStyle,
-  setNodeStyle, mergeVariables, setGetController, setAlgorithm
+  setVariables, setPointerLine, setCurrentController, setInvalidateAlgorithm, setNodesRecord,
+  setNodeStyle, mergeVariables, setGetController, setAlgorithm, changeNodesRecord
 } = algorithmSlice.actions;
 
 export const reducer = algorithmSlice.reducer;

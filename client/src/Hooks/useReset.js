@@ -2,8 +2,9 @@ import { useDispatch, useSelector } from "react-redux";
 import {
     selectVariables,
     setPointerLine as setPointerLineAction, setVariables as setVariablesAction,
-    resetNodesStyle as resetNodesStyleAction
+    changeNodesRecord as changeNodesRecordAction
 } from "../Store/algorithm/algorithmSlice";
+import { defaultNodeStyle } from "../Data/Algorithms/graph";
 
 export function useReset() {
     const dispatch = useDispatch();
@@ -13,7 +14,13 @@ export function useReset() {
 
     const setPointerLine = pointerLine => dispatch(setPointerLineAction(pointerLine));
 
-    const resetNodesStyle = () => dispatch(resetNodesStyleAction());
+    function resetNodesStyleFunc(nodesRecord) {
+        const newNodes = nodesRecord.get("nodes").map(node=>node.set("style", defaultNodeStyle));
+        const newNodesRecord = nodesRecord.set("nodes", newNodes);
+        return newNodesRecord;
+    }
+
+    const resetNodesStyle = () => dispatch(changeNodesRecordAction(resetNodesStyleFunc));
 
     function resetPointerLine() {
         setPointerLine(-1);
