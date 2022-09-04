@@ -1,9 +1,8 @@
-import VariablesContext from "../../../../Contexts/Controller/Variables";
-import { useContext } from "react";
 import IntegerVariableCard from "./IntegerVariableCard/IntegerVariableCard";
+import { useVariableHandlers } from "./useVariableHandlers";
 
 export default function VariablesController() {
-    const {variables} = useContext(VariablesContext);
+    const {variables} = useVariableHandlers();
 
     return <div>{
         Object.keys(variables).map(variableName=>

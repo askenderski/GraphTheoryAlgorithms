@@ -7,7 +7,6 @@ import AlgorithmControllerCard from "../../../Common/Algorithms/AlgorithmControl
 import GraphCard from "../../../Common/Algorithms/GraphCard/GraphCard";
 import GraphContext from "../../../../Contexts/Controller/Graph";
 import AlgorithmTextCard from "../../../Common/Algorithms/AlgorithmTextCard/AlgorithmTextCard";
-import AlgorithmTextContext from "../../../../Contexts/Controller/AlgorithmText";
 import VariablesContext from "../../../../Contexts/Controller/Variables";
 import VariablesControllerCard from "../../../Common/Algorithms/VariablesControllerCard/VariablesControllerCard";
 import { selectVariables, setAlgorithmText as setAlgorithmTextAction, 
@@ -39,9 +38,7 @@ export default function TopSort({nodesRecord, setNodesRecord}) {
             <GraphContext.Provider value={{nodesRecord, handlers: graphCardHandlers}}>
                 <GraphCard/>
             </GraphContext.Provider>
-            <VariablesContext.Provider value={{variables}}>
-                <VariablesControllerCard/>
-            </VariablesContext.Provider>
+            <VariablesControllerCard/>
         </>
     );
 }
