@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { selectInvalidateAlgorithm, selectNodesRecord, setNodesRecord as setNodesRecordAction } from "../Store/algorithm/algorithmSlice";
+import { changeNodesRecord as changeNodesRecordAction, selectInvalidateAlgorithm, selectNodesRecord, setNodesRecord as setNodesRecordAction } from "../Store/algorithm/algorithmSlice";
 import { NodeRecord } from "../Records/NodeRecord/NodeRecord";
 
 export default function useNodesHandlers() {
@@ -10,12 +10,13 @@ export default function useNodesHandlers() {
 
     const invalidateAlgorithm = useSelector(selectInvalidateAlgorithm);
 
-    let nodeValues = nodesRecord.nodes.map(node=>node.value).sort();
-
-    function addNode() {
+    function addNodeFunc(nodesRecord) {
+        let nodeValues = nodesRecord.nodes.map(node=>node.value).sort();
         const value = nodeValues.find(val=>!nodeValues.includes(val+1))+1;
-        setNodesRecord(nodesRecord.addNode(NodeRecord({value, label: value.toString()})));
+        return nodesRecord.addNode(NodeRecord({value, label: value.toString()}));
     }
+
+    const addNode = ()=>dispatch(changeNodesRecordAction(addNodeFunc));
 
     function deleteNode(nodeId) {
         setNodesRecord(nodesRecord.deleteNodeById(nodeId));
