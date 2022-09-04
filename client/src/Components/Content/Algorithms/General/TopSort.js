@@ -1,7 +1,8 @@
 import TopSortText from "../../../../Algorithms/General/TopSort/TopSortText";
-import { useState } from "react";
+import { useEffect } from "react";
 import NodeContext from "../../../../Contexts/Controller/Node";
 import NodesCard from "../../../Common/Algorithms/NodesCard/NodesCard";
+import algorithm from "../../../../Algorithms/General/TopSort/TopSort";
 import { getNodesHandlers, getGraphCardHandlers } from "../../../../Utilities/algorithmHandlers";
 import AlgorithmControllerCard from "../../../Common/Algorithms/AlgorithmControllerCard/AlgorithmControllerCard";
 import GraphCard from "../../../Common/Algorithms/GraphCard/GraphCard";
@@ -14,8 +15,10 @@ import VariablesControllerCard from "../../../Common/Algorithms/VariablesControl
 import { selectVariables } from "../../../../Store/algorithm/algorithmSlice";
 import { selectInvalidateAlgorithm, setInvalidateAlgorithm as setInvalidateAlgorithmAction } from "../../../../Store/algorithm/algorithmSlice";
 import { selectPointerLine } from "../../../../Store/algorithm/algorithmSlice";
-import { selectCurrentController } from "../../../../Store/algorithm/algorithmSlice";
+import {setGetController as setGetControllerAction, setAlgorithm as setAlgorithmAction}
+    from "../../../../Store/algorithm/algorithmSlice";
 import {useDispatch, useSelector} from "react-redux";
+import getController from "../../../../Algorithms/GenericController/Controller";
 
 const algorithmText = TopSortText;
 
@@ -29,10 +32,13 @@ export default function TopSort({nodesRecord, setNodesRecord}) {
   
     const pointerLine = useSelector(selectPointerLine);
 
-    const currentController = useSelector(selectCurrentController);
-
     const nodesCardHandlers = getNodesHandlers(nodesRecord, setNodesRecord, {invalidateAlgorithm});
     const graphCardHandlers = getGraphCardHandlers(nodesRecord, setNodesRecord);
+
+    useEffect(()=>{
+        dispatch(setGetControllerAction(getController));
+        dispatch(setAlgorithmAction(algorithm));
+    }, []);
 
     return (
         <>
@@ -40,7 +46,7 @@ export default function TopSort({nodesRecord, setNodesRecord}) {
                 <NodesCard/>
             </NodeContext.Provider>
             <TopSortAlgorithmContext.Provider
-            value={{setInvalidateAlgorithm, currentController}}>
+            value={{setInvalidateAlgorithm}}>
                 <AlgorithmControllerCard/>
             </TopSortAlgorithmContext.Provider>
             <AlgorithmTextContext.Provider value={{algorithmText, pointerLine}}>

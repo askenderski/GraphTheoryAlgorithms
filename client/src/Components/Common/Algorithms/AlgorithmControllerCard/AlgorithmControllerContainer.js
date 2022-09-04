@@ -5,10 +5,15 @@ import useStateWithShallowMerge from "../../../../Hooks/useStateWithShallowMerge
 import useSettingController from "../../../../Hooks/useSettingController";
 import useStartAlgorithmWithNewController from "./useStartAlgorithmWithNewController";
 import useAlgorithmHandlers from "../../../../Hooks/useAlgorithmHandlers";
+import { useSelector } from "react-redux";
+import { selectAlgorithmObject, selectGetController } from "../../../../Store/algorithm/algorithmSlice";
 
 export default function AlgorithmControllerContainer() {
-    const {setInvalidateAlgorithm, algorithm, getController} = useContext(BasicAlgorithmContext);
+    const {setInvalidateAlgorithm} = useContext(BasicAlgorithmContext);
     const handlers = useAlgorithmHandlers();
+
+    const algorithm = useSelector(selectAlgorithmObject);
+    const getController = useSelector(selectGetController);
 
     const [algorithmState, setAlgorithmState] = useStateWithShallowMerge({isPaused: false, isRunning: false});
 

@@ -2,6 +2,8 @@ import { useEffect } from "react";
 
 export default function useSettingController({ getController, handlers, algorithm }) {
     useEffect(() => {
+        if (getController.isMock) return;
+
         const allVariables = {};
 
         const oneTimeController = getController({
@@ -24,5 +26,5 @@ export default function useSettingController({ getController, handlers, algorith
             handlers.getNodesIdList(),
             handlers.getEdgesRepresentation(algorithm.graphRepresentation)
         );
-    }, []);
+    }, [getController]);
 }

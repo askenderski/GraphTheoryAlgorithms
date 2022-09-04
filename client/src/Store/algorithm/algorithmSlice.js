@@ -3,16 +3,27 @@ import { NodesRecord } from "../../Records/NodesRecord/NodesRecord";
 import { mergeIn, setIn } from "../Utilities/reducerFunctions";
 import { defaultNodeStyle } from "../../Data/Algorithms/graph";
 
+const getControllerDefault = ()=>{};
+getControllerDefault.isMock = true;
+
 const algorithmSlice = createSlice({
   name: 'algorithm',
   initialState: {
     variables: {},
     pointerLine: -1,
     currentController: {},
+    getController: getControllerDefault,
+    algorithm: {},
     invalidateAlgorithm: ()=>{},
     nodesRecord: NodesRecord()
   },
   reducers: {
+    setGetController: (state, {payload})=>{
+      return setIn(state, ["getController"], payload);
+    },
+    setAlgorithm: (state, {payload})=>{
+      return setIn(state, ["algorithm"], payload);
+    },
     setVariables: (state, {payload}) => {
       return setIn(state, ["variables"], payload);
     },
@@ -64,10 +75,12 @@ export const selectInvalidateAlgorithm = createSelector(selectAlgorithm, algorit
 export const selectPointerLine = createSelector(selectAlgorithm, algorithm => algorithm.pointerLine);
 export const selectCurrentController = createSelector(selectAlgorithm, algorithm => algorithm.currentController);
 export const selectNodesRecord = createSelector(selectAlgorithm, algorithm => algorithm.nodesRecord);
+export const selectAlgorithmObject = createSelector(selectAlgorithm, algorithm => algorithm.algorithm);
+export const selectGetController = createSelector(selectAlgorithm, algorithm => algorithm.getController);
 
 export const {
   setVariables, setPointerLine, setCurrentController, setInvalidateAlgorithm, setNodesRecord, resetNodesStyle,
-  setNodeStyle, setVariable
+  setNodeStyle, setVariable, setGetController, setAlgorithm
 } = algorithmSlice.actions;
 
 export const reducer = algorithmSlice.reducer;
