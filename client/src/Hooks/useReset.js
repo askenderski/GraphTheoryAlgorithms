@@ -27,6 +27,7 @@ export function useReset() {
     }
 
     const reset = () => {
+        console.log("resetting")
         resetNodesStyle();
         resetPointerLine();
         resetVariables();

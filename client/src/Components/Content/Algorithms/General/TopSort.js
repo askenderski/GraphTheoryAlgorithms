@@ -7,13 +7,12 @@ import { getNodesHandlers, getGraphCardHandlers } from "../../../../Utilities/al
 import AlgorithmControllerCard from "../../../Common/Algorithms/AlgorithmControllerCard/AlgorithmControllerCard";
 import GraphCard from "../../../Common/Algorithms/GraphCard/GraphCard";
 import GraphContext from "../../../../Contexts/Controller/Graph";
-import TopSortAlgorithmContext from "../.././../../Contexts/Controller/TopSort/Algorithm";
 import AlgorithmTextCard from "../../../Common/Algorithms/AlgorithmTextCard/AlgorithmTextCard";
 import AlgorithmTextContext from "../../../../Contexts/Controller/AlgorithmText";
 import VariablesContext from "../../../../Contexts/Controller/Variables";
 import VariablesControllerCard from "../../../Common/Algorithms/VariablesControllerCard/VariablesControllerCard";
 import { selectVariables } from "../../../../Store/algorithm/algorithmSlice";
-import { selectInvalidateAlgorithm, setInvalidateAlgorithm as setInvalidateAlgorithmAction } from "../../../../Store/algorithm/algorithmSlice";
+import { selectInvalidateAlgorithm } from "../../../../Store/algorithm/algorithmSlice";
 import { selectPointerLine } from "../../../../Store/algorithm/algorithmSlice";
 import {setGetController as setGetControllerAction, setAlgorithm as setAlgorithmAction}
     from "../../../../Store/algorithm/algorithmSlice";
@@ -28,7 +27,6 @@ export default function TopSort({nodesRecord, setNodesRecord}) {
     const variables = useSelector(selectVariables);
 
     const invalidateAlgorithm = useSelector(selectInvalidateAlgorithm);
-    const setInvalidateAlgorithm = invalidate => dispatch(setInvalidateAlgorithmAction(invalidate));
   
     const pointerLine = useSelector(selectPointerLine);
 
@@ -45,10 +43,7 @@ export default function TopSort({nodesRecord, setNodesRecord}) {
             <NodeContext.Provider value={{handlers: nodesCardHandlers}}>
                 <NodesCard/>
             </NodeContext.Provider>
-            <TopSortAlgorithmContext.Provider
-            value={{setInvalidateAlgorithm}}>
-                <AlgorithmControllerCard/>
-            </TopSortAlgorithmContext.Provider>
+            <AlgorithmControllerCard/>
             <AlgorithmTextContext.Provider value={{algorithmText, pointerLine}}>
                 <AlgorithmTextCard />
             </AlgorithmTextContext.Provider>
