@@ -1,8 +1,7 @@
 import { useDispatch } from "react-redux";
 import {
     setPointerLine as setPointerLineAction, setVariables as setVariablesAction,
-    setCurrentController as setCurrentControllerAction,
-    setNodeStyle as setNodeStyleAction
+    setCurrentController as setCurrentControllerAction
 }
     from "../Store/algorithm/algorithmSlice";
 import { useReset } from "./useReset";
@@ -16,12 +15,10 @@ export default function useAlgorithmHandlers() {
     const setVariables = variables => dispatch(setVariablesAction(variables));
     
     const setCurrentController = controller => dispatch(setCurrentControllerAction(controller));
-    
-    const setNodeStyle = (nodeId, style) => dispatch(setNodeStyleAction({nodeId, style}));
 
     const specificAlgorithmHandlers = useSpecificAlgorithmHandlers();
 
     const reset = useReset();
 
-    return {...specificAlgorithmHandlers, setVariables, setNodeStyle, setPointerLine, setCurrentController, reset};
+    return {...specificAlgorithmHandlers, setVariables, setPointerLine, setCurrentController, reset};
 }
