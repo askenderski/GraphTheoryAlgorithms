@@ -11,12 +11,10 @@ import { setInvalidateAlgorithm as setInvalidateAlgorithmAction } from "../../..
 export default function AlgorithmControllerContainer() {
     const handlers = useAlgorithmHandlers();
 
-    const algorithm = useSelector(selectAlgorithmObject);
-    const getController = useSelector(selectGetController);
+    const algorithm = handlers.algorithm;
+    const getController = handlers.getController;
 
-    const dispatch = useDispatch();
-
-    const setInvalidateAlgorithm = invalidate => dispatch(setInvalidateAlgorithmAction(invalidate));
+    const setInvalidateAlgorithm = handlers.setInvalidateAlgorithm;
 
     const [algorithmState, setAlgorithmState] = useStateWithShallowMerge({isPaused: false, isRunning: false});
 

@@ -2,27 +2,21 @@ import TopSortText from "../../../../Algorithms/General/TopSort/TopSortText";
 import { useEffect } from "react";
 import NodesCard from "../../../Common/Algorithms/NodesCard/NodesCard";
 import algorithm from "../../../../Algorithms/General/TopSort/TopSort";
-import { getGraphCardHandlers } from "../../../../Utilities/algorithmHandlers";
 import AlgorithmControllerCard from "../../../Common/Algorithms/AlgorithmControllerCard/AlgorithmControllerCard";
 import GraphCard from "../../../Common/Algorithms/GraphCard/GraphCard";
-import GraphContext from "../../../../Contexts/Controller/Graph";
 import AlgorithmTextCard from "../../../Common/Algorithms/AlgorithmTextCard/AlgorithmTextCard";
-import VariablesContext from "../../../../Contexts/Controller/Variables";
 import VariablesControllerCard from "../../../Common/Algorithms/VariablesControllerCard/VariablesControllerCard";
-import { selectVariables, setAlgorithmText as setAlgorithmTextAction, 
-    setGetController as setGetControllerAction, setAlgorithm as setAlgorithmAction}
-    from "../../../../Store/algorithm/algorithmSlice";
-import {useDispatch, useSelector} from "react-redux";
+import {
+    setAlgorithmText as setAlgorithmTextAction,  setGetController as setGetControllerAction,
+    setAlgorithm as setAlgorithmAction
+} from "../../../../Store/algorithm/algorithmSlice";
+import {useDispatch} from "react-redux";
 import getController from "../../../../Algorithms/GenericController/Controller";
 
 const algorithmText = TopSortText;
 
-export default function TopSort({nodesRecord, setNodesRecord}) {
+export default function TopSort() {
     const dispatch = useDispatch();
-
-    const variables = useSelector(selectVariables);
-
-    const graphCardHandlers = getGraphCardHandlers(nodesRecord, setNodesRecord);
 
     useEffect(()=>{
         dispatch(setGetControllerAction(getController));
@@ -35,9 +29,7 @@ export default function TopSort({nodesRecord, setNodesRecord}) {
             <NodesCard/>
             <AlgorithmControllerCard/>
             <AlgorithmTextCard />
-            <GraphContext.Provider value={{nodesRecord, handlers: graphCardHandlers}}>
-                <GraphCard/>
-            </GraphContext.Provider>
+            <GraphCard/>
             <VariablesControllerCard/>
         </>
     );

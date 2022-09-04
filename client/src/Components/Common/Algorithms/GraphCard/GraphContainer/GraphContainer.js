@@ -1,7 +1,7 @@
 import VisNetworkReactComponent from "vis-network-react";
 import {edgesRecordToGraphRepresentation} from "../../../../../Utilities/graphs";
-import { useContext, useEffect, useState } from "react";
-import GraphContext from "../../../../../Contexts/Controller/Graph";
+import { useEffect, useState } from "react";
+import { useGraphHandlers } from "./useGraphHandlers";
 
 const getEdgeList = edgesRecord => {
     const edgeListAsImmutable = edgesRecordToGraphRepresentation(edgesRecord, "edgeList");
@@ -19,7 +19,9 @@ const getNodesAsJS = nodes => {
 const defaultNetwork = {fit:()=>{}};
 
 export default function GraphContainer() {
-    const {nodesRecord, handlers} = useContext(GraphContext);
+    const handlers = useGraphHandlers();
+
+    const nodesRecord = handlers.nodesRecord;
 
     const edges = getEdgeList(nodesRecord.get("edgesRecord"));
     const nodes = getNodesAsJS(handlers.getNodes());

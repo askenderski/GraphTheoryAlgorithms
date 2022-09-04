@@ -1,7 +1,9 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
     setPointerLine as setPointerLineAction, setVariables as setVariablesAction,
-    setCurrentController as setCurrentControllerAction
+    setCurrentController as setCurrentControllerAction,
+    selectGetController, setInvalidateAlgorithm as setInvalidateAlgorithmAction,
+    selectAlgorithmObject
 }
     from "../Store/algorithm/algorithmSlice";
 import { useReset } from "./useReset";
@@ -20,5 +22,12 @@ export default function useAlgorithmHandlers() {
 
     const reset = useReset();
 
-    return {...specificAlgorithmHandlers, setVariables, setPointerLine, setCurrentController, reset};
+    const algorithm = useSelector(selectAlgorithmObject);
+
+    const getController = useSelector(selectGetController)
+
+    const setInvalidateAlgorithm = invalidate => dispatch(setInvalidateAlgorithmAction(invalidate));
+
+    return {...specificAlgorithmHandlers, algorithm, getController, setVariables, setPointerLine,
+        setCurrentController, reset, setInvalidateAlgorithm};
 }

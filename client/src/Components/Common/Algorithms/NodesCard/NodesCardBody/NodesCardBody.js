@@ -2,8 +2,6 @@ import Nodes from "../Nodes/Nodes";
 import useToggle from "../../../../../Hooks/useToggle";
 import ToggleableComponent from "../../../../Common/ToggleableComponent/ToggleableComponent";
 import style from "./NodesCardBody.module.css";
-import { useContext } from "react";
-import NodeContext from "../../../../../Contexts/Controller/Node";
 import useNodesHandlers from "../../../../../Hooks/useNodesHandlers";
 
 export default function NodesCardBody() {
