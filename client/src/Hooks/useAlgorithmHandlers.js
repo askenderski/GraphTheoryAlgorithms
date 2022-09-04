@@ -23,7 +23,7 @@ function getAlgorithmHandlers(nodesRecord, setNodesRecord, {setPointerLine, setV
     }
 
     return {
-        setNodesRecord, getNodesIdList, getEdgesRepresentation, setPointerLine, setVariable, setVariables
+        getNodesIdList, getEdgesRepresentation, setPointerLine, setVariable, setVariables
     };
 }
 
