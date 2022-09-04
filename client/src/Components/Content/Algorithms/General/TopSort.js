@@ -1,9 +1,8 @@
 import TopSortText from "../../../../Algorithms/General/TopSort/TopSortText";
 import { useEffect } from "react";
-import NodeContext from "../../../../Contexts/Controller/Node";
 import NodesCard from "../../../Common/Algorithms/NodesCard/NodesCard";
 import algorithm from "../../../../Algorithms/General/TopSort/TopSort";
-import { getNodesHandlers, getGraphCardHandlers } from "../../../../Utilities/algorithmHandlers";
+import { getGraphCardHandlers } from "../../../../Utilities/algorithmHandlers";
 import AlgorithmControllerCard from "../../../Common/Algorithms/AlgorithmControllerCard/AlgorithmControllerCard";
 import GraphCard from "../../../Common/Algorithms/GraphCard/GraphCard";
 import GraphContext from "../../../../Contexts/Controller/Graph";
@@ -30,7 +29,6 @@ export default function TopSort({nodesRecord, setNodesRecord}) {
   
     const pointerLine = useSelector(selectPointerLine);
 
-    const nodesCardHandlers = getNodesHandlers(nodesRecord, setNodesRecord, {invalidateAlgorithm});
     const graphCardHandlers = getGraphCardHandlers(nodesRecord, setNodesRecord);
 
     useEffect(()=>{
@@ -40,9 +38,7 @@ export default function TopSort({nodesRecord, setNodesRecord}) {
 
     return (
         <>
-            <NodeContext.Provider value={{handlers: nodesCardHandlers}}>
-                <NodesCard/>
-            </NodeContext.Provider>
+            <NodesCard/>
             <AlgorithmControllerCard/>
             <AlgorithmTextContext.Provider value={{algorithmText, pointerLine}}>
                 <AlgorithmTextCard />

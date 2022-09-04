@@ -4,10 +4,11 @@ import ToggleableComponent from "../../../../Common/ToggleableComponent/Toggleab
 import style from "./NodesCardBody.module.css";
 import { useContext } from "react";
 import NodeContext from "../../../../../Contexts/Controller/Node";
+import useNodesHandlers from "../../../../../Hooks/useNodesHandlers";
 
 export default function NodesCardBody() {
     const [isDeleting, toggleIsDeleting] = useToggle(false);
-    const {handlers} = useContext(NodeContext);
+    const handlers = useNodesHandlers();
 
     return (
         <div className={style.cardBody}>
