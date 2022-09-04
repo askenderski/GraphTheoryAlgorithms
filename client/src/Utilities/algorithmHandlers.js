@@ -87,57 +87,6 @@ export function getNodesHandlers(nodesRecord, setNodes, {invalidateAlgorithm}) {
     return nodeRecordHandlers;
 };
 
-export function getStartAlgorithmHandlers(nodesRecord, setNodes,
-    {setPointerLine, setVariables, variables, setCurrentController, resetNodes}) {
-    function resetPointerLine() {
-        setPointerLine(-1);
-    }
-
-    function resetVariables() {
-        const newVariables = Object.keys(variables)
-            .reduce((acc, varName)=>({...acc, [varName]: ""}), {})
-
-        setVariables(newVariables);
-    }
-
-    function reset() {
-        resetNodes();
-        resetPointerLine();
-        resetVariables();
-    }
-
-    function setNodesRecord(newRecord) {
-        setNodes(newRecord);
-    }
-
-    function setNodeStyle(nodeId, style) {
-        setNodesRecord((oldNodesRecord => {
-            const nodeIndex = oldNodesRecord.get("nodes").findIndex(node=>node.id===nodeId);
-            console.log(nodeIndex, style)
-
-            return oldNodesRecord.setIn(["nodes", nodeIndex, "style"], style);
-        })(nodesRecord));
-    }
-
-    function getNodesIdList() {
-        return nodesRecord.get("nodes").map(node=>node.id);
-    }
-
-    function getEdgesRepresentation(edgesRepresentation) {
-        return edgesRecordToGraphRepresentation(nodesRecord.get("edgesRecord"), edgesRepresentation);
-    }
-
-    function setVariable(name, value) {
-        setVariables({[name]: value});
-    }
-
-    return {
-        setNodesRecord, reset, setNodeStyle,
-        getNodesIdList, getEdgesRepresentation, setPointerLine, setVariable, setVariables,
-        setCurrentController
-    };
-};
-
 export function getGraphCardHandlers(nodesRecord, setNodesRecord) {
     function getNodes() {
         return nodesRecord.nodes;

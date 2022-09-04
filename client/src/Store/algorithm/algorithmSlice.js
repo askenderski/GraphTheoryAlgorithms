@@ -26,6 +26,7 @@ const algorithmSlice = createSlice({
       return setIn(state, ["invalidateAlgorithm"], payload);
     },
     setNodesRecord: (state, {payload})=>{
+      console.log("setting nodes record")
       return setIn(state, ["nodesRecord"], payload);
     },
     resetNodesStyle: (state) => {
@@ -35,12 +36,13 @@ const algorithmSlice = createSlice({
     },
     setNodeStyle: (state, {payload, asyncDispatch}) => {
       const {nodeId, style} = payload;
+      console.log(nodeId, style)
       const nodesRecord = state.nodesRecord;
 
       const nodeIndex = nodesRecord.get("nodes").findIndex(node=>node.id===nodeId);
       const newRecord = nodesRecord.setIn(["nodes", nodeIndex, "style"], style);
 
-      asyncDispatch({type: "setNodesRecord", payload: newRecord});
+      asyncDispatch({type: "algorithm/setNodesRecord", payload: newRecord});
 
       return state;
     }

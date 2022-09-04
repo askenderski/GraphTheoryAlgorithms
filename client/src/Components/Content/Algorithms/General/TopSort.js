@@ -2,7 +2,7 @@ import TopSortText from "../../../../Algorithms/General/TopSort/TopSortText";
 import { useState } from "react";
 import NodeContext from "../../../../Contexts/Controller/Node";
 import NodesCard from "../../../Common/Algorithms/NodesCard/NodesCard";
-import { getNodesHandlers, getStartAlgorithmHandlers, getGraphCardHandlers } from "../../../../Utilities/algorithmHandlers";
+import { getNodesHandlers, getGraphCardHandlers } from "../../../../Utilities/algorithmHandlers";
 import AlgorithmControllerCard from "../../../Common/Algorithms/AlgorithmControllerCard/AlgorithmControllerCard";
 import GraphCard from "../../../Common/Algorithms/GraphCard/GraphCard";
 import GraphContext from "../../../../Contexts/Controller/Graph";
@@ -11,11 +11,10 @@ import AlgorithmTextCard from "../../../Common/Algorithms/AlgorithmTextCard/Algo
 import AlgorithmTextContext from "../../../../Contexts/Controller/AlgorithmText";
 import VariablesContext from "../../../../Contexts/Controller/Variables";
 import VariablesControllerCard from "../../../Common/Algorithms/VariablesControllerCard/VariablesControllerCard";
-import { selectVariables, setVariables as setVariablesAction } from "../../../../Store/algorithm/algorithmSlice";
+import { selectVariables } from "../../../../Store/algorithm/algorithmSlice";
 import { selectInvalidateAlgorithm, setInvalidateAlgorithm as setInvalidateAlgorithmAction } from "../../../../Store/algorithm/algorithmSlice";
-import { selectPointerLine, setPointerLine as setPointerLineAction } from "../../../../Store/algorithm/algorithmSlice";
-import { selectCurrentController, setCurrentController as setCurrentControllerAction } from "../../../../Store/algorithm/algorithmSlice";
-import { resetNodesStyle as resetNodesAction } from "../../../../Store/algorithm/algorithmSlice";
+import { selectPointerLine } from "../../../../Store/algorithm/algorithmSlice";
+import { selectCurrentController } from "../../../../Store/algorithm/algorithmSlice";
 import {useDispatch, useSelector} from "react-redux";
 
 const algorithmText = TopSortText;
@@ -24,23 +23,15 @@ export default function TopSort({nodesRecord, setNodesRecord}) {
     const dispatch = useDispatch();
 
     const variables = useSelector(selectVariables);
-    const setVariables = variables => dispatch(setVariablesAction(variables));
 
     const invalidateAlgorithm = useSelector(selectInvalidateAlgorithm);
     const setInvalidateAlgorithm = invalidate => dispatch(setInvalidateAlgorithmAction(invalidate));
   
     const pointerLine = useSelector(selectPointerLine);
-    const setPointerLine = pointerLine => dispatch(setPointerLineAction(pointerLine));
 
     const currentController = useSelector(selectCurrentController);
-    const setCurrentController = currentController => dispatch(setCurrentControllerAction(currentController));
-
-    const resetNodes = ()=>dispatch(resetNodesAction());
 
     const nodesCardHandlers = getNodesHandlers(nodesRecord, setNodesRecord, {invalidateAlgorithm});
-    const startAlgorithmHandlers = getStartAlgorithmHandlers(nodesRecord, setNodesRecord,
-        {setPointerLine, setVariables, variables, setCurrentController, resetNodes});
-    console.log("new handlers")
     const graphCardHandlers = getGraphCardHandlers(nodesRecord, setNodesRecord);
 
     return (
@@ -49,7 +40,7 @@ export default function TopSort({nodesRecord, setNodesRecord}) {
                 <NodesCard/>
             </NodeContext.Provider>
             <TopSortAlgorithmContext.Provider
-            value={{setInvalidateAlgorithm, currentController, handlers: startAlgorithmHandlers}}>
+            value={{setInvalidateAlgorithm, currentController}}>
                 <AlgorithmControllerCard/>
             </TopSortAlgorithmContext.Provider>
             <AlgorithmTextContext.Provider value={{algorithmText, pointerLine}}>

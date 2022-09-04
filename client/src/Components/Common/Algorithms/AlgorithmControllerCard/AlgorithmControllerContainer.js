@@ -7,8 +7,8 @@ import useStartAlgorithmWithNewController from "./useStartAlgorithmWithNewContro
 import useAlgorithmHandlers from "../../../../Hooks/useAlgorithmHandlers";
 
 export default function AlgorithmControllerContainer() {
-    const {handlers, setInvalidateAlgorithm, algorithm, getController} = useContext(BasicAlgorithmContext);
-    const handlers1 = useAlgorithmHandlers();
+    const {setInvalidateAlgorithm, algorithm, getController} = useContext(BasicAlgorithmContext);
+    const handlers = useAlgorithmHandlers();
 
     const [algorithmState, setAlgorithmState] = useStateWithShallowMerge({isPaused: false, isRunning: false});
 
@@ -16,7 +16,7 @@ export default function AlgorithmControllerContainer() {
 
     function invalidateAlgorithm() {
         algorithmController.invalidate();
-        handlers1.reset();
+        handlers.reset();
     }
 
     useSettingController({getController, handlers, algorithm});

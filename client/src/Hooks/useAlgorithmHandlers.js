@@ -8,29 +8,7 @@ import {selectNodesRecord, selectVariables,
     from "../Store/algorithm/algorithmSlice";
 import { edgesRecordToGraphRepresentation } from "../Utilities/graphs";
 
-function getStartAlgorithmHandlers(nodesRecord, setNodes,
-    {setPointerLine, setVariables, variables, setCurrentController, resetNodes, setNodeStyle}) {
-    function resetPointerLine() {
-        setPointerLine(-1);
-    }
-
-    function resetVariables() {
-        const newVariables = Object.keys(variables)
-            .reduce((acc, varName)=>({...acc, [varName]: ""}), {})
-
-        setVariables(newVariables);
-    }
-
-    function reset() {
-        resetNodes();
-        resetPointerLine();
-        resetVariables();
-    }
-
-    function setNodesRecord(newRecord) {
-        setNodes(newRecord);
-    }
-
+function getAlgorithmHandlers(nodesRecord, setNodesRecord, {setPointerLine, setVariables}) {
     function getNodesIdList() {
         return nodesRecord.get("nodes").map(node=>node.id);
     }
@@ -44,27 +22,59 @@ function getStartAlgorithmHandlers(nodesRecord, setNodes,
     }
 
     return {
-        setNodesRecord, reset, setNodeStyle,
-        getNodesIdList, getEdgesRepresentation, setPointerLine, setVariable, setVariables,
-        setCurrentController
+        setNodesRecord, getNodesIdList, getEdgesRepresentation, setPointerLine, setVariable, setVariables
     };
+}
+
+function useReset() {
+    const dispatch = useDispatch();
+
+    const variables = useSelector(selectVariables);
+    const setVariables = variables => dispatch(setVariablesAction(variables));
+
+    const setPointerLine = pointerLine => dispatch(setPointerLineAction(pointerLine));
+
+    const resetNodesStyle = () => dispatch(resetNodesStyleAction());
+
+    function resetPointerLine() {
+        setPointerLine(-1);
+    }
+
+    function resetVariables() {
+        const newVariables = Object.keys(variables)
+            .reduce((acc, varName)=>({...acc, [varName]: ""}), {})
+
+        setVariables(newVariables);
+    }
+
+    const reset = () => {
+        resetNodesStyle();
+        resetPointerLine();
+        resetVariables();
+    };
+
+    return reset;
 }
 
 export default function useAlgorithmHandlers() {
     const dispatch = useDispatch();
+    
     const setPointerLine = pointerLine => dispatch(setPointerLineAction(pointerLine));
+    
     const setVariables = variables => dispatch(setVariablesAction(variables));
-    const variables = useSelector(selectVariables);
+    
     const nodesRecord = useSelector(selectNodesRecord);
     const setNodesRecord = nodesRecord => dispatch(setNodesRecordAction(nodesRecord));
-    const resetNodesStyle = ()=>dispatch(resetNodesStyleAction());
+    
     const setCurrentController = controller => dispatch(setCurrentControllerAction(controller));
+    
     const setNodeStyle = (nodeId, style) => dispatch(setNodeStyleAction({nodeId, style}));
 
-    const startAlgorithmHandlers = useMemo(()=>getStartAlgorithmHandlers(
-        nodesRecord, setNodesRecord,
-        {setPointerLine, setVariables, variables, resetNodes: resetNodesStyle, setCurrentController, setNodeStyle}
-    ), []);
+    const startAlgorithmHandlers = getAlgorithmHandlers(
+        nodesRecord, setNodesRecord, {setPointerLine, setVariables}
+    );
 
-    return startAlgorithmHandlers;
+    const reset = useReset();
+
+    return {...startAlgorithmHandlers, setNodeStyle, setCurrentController, reset};
 }
