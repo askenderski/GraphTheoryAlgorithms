@@ -1,6 +1,6 @@
 import { edgesRecordToGraphRepresentation } from "../Utilities/graphs";
 import { selectNodesRecord,
-    setVariable as setVariableAction, setNodeStyle as setNodeStyleAction } from "../Store/algorithm/algorithmSlice";
+    mergeVariables as mergeVariablesAction, setNodeStyle as setNodeStyleAction } from "../Store/algorithm/algorithmSlice";
 import { useSelector, useDispatch } from "react-redux";
 
 export function useSpecificAlgorithmHandlers() {
@@ -8,7 +8,7 @@ export function useSpecificAlgorithmHandlers() {
 
     const nodesRecord = useSelector(selectNodesRecord);
 
-    const setVariable = (name, value) => dispatch(setVariableAction({name, value}));
+    const setVariable = (name, value) => dispatch(mergeVariablesAction({[name]: value}));
 
     const setNodeStyle = (nodeId, style) => dispatch(setNodeStyleAction({nodeId, style}));
 

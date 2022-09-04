@@ -30,11 +30,6 @@ const algorithmSlice = createSlice({
     mergeVariables: (state, {payload}) => {
       return mergeIn(state, ["variables"], payload);
     },
-    setVariable: (state, {payload, asyncDispatch}) => {
-      asyncDispatch({type: "algorithm/mergeVariables", payload: {[payload.name]: payload.value}});
-
-      return state;
-    },
     setPointerLine: (state, {payload}) => {
       return setIn(state, ["pointerLine"], payload);
     },
@@ -80,7 +75,7 @@ export const selectGetController = createSelector(selectAlgorithm, algorithm => 
 
 export const {
   setVariables, setPointerLine, setCurrentController, setInvalidateAlgorithm, setNodesRecord, resetNodesStyle,
-  setNodeStyle, setVariable, setGetController, setAlgorithm
+  setNodeStyle, mergeVariables, setGetController, setAlgorithm
 } = algorithmSlice.actions;
 
 export const reducer = algorithmSlice.reducer;
