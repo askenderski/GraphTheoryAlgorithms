@@ -13,11 +13,15 @@ const algorithmSlice = createSlice({
     pointerLine: -1,
     currentController: {},
     getController: getControllerDefault,
+    algorithmText: "",
     algorithm: {},
     invalidateAlgorithm: ()=>{},
     nodesRecord: NodesRecord()
   },
   reducers: {
+    setAlgorithmText: (state, {payload}) => {
+      return setIn(state, ["algorithmText"], payload);
+    },
     setGetController: (state, {payload})=>{
       return setIn(state, ["getController"], payload);
     },
@@ -64,10 +68,11 @@ const selectNodesRecordFromAlgorithm = algorithm => algorithm.nodesRecord;
 export const selectNodesRecord = createSelector(selectAlgorithm, selectNodesRecordFromAlgorithm);
 export const selectAlgorithmObject = createSelector(selectAlgorithm, algorithm => algorithm.algorithm);
 export const selectGetController = createSelector(selectAlgorithm, algorithm => algorithm.getController);
+export const selectAlgorithmText = createSelector(selectAlgorithm, algorithm => algorithm.algorithmText);
 
 export const {
   setVariables, setPointerLine, setCurrentController, setInvalidateAlgorithm, setNodesRecord,
-  setNodeStyle, mergeVariables, setGetController, setAlgorithm, changeNodesRecord
+  setNodeStyle, mergeVariables, setGetController, setAlgorithm, changeNodesRecord, setAlgorithmText
 } = algorithmSlice.actions;
 
 export const reducer = algorithmSlice.reducer;

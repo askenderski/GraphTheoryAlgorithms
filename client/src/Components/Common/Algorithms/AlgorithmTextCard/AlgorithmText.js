@@ -1,10 +1,9 @@
 import style from "./AlgorithmText.module.css";
-import { useContext } from "react";
-import AlgorithmTextContext from "../../../../Contexts/Controller/AlgorithmText";
 import Line from "./Line/Line";
+import useAlgorithmTextHandlers from "../../../../Hooks/useAlgorithmTextHandlers";
 
 export default function AlgorithmText() {
-    const {algorithmText, pointerLine} = useContext(AlgorithmTextContext);
+    const {algorithmText, pointerLine} = useAlgorithmTextHandlers();
 
     const lines = algorithmText.split("\n")
         .map((line, i)=><Line point={i+1 === pointerLine ? true : false}>{line}</Line>);
