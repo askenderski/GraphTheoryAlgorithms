@@ -1,13 +1,13 @@
 import Card from "../../../Card/Card";
 import IntegerVariable from "./IntegerVariable";
 
-const defaultPosition = {x: 50, y: 150};
-const defaultSize = {width: "50px", height: "50px"};
+export default function IntegerVariableCard({variableName, variableValue, moving, setMoving}) {
+    const movementOptions = {fixedPosition: moving, onMovementStart: ()=>setMoving(true)};
+    const resize = "vertical";
 
-export default function IntegerVariableCard({variableName, variableValue}) {
     return (
         // sizeRef is used for tracking card size and therefore changing the size of the header
-        <Card headerContent={variableName} defaultPosition={defaultPosition} defaultSize={defaultSize}>
+        <Card resize={resize} movement={movementOptions} headerContent={variableName}>
             <IntegerVariable variableValue={variableValue}/>
         </Card>
     );

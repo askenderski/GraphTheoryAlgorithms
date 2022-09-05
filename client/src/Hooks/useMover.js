@@ -1,15 +1,22 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
-export default function useMover(defaultPosition) {
+export default function useMover(defaultPosition, options) {
+    const {onMovementStart=()=>{}} = options;
+
     const [position, setPosition] = useState(defaultPosition);
+    const ref = useRef();
 
     return {
         //onMouseDown starts to track the moving of the element
         onMouseDown: e => {
             //offset is the difference between the cursor and element coordinates
             //(the cursor is being tracked because it's easier)
+            onMovementStart();
+
+            const boundingClientRect = ref.current?.getBoundingClientRect();
+
             const offset = {};
-            const [xOffset, yOffset] = [e.screenX - position.x, e.screenY - position.y];
+            const [xOffset, yOffset] = [e.screenX - boundingClientRect.left, e.screenY - boundingClientRect.top];
             offset.x = xOffset;
             offset.y = yOffset;
 
@@ -31,6 +38,9 @@ export default function useMover(defaultPosition) {
             window.addEventListener("mousemove", onMouseMove);
 
             window.addEventListener("mouseup", onMouseUp);
-        }, position, setPosition
+        },
+        position,
+        setPosition,
+        ref
     };
 }

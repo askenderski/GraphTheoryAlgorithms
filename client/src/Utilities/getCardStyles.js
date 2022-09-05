@@ -1,8 +1,16 @@
-export function getCardStyle({size, position}) {
+const getPosition = fixedPosition => fixedPosition ? "fixed" : "static";
+
+export function getCardStyle({size, position, fixedPosition, resize}) {
     return {
-        width: size.width, height: size.height, left: position.x, top: position.y
+        width: size.width, height: size.height, left: position?.x, top: position?.y,
+        position: getPosition(fixedPosition), resize
     };
 };
+
+export function getHeaderMoverStyle({size, position, fixedPosition}) {
+    return {...getHeaderStyle({size, position}), position: getPosition(fixedPosition)};
+};
+
 export function getHeaderStyle({size, position}) {
     const {height} = size;
     
@@ -12,7 +20,7 @@ export function getHeaderStyle({size, position}) {
     return {
         height: headerHeight,
         width: size.width,
-        left: position.x,
-        top: position.y
+        left: position?.x,
+        top: position?.y
     };
 };
