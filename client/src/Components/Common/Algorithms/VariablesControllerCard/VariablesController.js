@@ -3,6 +3,7 @@ import useStateWithShallowMerge from "../../../../Hooks/useStateWithShallowMerge
 import Between from "./Between/Between";
 import IntegerVariableCard from "./IntegerVariableCard/IntegerVariableCard";
 import { useVariableHandlers } from "./useVariableHandlers";
+import usePrevious from "../../../../Hooks/usePrevious";
 
 export default function VariablesController() {
     const {variables} = useVariableHandlers();
@@ -11,15 +12,21 @@ export default function VariablesController() {
     const [betweenElementExists, setBetweenElementExists] = useStateWithShallowMerge({});
     const [currentlyMovingElement, setCurrentlyMovingElement] = useState();
     const firstBetween = <Between currentlyMovingElement={currentlyMovingElement}/>;
+    const prevVariables = usePrevious(variables);
 
     useEffect(()=>{
+        if (
+            Object.keys(variables).every(variable => prevVariables[variable] !== undefined) &&
+            Object.keys(prevVariables || {}).every(variable => prevVariables[variable] !== undefined)
+        ) return;
+
         setOrder(Object.keys(variables));
     }, [variables]);
 
     useEffect(()=>{
         setMoving(Object.keys(variables).reduce((a,b)=>({...a,[b]: false}),{}));
         setBetweenElementExists(Object.keys(variables).reduce((a,b)=>({...a,[b]: true}),{}));
-    }, [variables]);
+    }, [order]);
 
     return <div>{firstBetween}{
         order.map(variableName=>
