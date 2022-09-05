@@ -1,8 +1,12 @@
 import Card from "../../../Card/Card";
 import IntegerVariable from "./IntegerVariable";
 
-export default function IntegerVariableCard({variableName, variableValue, moving, setMoving}) {
-    const movementOptions = {fixedPosition: moving, onMovementStart: ()=>setMoving(true)};
+export default function IntegerVariableCard({variableName, variableValue, moving, setMoving, setStop}) {
+    const movementOptions = {
+        fixedPosition: moving,
+        onMovementStart: ()=>setMoving(true),
+        onMovementStop: ()=>setStop()
+    };
     const resize = "vertical";
 
     return (

@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 
 export default function useMover(defaultPosition, options) {
-    const {onMovementStart=()=>{}} = options;
+    const {onMovementStart=()=>{}, onMovementStop=()=>{}} = options;
 
     const [position, setPosition] = useState(defaultPosition);
     const ref = useRef();
@@ -31,6 +31,7 @@ export default function useMover(defaultPosition, options) {
             //when the mouse is up, the movement has stopped
             //and the event listeners are removed
             const onMouseUp = e => {
+                onMovementStop();
                 window.removeEventListener("mousemove", onMouseMove);
                 window.removeEventListener("mouseup", onMouseUp);
             };

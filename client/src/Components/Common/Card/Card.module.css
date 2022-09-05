@@ -4,7 +4,6 @@
     border-style: solid;
     display: flex;
     flex-flow: column;
-    height: 100%;
     /* overflow cannot be any property for resize to work */
     overflow: hidden;
 }
