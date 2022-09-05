@@ -16,16 +16,16 @@ export default function useMover(defaultPosition, options) {
             const boundingClientRect = ref.current?.getBoundingClientRect();
 
             const offset = {};
-            const [xOffset, yOffset] = [e.screenX - boundingClientRect.left, e.screenY - boundingClientRect.top];
+            const [xOffset, yOffset] = [e.clientX - boundingClientRect.left, e.clientY - boundingClientRect.top];
             offset.x = xOffset;
             offset.y = yOffset;
 
             //when the cursor is moved, we change the position, taking the offset into account
             const onMouseMove = e => {
-                const { screenX, screenY } = e;
+                const { clientX, clientY } = e;
 
                 setPosition(
-                    { x: screenX - offset.x, y: screenY - offset.y }
+                    { x: clientX - offset.x, y: clientY - offset.y }
                 );
             };
             //when the mouse is up, the movement has stopped
