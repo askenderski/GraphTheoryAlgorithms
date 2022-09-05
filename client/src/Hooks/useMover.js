@@ -20,6 +20,10 @@ export default function useMover(defaultPosition, options) {
             offset.x = xOffset;
             offset.y = yOffset;
 
+            setPosition(
+                { x: e.clientX - offset.x, y: e.clientY - offset.y }
+            );
+
             //when the cursor is moved, we change the position, taking the offset into account
             const onMouseMove = e => {
                 const { clientX, clientY } = e;
@@ -37,7 +41,6 @@ export default function useMover(defaultPosition, options) {
             };
 
             window.addEventListener("mousemove", onMouseMove);
-
             window.addEventListener("mouseup", onMouseUp);
         },
         position,
