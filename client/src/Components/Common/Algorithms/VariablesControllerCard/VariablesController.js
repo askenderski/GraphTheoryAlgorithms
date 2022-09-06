@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import useStateWithShallowMerge from "../../../../Hooks/useStateWithShallowMerge";
 import Between from "./Between/Between";
 import IntegerVariableCard from "./IntegerVariableCard/IntegerVariableCard";
@@ -15,6 +15,7 @@ function BetweenIfNeeded({ground, currentlyMovingElement, element, betweenExists
 export default function VariablesController() {
     function getGround(i) {
         return varName=>{
+            console.log(moving)
             setMoving({[varName]: false});
             setBetweenElementExists({[varName]: true});
             
@@ -59,13 +60,15 @@ export default function VariablesController() {
 
     return <div style={{height: "100%", display: "flex", flexDirection: "column"}}>{
         order.map((variableName, i)=>
-                <>
+                <Fragment key={variableName}>
                     <BetweenIfNeeded
+                    // key={variableName+"Between"}
                     betweenExists={betweenElementExists[variableName]}
                     ground={getGround(i)}
                     currentlyMovingElement={currentlyMovingElement}
                     />
                     <IntegerVariableCard moving={moving[variableName]}
+                    // key={variableName+"Card"}
                     setMoving={status=>{
                         setMoving({[variableName]: status});
                         setCurrentlyMovingElement(variableName);
@@ -76,7 +79,7 @@ export default function VariablesController() {
                     }}
                     variableValue={variables[variableName]} variableName={variableName}
                     />
-                </>
+                </Fragment>
             )
         }{lastBetween}</div>;
 }
