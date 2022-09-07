@@ -15,7 +15,6 @@ function BetweenIfNeeded({ground, currentlyMovingElement, element, betweenExists
 export default function VariablesController() {
     function getGround(i) {
         return varName=>{
-            console.log(moving)
             setMoving({[varName]: false});
             setBetweenElementExists({[varName]: true});
             

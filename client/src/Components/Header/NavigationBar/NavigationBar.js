@@ -39,7 +39,6 @@ export default function NavigationBar() {
                 <Menu.Item
                     style={{float: "right"}} key={Routes.authentication.login.fullPath}
                     onClick={()=>{
-                        console.log("sadsad");
                         logout()
                             .then(()=> {
                                 setUser();

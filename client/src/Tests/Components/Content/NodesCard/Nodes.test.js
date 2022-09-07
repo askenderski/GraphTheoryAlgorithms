@@ -58,7 +58,6 @@ test("Nodes renders correct table cells", () => {
 
     const tableRows = tableRowHTMLElements
         .map(row=> Array.from(row.getElementsByTagName("td")));
-    console.log(nodesWrapper.debug())
 
     tableRows.forEach((tableRow, rowIndex)=>{
         tableRow.forEach((tableElement, colIndex)=>{

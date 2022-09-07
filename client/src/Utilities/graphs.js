@@ -45,7 +45,6 @@ export const edgesRecordToGraphRepresentation = function (edgesRecord, graphRepr
                         edgesFromRecord.get("toMap").valueSeq()
                             .filter(edge=>edge.value !== false && edge.value !== 0).toList()
                 );
-            console.log(res)
             return res;
         case "edgeList":
             return edgesRecord

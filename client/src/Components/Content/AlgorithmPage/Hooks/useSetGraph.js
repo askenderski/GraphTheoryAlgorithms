@@ -9,7 +9,6 @@ export default function useSetGraph(graphId, {setNodesRecord, setDoesGraphExist}
                 setNodesRecord(getNodesRecordFromGraphObject(graph));
             })
             .catch(err=>{
-                console.log(err);
                 setDoesGraphExist(false);
             });
     }, [graphId]);

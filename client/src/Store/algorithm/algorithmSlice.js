@@ -41,11 +41,9 @@ const algorithmSlice = createSlice({
       return setIn(state, ["currentController"], payload);
     },
     setInvalidateAlgorithm: (state, {payload}) => {
-      console.log(payload)
       return setIn(state, ["invalidateAlgorithm"], payload);
     },
     setNodesRecord: (state, {payload})=>{
-      console.log("setting nodes record")
       return setIn(state, ["nodesRecord"], payload);
     },
     changeNodesRecord: (state, {payload, asyncDispatch}) => {

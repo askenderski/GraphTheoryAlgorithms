@@ -25,21 +25,16 @@ export default function Form(
     const [formPreSubmitErrors, setFormPreSubmitErrors] = useStateWithShallowMerge({});
 
     useEffect(() => {
-        console.log("lol")
         setFormPreSubmitErrors({otherFormErrors: otherFormErrors || []});
     }, [otherFormErrors]);
 
     function handleSubmit(e) {
         e.preventDefault();
 
-        console.log(formPreSubmitErrors)
-        console.log(Object.values(formPreSubmitErrors).flat(1))
-        console.log(Object.values(formPreSubmitErrors).flat(1).length)
         if (Object.values(formPreSubmitErrors).flat(1).length > 0) {
             return;
         }
-        console.log("aaaaaaa")
-
+        
         service(serviceArguments)
             .then(res=>{
                 history.push(redirectPath);

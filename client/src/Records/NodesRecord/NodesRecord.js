@@ -35,7 +35,6 @@ export function getNodesRecordFromGraphObject(graph) {
     
     const nodesArray = new Array(adjacencyMatrix.length).fill(1).map(getNodeRecordByIndex);
     const nodesList = List(nodesArray);
-    console.log(nodesList)
     
     const adjacencyMatrixAsList = getAdjacencyMatrixAsList(graph, nodesList);
     const edgesRecord = getEdgesRecord(adjacencyMatrixAsList.flatten(2));

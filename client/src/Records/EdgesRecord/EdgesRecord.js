@@ -62,7 +62,6 @@ EdgesFromRecord.prototype.addEdge = function (edge) {
     let edgesFromRecord = this;
 
     if (!edgesFromRecord.get("fromMap").has(edge.from)) {
-        console.log("hey")
         const edgesToRecord = EdgesToRecord({from: edge.from});
 
         edgesFromRecord = edgesFromRecord.setIn(["fromMap", edge.from], edgesToRecord);
@@ -139,11 +138,8 @@ EdgesRecord.prototype.setEdge = function({from, to, value}) {
 
 export const getEdgesRecord = (edgesArray) => {
     const edges = List(edgesArray);
-    console.log(edges)
 
     let res = EdgesRecord().addEdges(...edges);
-
-    console.log(res);
 
     return res;
 };
