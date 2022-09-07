@@ -1,5 +1,5 @@
 export default function IntegerVariable({variableValue}) {
     return (
-        <span>{variableValue}</span>
+        <span style={{whiteSpace:"pre"}}>{variableValue}</span>
     );
 }

@@ -32,18 +32,23 @@ function getPointerConsiderator({ setPointerLine, pointerTime, waitToConsider })
 
     return considerPointerLine;
 }
-function getIntegerConsiderator({ setVariable }) {
-    async function considerInteger(integer, considerationType, value) {
+
+export const defaultValueByType = {
+    integer: " "
+};
+
+function getVariableConsiderator({ setVariable }) {
+    async function considerVariable(variableType, name, considerationType, value) {
         if (considerationType === "remove") {
-            setVariable(integer, "");
+            setVariable(name, {type: variableType, value: defaultValueByType[variableType]});
             return;
         }
 
-        setVariable(integer, value);
+        setVariable(name, {type: variableType, value});
         return;
     }
 
-    return considerInteger;
+    return considerVariable;
 }
 
 const defaultWaitTimes = {graphTime: 4000, pointerTime: 700};
@@ -55,7 +60,8 @@ export default function getConsiderator({setters, waitTimes = defaultWaitTimes, 
     const considerPointerLine = getPointerConsiderator({
         setPointerLine: setters.setPointerLine, waitToConsider: waitToConsider.bind(undefined, waitTimes.pointerTime)
     });
-    const considerInteger = getIntegerConsiderator({ setVariable: setters.setVariable });
+    const considerVariable = getVariableConsiderator({ setVariable: setters.setVariable });
+    const considerInteger = considerVariable.bind(undefined, "integer");
 
     async function consider(type, ...args) {
         switch (type) {

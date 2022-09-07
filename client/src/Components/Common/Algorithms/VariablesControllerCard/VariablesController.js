@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import useStateWithShallowMerge from "../../../../Hooks/useStateWithShallowMerge";
 import Between from "./Between/Between";
-import IntegerVariableCard from "./IntegerVariableCard/IntegerVariableCard";
+import VariableCard from "./VariableCard/VariableCard";
 import { useVariableHandlers } from "./useVariableHandlers";
 import usePrevious from "../../../../Hooks/usePrevious";
 
@@ -66,7 +66,7 @@ export default function VariablesController() {
                     ground={getGround(i)}
                     currentlyMovingElement={currentlyMovingElement}
                     />
-                    <IntegerVariableCard moving={moving[variableName]}
+                    <VariableCard moving={moving[variableName]}
                     // key={variableName+"Card"}
                     setMoving={status=>{
                         setMoving({[variableName]: status});
@@ -76,7 +76,8 @@ export default function VariablesController() {
                     setStop={()=>{
                         setCurrentlyMovingElement(undefined);
                     }}
-                    variableValue={variables[variableName]} variableName={variableName}
+                    variableType={variables[variableName].type}
+                    variableValue={variables[variableName].value} variableName={variableName}
                     />
                 </Fragment>
             )
