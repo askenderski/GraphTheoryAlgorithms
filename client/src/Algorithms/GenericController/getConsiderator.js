@@ -69,8 +69,8 @@ export default function getConsiderator({setters, waitTimes = defaultWaitTimes, 
                 return considerGraph(...args);
             case "pointerLine":
                 return considerPointerLine(...args);
-            case "integer":
-                return considerInteger(...args);
+            case "variable":
+                return considerVariable(...args);
         }
     }
 
