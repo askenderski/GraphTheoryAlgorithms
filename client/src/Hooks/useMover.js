@@ -9,6 +9,8 @@ export default function useMover(defaultPosition, options) {
     return {
         //onMouseDown starts to track the moving of the element
         onMouseDown: e => {
+            if (e.button !== 0) return;
+
             //offset is the difference between the cursor and element coordinates
             //(the cursor is being tracked because it's easier)
             onMovementStart();

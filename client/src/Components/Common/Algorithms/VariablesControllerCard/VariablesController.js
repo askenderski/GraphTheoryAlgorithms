@@ -57,7 +57,7 @@ export default function VariablesController({parsers}) {
         setBetweenElementExists(Object.keys(variables).reduce((a,b)=>({...a,[b]: true}),{}));
     }, [variables]);
 
-    return <div style={{height: "100%", display: "flex", flexDirection: "column"}}>{
+    return <div style={{height: "100%", display: "flex", flexDirection: "column", overflowY: "scroll"}}>{
         order.map((variableName, i)=>
                 <Fragment key={variableName}>
                     <BetweenIfNeeded

@@ -1,25 +1,27 @@
-const getPosition = fixedPosition => fixedPosition ? "fixed" : "static";
+const getPosition = isFixedPositon => isFixedPositon ? "fixed" : "static";
 
-export function getCardStyle({size, position, fixedPosition, resize}) {
+export function getCardStyle({size, position, isFixedPositon, resize}) {
     return {
-        width: size.width, height: size.height, left: position?.x, top: position?.y,
-        position: getPosition(fixedPosition), resize
+        width: resize === "both" || resize === "horizontal" ? size.width : undefined,
+        height: resize === "both" || resize === "vertical" ? size.height : undefined,
+        left: position?.x, top: position?.y,
+        position: getPosition(isFixedPositon), resize
     };
 };
 
-export function getHeaderMoverStyle({size, position, fixedPosition}) {
-    return {...getHeaderStyle({size, position}), position: getPosition(fixedPosition)};
+export function getHeaderMoverStyle({size, position, isFixedPositon, resize}) {
+    return {...getHeaderStyle({size, position, resize}), position: getPosition(isFixedPositon)};
 };
 
-export function getHeaderStyle({size, position}) {
-    const {height} = size;
+export function getHeaderStyle({size, position, resize}) {
+    const {height = "0px"} = size;
     
     const heightAsNum = Number(height.substring(0, height.length-2));
     const headerHeight = Math.max(heightAsNum * 0.2, 30);
 
     return {
         height: headerHeight,
-        width: size.width,
+        width: resize === "both" || resize === "horizontal" ? size.width : undefined,
         left: position?.x,
         top: position?.y
     };
