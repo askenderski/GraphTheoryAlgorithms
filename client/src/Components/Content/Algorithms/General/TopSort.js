@@ -8,15 +8,18 @@ import AlgorithmTextCard from "../../../Common/Algorithms/AlgorithmTextCard/Algo
 import VariablesControllerCard from "../../../Common/Algorithms/VariablesControllerCard/VariablesControllerCard";
 import {
     setAlgorithmText as setAlgorithmTextAction,  setGetController as setGetControllerAction,
-    setAlgorithm as setAlgorithmAction
+    setAlgorithm as setAlgorithmAction,
+    selectNodesRecord
 } from "../../../../Store/algorithm/algorithmSlice";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import getController from "../../../../Algorithms/GenericController/Controller";
 
 const algorithmText = TopSortText;
 
 export default function TopSort() {
     const dispatch = useDispatch();
+
+    const nodesRecord = useSelector(selectNodesRecord);
 
     useEffect(()=>{
         dispatch(setGetControllerAction(getController));
@@ -30,7 +33,9 @@ export default function TopSort() {
             <AlgorithmControllerCard/>
             <AlgorithmTextCard />
             <GraphCard/>
-            <VariablesControllerCard/>
+            <VariablesControllerCard parsers={{
+                nodesTopSorted: arr => arr.map(nodeId=>(nodesRecord.getNodeById(nodeId) || {value: nodeId}).value)
+            }}/>
         </>
     );
 }

@@ -12,7 +12,7 @@ function BetweenIfNeeded({ground, currentlyMovingElement, element, betweenExists
     return null;
 }
 
-export default function VariablesController() {
+export default function VariablesController({parsers}) {
     function getGround(i) {
         return varName=>{
             setMoving({[varName]: false});
@@ -61,13 +61,12 @@ export default function VariablesController() {
         order.map((variableName, i)=>
                 <Fragment key={variableName}>
                     <BetweenIfNeeded
-                    // key={variableName+"Between"}
                     betweenExists={betweenElementExists[variableName]}
                     ground={getGround(i)}
                     currentlyMovingElement={currentlyMovingElement}
                     />
                     <VariableCard moving={moving[variableName]}
-                    // key={variableName+"Card"}
+                    parser={parsers[variableName] || (val=>val)}
                     setMoving={status=>{
                         setMoving({[variableName]: status});
                         setCurrentlyMovingElement(variableName);

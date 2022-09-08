@@ -1,7 +1,7 @@
 import Card from "../../../Card/Card";
 import selectVariableTypeComponent from "./selectVariableTypeComponent";
 
-export default function VariableCard({variableType, variableName, variableValue, moving, setMoving, setStop}) {
+export default function VariableCard({parser, variableType, variableName, variableValue, moving, setMoving, setStop}) {
     const movementOptions = {
         fixedPosition: moving,
         onMovementStart: ()=>setMoving(true),
@@ -14,7 +14,7 @@ export default function VariableCard({variableType, variableName, variableValue,
     return (
         // sizeRef is used for tracking card size and therefore changing the size of the header
         <Card resize={resize} movement={movementOptions} headerContent={variableName}>
-            <VariableTypeComponent variableValue={variableValue}/>
+            <VariableTypeComponent variableValue={parser(variableValue)}/>
         </Card>
     );
 }
