@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import defaultValueByType from "../Algorithms/GenericController/getConsiderator";
+import {defaultValueByType} from "../Algorithms/GenericController/getConsiderator";
 
 export default function useSettingController({ getController, handlers, algorithm }) {
     useEffect(() => {
@@ -18,8 +18,11 @@ export default function useSettingController({ getController, handlers, algorith
             styleSetters: {
                 setNodeStyle: () => { },
                 setPointerLine: () => { },
-                setVariable: (variableName, variableObject) =>
-                    allVariables[variableName] = variableObject
+                setVariable: (variableName, variableObject) => {
+                    const {type} = variableObject;
+                    console.log(type, defaultValueByType[type])
+                    allVariables[variableName] = {type, value: defaultValueByType[type]}
+                }
             },
             algorithm
         });

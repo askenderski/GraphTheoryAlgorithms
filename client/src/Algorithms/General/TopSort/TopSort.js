@@ -1,7 +1,7 @@
 const TopSort = {
     graphRepresentation: "adjacencyList",
     getRun: function({considers, setIsDone}) {
-        const {considerGraph, considerInteger, considerPointerLine} = considers;
+        const {considerGraph, considerInteger, considerPointerLine, considerArray} = considers;
 
         return async function(nodesIds, edgeList) {
             async function dfs(nodeId) {
@@ -70,10 +70,12 @@ const TopSort = {
 
                 await considerPointerLine(12);
                 nodesTopSorted.unshift(nodeId);
+                await considerArray("nodesTopSorted", "unshift", nodeId);
             }
 
             await considerPointerLine(15);
             const nodesTopSorted = [];
+            await considerArray("nodesTopSorted", "add", []);
             await considerPointerLine(16);
             const visited = {};
 
