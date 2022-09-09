@@ -35,7 +35,8 @@ function getPointerConsiderator({ setPointerLine, pointerTime, waitToConsider })
 
 export const defaultValueByType = {
     integer: " ",
-    array: [" "]
+    array: [" "],
+    objectArray: []
 };
 
 const variableConsiderators = {
@@ -46,6 +47,22 @@ const variableConsiderators = {
         },
         unshift: ({value: array, considerThisVariable}) => (_, val) => {
             return considerThisVariable("set", [val, ...array.slice()]);
+        }
+    },
+    objectArray: {
+        setAt: ({value: objectArray, considerThisVariable}) => (_, key, value) => {
+            const indexOfVal = objectArray.findIndex(([curKey])=>curKey===key);
+
+            let resVal;
+
+            if (indexOfVal === -1) {
+                resVal = objectArray.slice();
+                resVal.push([key, value]);
+            } else {
+                resVal = [...objectArray.slice(0,indexOfVal), [key, value], ...objectArray.slice(indexOfVal+1)];
+            }
+
+            return considerThisVariable("set", resVal);
         }
     }
 };
@@ -98,6 +115,7 @@ export default function getConsiderator({setters, waitTimes = defaultWaitTimes, 
     const considerVariable = getVariableConsiderator({ setVariable: setters.setVariable });
     const considerInteger = considerVariable.bind(undefined, "integer");
     const considerArray = considerVariable.bind(undefined, "array");
+    const considerObjectArray = considerVariable.bind(undefined, "objectArray");
 
     async function consider(type, ...args) {
         switch (type) {
@@ -110,5 +128,5 @@ export default function getConsiderator({setters, waitTimes = defaultWaitTimes, 
         }
     }
 
-    return { consider, considerGraph, considerInteger, considerPointerLine, considerArray };
+    return { consider, considerGraph, considerInteger, considerPointerLine, considerArray, considerObjectArray };
 }

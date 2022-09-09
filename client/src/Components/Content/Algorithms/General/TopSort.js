@@ -34,7 +34,18 @@ export default function TopSort() {
             <AlgorithmTextCard />
             <GraphCard/>
             <VariablesControllerCard parsers={{
-                nodesTopSorted: arr => arr.map(nodeId=>(nodesRecord.getNodeById(nodeId) || {value: nodeId}).value)
+                nodesTopSorted: arr => arr.map(nodeId=>(nodesRecord.getNodeById(nodeId) || {value: nodeId}).value),
+                visited: arr => {
+                    return [
+                            ...arr,
+                            ...nodesRecord.nodes
+                                .map(node=>node.id)
+                                .filter(nodeId=>!arr.map(([key])=>key).includes(nodeId))
+                                .map(nodeId=>[nodeId, "false"])
+                        ]
+                        .map(([key, val])=>[nodesRecord.getNodeById(key).value, val.toString()])
+                        .sort(([key1],[key2]) => key1 - key2)
+                }
             }}/>
         </>
     );

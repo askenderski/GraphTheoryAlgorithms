@@ -1,7 +1,7 @@
 const TopSort = {
     graphRepresentation: "adjacencyList",
     getRun: function({considers, setIsDone}) {
-        const {considerGraph, considerInteger, considerPointerLine, considerArray} = considers;
+        const {considerGraph, considerInteger, considerPointerLine, considerArray, considerObjectArray} = considers;
 
         return async function(nodesIds, edgeList) {
             async function dfs(nodeId) {
@@ -38,6 +38,7 @@ const TopSort = {
                 await considerGraph(nodeId, "current");
 
                 visited[nodeId] = true;
+                await considerObjectArray("visited", "setAt", nodeId, true);
 
                 await considerPointerLine(8);
                 await considerInteger("i1", "add", 0);
@@ -78,6 +79,7 @@ const TopSort = {
             await considerArray("nodesTopSorted", "add", []);
             await considerPointerLine(16);
             const visited = {};
+            await considerObjectArray("visited", "add", []);
 
             //done is used purely for styling purposes, it contains visited nodes that have also been completely
             // dfs-ed, so if we hit a simply visited node, it means it's still down the dfs chain (and done ones
