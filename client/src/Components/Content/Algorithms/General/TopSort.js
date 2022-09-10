@@ -48,7 +48,8 @@ export default function TopSort() {
                         ]
                         .map(([key, val])=>[nodesRecord.getNodeById(key).value, val.toString()])
                         .sort(([key1],[key2]) => key1 - key2)
-                }
+                },
+                node: nodeId => (nodesRecord.getNodeById(nodeId) || {value: nodeId}).value
             }}/>
         </>
     );

@@ -5,6 +5,7 @@ const TopSort = {
 
         return async function(nodesIds, edgeList) {
             async function dfs(nodeId) {
+                await considerInteger("node", "set", nodeId);
                 await considerInteger("i1", "remove");
                 await considerPointerLine(1);
                 //if the node has already been visited, we do not go through it again
