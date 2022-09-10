@@ -9,13 +9,15 @@ export default function ObjectArrayVariable({variableValue}) {
             <table style={{whitseSpace: "pre", overflow: "scroll", height: "100%", width: "100%", border: "1px solid"}}>
                 <thead>
                     {
-                        variableValue.map(([key])=><th style={{border: "1px solid"}}>{key}</th>)
+                        variableValue
+                            .map(([key])=><th style={{border: "1px solid", whiteSpace: "pre"}}>{key}</th>)
                     }
                 </thead>
                 <tbody>
                     <tr>
                         {
-                            variableValue.map(([key,value])=><td style={{border: "1px solid"}}>{value}</td>)
+                            variableValue
+                                .map(([key,value])=><td style={{border: "1px solid", whiteSpace: "pre"}}>{value}</td>)
                         }
                     </tr>
                 </tbody>

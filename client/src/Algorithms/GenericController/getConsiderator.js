@@ -36,7 +36,7 @@ function getPointerConsiderator({ setPointerLine, pointerTime, waitToConsider })
 export const defaultValueByType = {
     integer: " ",
     array: [" "],
-    objectArray: []
+    objectArray: [[" ", " "]]
 };
 
 const variableConsiderators = {

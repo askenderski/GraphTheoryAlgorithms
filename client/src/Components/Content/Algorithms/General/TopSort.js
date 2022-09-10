@@ -13,6 +13,7 @@ import {
 } from "../../../../Store/algorithm/algorithmSlice";
 import {useDispatch, useSelector} from "react-redux";
 import getController from "../../../../Algorithms/GenericController/Controller";
+import { defaultValueByType } from "../../../../Algorithms/GenericController/getConsiderator";
 
 const algorithmText = TopSortText;
 
@@ -36,6 +37,8 @@ export default function TopSort() {
             <VariablesControllerCard parsers={{
                 nodesTopSorted: arr => arr.map(nodeId=>(nodesRecord.getNodeById(nodeId) || {value: nodeId}).value),
                 visited: arr => {
+                    if (arr === defaultValueByType.objectArray) return arr;
+
                     return [
                             ...arr,
                             ...nodesRecord.nodes
