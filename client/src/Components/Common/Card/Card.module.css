@@ -8,6 +8,10 @@
     overflow: hidden;
 }
 
+.card {
+    z-index: 1;
+}
+
 .headerMover {
     border-color: black;
     border-width: medium;
