@@ -43,6 +43,7 @@ export default function AlgorithmControllerContainer() {
                 setVariable: handlers.setVariable,
                 setPointerLine: handlers.setPointerLine
             },
+            addConsideration: handlers.addConsideration,
             setAlgorithmState,
             algorithm
         }));

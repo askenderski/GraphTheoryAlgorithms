@@ -3,7 +3,7 @@ import {
     setPointerLine as setPointerLineAction, setVariables as setVariablesAction,
     setCurrentController as setCurrentControllerAction,
     selectGetController, setInvalidateAlgorithm as setInvalidateAlgorithmAction,
-    selectAlgorithmObject
+    selectAlgorithmObject, addConsideration as addConsiderationAction
 }
     from "../Store/algorithm/algorithmSlice";
 import { useReset } from "./useReset";
@@ -18,6 +18,8 @@ export default function useAlgorithmHandlers() {
     
     const setCurrentController = controller => dispatch(setCurrentControllerAction(controller));
 
+    const addConsideration = consideration => dispatch(addConsiderationAction(consideration));
+
     const specificAlgorithmHandlers = useSpecificAlgorithmHandlers();
 
     const reset = useReset();
@@ -29,5 +31,5 @@ export default function useAlgorithmHandlers() {
     const setInvalidateAlgorithm = invalidate => dispatch(setInvalidateAlgorithmAction(invalidate));
 
     return {...specificAlgorithmHandlers, algorithm, getController, setVariables, setPointerLine,
-        setCurrentController, reset, setInvalidateAlgorithm};
+        setCurrentController, reset, setInvalidateAlgorithm, addConsideration};
 }

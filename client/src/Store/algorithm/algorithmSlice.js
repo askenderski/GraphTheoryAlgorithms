@@ -16,9 +16,19 @@ const algorithmSlice = createSlice({
     algorithmText: "",
     algorithm: {},
     invalidateAlgorithm: ()=>{},
-    nodesRecord: NodesRecord()
+    nodesRecord: NodesRecord(),
+    considerations: []
   },
   reducers: {
+    addConsideration: (state, {payload, asyncDispatch}) => {
+      const currentConsiderations = selectConsiderationsFromAlgorithm(state);
+      const newConsiderations = [...currentConsiderations, payload];
+
+      return getNewConsiderations(state, newConsiderations);
+    },
+    setConsiderations: (state, {payload}) => {
+      return getNewConsiderations(state, payload);
+    },
     setAlgorithmText: (state, {payload}) => {
       return setIn(state, ["algorithmText"], payload);
     },
@@ -44,17 +54,19 @@ const algorithmSlice = createSlice({
       return setIn(state, ["invalidateAlgorithm"], payload);
     },
     setNodesRecord: (state, {payload})=>{
-      return setIn(state, ["nodesRecord"], payload);
+      return getNewNodesRecord(state, payload);
     },
-    changeNodesRecord: (state, {payload, asyncDispatch}) => {
+    changeNodesRecord: (state, {payload}) => {
       const currentNodesRecord = selectNodesRecordFromAlgorithm(state);
       const newNodesRecord = payload(currentNodesRecord);
-      const newNodesRecordAction = setNodesRecord(newNodesRecord);
 
-      return asyncDispatch(newNodesRecordAction);
+      return getNewNodesRecord(state, newNodesRecord);
     }
   }
 });
+
+const getNewNodesRecord = (state, val) => setIn(state, ["nodesRecord"], val);
+const getNewConsiderations = (state, val) => setIn(state, ["considerations"], val);
 
 const selectAlgorithm = state => state.algorithm;
 
@@ -67,10 +79,13 @@ export const selectNodesRecord = createSelector(selectAlgorithm, selectNodesReco
 export const selectAlgorithmObject = createSelector(selectAlgorithm, algorithm => algorithm.algorithm);
 export const selectGetController = createSelector(selectAlgorithm, algorithm => algorithm.getController);
 export const selectAlgorithmText = createSelector(selectAlgorithm, algorithm => algorithm.algorithmText);
+const selectConsiderationsFromAlgorithm = algorithm => algorithm.considerations;
+export const selectConsiderations = createSelector(selectAlgorithm, selectConsiderationsFromAlgorithm);
 
 export const {
   setVariables, setPointerLine, setCurrentController, setInvalidateAlgorithm, setNodesRecord,
-  setNodeStyle, mergeVariables, setGetController, setAlgorithm, changeNodesRecord, setAlgorithmText
+  setNodeStyle, mergeVariables, setGetController, setAlgorithm, changeNodesRecord, setAlgorithmText,
+  setConsiderations, addConsideration
 } = algorithmSlice.actions;
 
 export const reducer = algorithmSlice.reducer;

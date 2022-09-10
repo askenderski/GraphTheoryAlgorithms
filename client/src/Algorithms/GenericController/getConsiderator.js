@@ -74,11 +74,10 @@ function getVariableConsiderator({ setVariable }) {
         const getCustomConsiderator = variableConsiderators[variableType][considerationType];
 
         if (getCustomConsiderator !== undefined) {
-            console.log(values, name)
             const customConsiderator = getCustomConsiderator({
                 value: values[name],
                 considerThisVariable: considerVariable.bind(undefined, variableType, name)
-            })
+            });
 
             const res = customConsiderator({variableType, name, considerationType}, ...rest);
             values[name] = res;
@@ -105,28 +104,35 @@ function getVariableConsiderator({ setVariable }) {
 
 const defaultWaitTimes = {graphTime: 4000, pointerTime: 700};
 
-export default function getConsiderator({setters, waitTimes = defaultWaitTimes, waitToConsider }) {
-    const considerGraph = getGraphConsiderator({
-        setNodeStyle: setters.setNodeStyle, waitToConsider: waitToConsider.bind(undefined, waitTimes.graphTime)
-    });
-    const considerPointerLine = getPointerConsiderator({
-        setPointerLine: setters.setPointerLine, waitToConsider: waitToConsider.bind(undefined, waitTimes.pointerTime)
-    });
-    const considerVariable = getVariableConsiderator({ setVariable: setters.setVariable });
-    const considerInteger = considerVariable.bind(undefined, "integer");
-    const considerArray = considerVariable.bind(undefined, "array");
-    const considerObjectArray = considerVariable.bind(undefined, "objectArray");
+export default function getConsiderator({setters, waitTimes = defaultWaitTimes, waitToConsider, addConsideration }) {
+    const variableConsiderator = getVariableConsiderator({ setVariable: setters.setVariable });
 
     async function consider(type, ...args) {
+        addConsideration([type, ...args]);
+
         switch (type) {
             case "graph":
-                return considerGraph(...args);
+                return getGraphConsiderator({
+                    setNodeStyle: setters.setNodeStyle, waitToConsider: waitToConsider.bind(undefined, waitTimes.graphTime)
+                })(...args);
             case "pointerLine":
-                return considerPointerLine(...args);
+                return getPointerConsiderator({
+                    setPointerLine: setters.setPointerLine, waitToConsider: waitToConsider.bind(undefined, waitTimes.pointerTime)
+                })(...args);
             case "variable":
-                return considerVariable(...args);
+                return variableConsiderator(...args);
         }
     }
 
-    return { consider, considerGraph, considerInteger, considerPointerLine, considerArray, considerObjectArray };
+    const considerGraph = consider.bind(undefined, "graph");
+    const considerPointerLine = consider.bind(undefined, "pointerLine");
+    const considerVariable = consider.bind(undefined, "variable");
+    
+    const considerInteger = considerVariable.bind(undefined, "integer");
+    const considerArray = considerVariable.bind(undefined, "array");
+    const considerObjectArray = considerVariable.bind(undefined, "objectArray");
+    
+    const considerators = {considerGraph, considerInteger, considerPointerLine, considerArray, considerObjectArray};
+
+    return considerators;
 }

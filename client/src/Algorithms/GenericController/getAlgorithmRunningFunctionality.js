@@ -4,17 +4,20 @@ export function getAlgorithmRunningFunctionality({ setIsDoneOutsideController, s
 
     let isDone = false;
     let isPaused = false;
+    let timeout;
 
     const waitToConsider = async (time) => {
         return new Promise((resolve, reject) => {
-            doAlgorithmUnpause = resolve;
+            doAlgorithmUnpause = () => {
+                resolve();
+            };
             doStopAlgorithm = reject;
 
-            setTimeout(() => {
+            timeout = setTimeout(() => {
                 if (isPaused)
                     return;
 
-                resolve();
+                doAlgorithmUnpause();
             }, time);
         });
     };
@@ -49,6 +52,7 @@ export function getAlgorithmRunningFunctionality({ setIsDoneOutsideController, s
     function pause() {
         isPaused = true;
         setIsPaused(true);
+        clearTimeout(timeout);
     }
 
     function setIsDone(...args) {

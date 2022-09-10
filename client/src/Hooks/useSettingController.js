@@ -20,10 +20,10 @@ export default function useSettingController({ getController, handlers, algorith
                 setPointerLine: () => { },
                 setVariable: (variableName, variableObject) => {
                     const {type} = variableObject;
-                    console.log(type, defaultValueByType[type])
                     allVariables[variableName] = {type, value: defaultValueByType[type]}
                 }
             },
+            addConsideration: ()=>{},
             algorithm
         });
 
