@@ -1,20 +1,22 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState, useRef } from "react";
 import useStateWithShallowMerge from "../../../../Hooks/useStateWithShallowMerge";
 import Between from "./Between/Between";
 import VariableCard from "./VariableCard/VariableCard";
 import { useVariableHandlers } from "./useVariableHandlers";
 import usePrevious from "../../../../Hooks/usePrevious";
 
-function BetweenIfNeeded({ground, currentlyMovingElement, element, betweenExists}) {
+function BetweenIfNeeded({betweenExists, ...rest}) {
     if (betweenExists)
-        return <Between element={element} ground={ground} currentlyMovingElement={currentlyMovingElement}/>;
+        return <Between {...rest}/>;
     
     return null;
 }
 
 export default function VariablesController({parsers}) {
     function getGround(i) {
-        return varName=>{
+        return ()=>{
+            const varName = currentlyMovingElementRef.current;
+
             setMoving({[varName]: false});
             setBetweenElementExists({[varName]: true});
             
@@ -41,9 +43,16 @@ export default function VariablesController({parsers}) {
     const {variables} = useVariableHandlers();
     const [order, setOrder] = useState([]);
     const [moving, setMoving] = useStateWithShallowMerge({});
-    const [betweenElementExists, setBetweenElementExists] = useStateWithShallowMerge({});
-    const [currentlyMovingElement, setCurrentlyMovingElement] = useState();
-    const lastBetween = <Between style={{flexGrow: 1}} ground={getGround(order.length)} currentlyMovingElement={currentlyMovingElement}/>;
+    const [betweenElementExists, setBetweenElementExists] = useStateWithShallowMerge({0: true});
+    const currentlyMovingElementRef = useRef();
+
+    function setCurrentlyMovingElement(el) {
+        currentlyMovingElementRef.current = el;
+    }
+
+    const lastBetween =
+        <Between style={{flexGrow: 1}} ground={getGround(order.length)}
+        setDealWith={func=>setDealWiths({0: func})}/>;
     const prevVariables = usePrevious(variables);
 
     useEffect(()=>{
@@ -54,16 +63,44 @@ export default function VariablesController({parsers}) {
 
         setOrder(Object.keys(variables));
         setMoving(Object.keys(variables).reduce((a,b)=>({...a,[b]: false}),{}));
-        setBetweenElementExists(Object.keys(variables).reduce((a,b)=>({...a,[b]: true}),{}));
+        setBetweenElementExists(Object.keys(variables).reduce((a,b)=>({...a,[b]: true}),{0: true}));
     }, [variables]);
 
-    return <div style={{height: "100%", display: "flex", flexDirection: "column", overflowY: "scroll"}}>{
-        order.map((variableName, i)=>
+    const dealWithsRef = useRef();
+
+    function setDealWiths(val) {
+        dealWithsRef.current = {...dealWithsRef.current, ...val};
+    }
+
+    return (
+        <div
+        onMouseDown={e=>{
+            setTimeout(()=>Object.values(dealWithsRef.current).forEach(dealWith=>{
+                dealWith(e);
+            }), 0);
+        }}
+        onMouseMove={e=>{
+            if (!currentlyMovingElementRef.current) return;
+
+            Object.values(dealWithsRef.current).forEach(dealWith=>{
+                dealWith(e);
+            });
+        }}
+        onMouseUp={e=>{
+            if (!currentlyMovingElementRef.current) return;
+
+            Object.values(dealWithsRef.current).forEach(dealWith=>{
+                dealWith(e);
+            });
+        }}
+        style={{height: "100%", display: "flex", flexDirection: "column", overflowY: "scroll"}}
+        >{
+            order.map((variableName, i)=>
                 <Fragment key={variableName}>
                     <BetweenIfNeeded
                     betweenExists={betweenElementExists[variableName]}
                     ground={getGround(i)}
-                    currentlyMovingElement={currentlyMovingElement}
+                    setDealWith={func=>setDealWiths({[variableName]: func})}
                     />
                     <VariableCard moving={moving[variableName]}
                     parser={parsers[variableName] || (val=>val)}
@@ -80,5 +117,6 @@ export default function VariablesController({parsers}) {
                     />
                 </Fragment>
             )
-        }{lastBetween}</div>;
+        }{lastBetween}</div>
+    );
 }
