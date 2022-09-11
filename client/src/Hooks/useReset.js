@@ -5,6 +5,7 @@ import {
     changeNodesRecord as changeNodesRecordAction
 } from "../Store/algorithm/algorithmSlice";
 import { defaultNodeStyle } from "../Data/Algorithms/graph";
+import { defaultValueByType } from "../Algorithms/GenericController/getConsiderator";
 
 export function useReset() {
     const dispatch = useDispatch();
@@ -27,8 +28,10 @@ export function useReset() {
     }
 
     function resetVariables() {
-        const newVariables = Object.keys(variables)
-            .reduce((acc, varName) => ({ ...acc, [varName]: "" }), {});
+        const newVariables = Object.entries(variables)
+            .reduce((acc, [varName, {type}]) => ({ ...acc, [varName]: {type, value: defaultValueByType[type] }}), {});
+
+        console.log(newVariables)
 
         setVariables(newVariables);
     }

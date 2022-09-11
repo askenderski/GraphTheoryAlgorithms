@@ -95,8 +95,10 @@ export default function VariablesController({parsers}) {
         }}
         style={{height: "100%", display: "flex", flexDirection: "column", overflowY: "scroll"}}
         >{
-            order.map((variableName, i)=>
-                <Fragment key={variableName}>
+            order.map((variableName, i)=> {
+                console.log(variableName, variables[variableName])
+
+                return <Fragment key={variableName}>
                     <BetweenIfNeeded
                     betweenExists={betweenElementExists[variableName]}
                     ground={getGround(i)}
@@ -116,6 +118,7 @@ export default function VariablesController({parsers}) {
                     variableValue={variables[variableName].value} variableName={variableName}
                     />
                 </Fragment>
+            }
             )
         }{lastBetween}</div>
     );

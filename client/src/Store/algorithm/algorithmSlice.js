@@ -20,7 +20,7 @@ const algorithmSlice = createSlice({
     considerations: []
   },
   reducers: {
-    addConsideration: (state, {payload, asyncDispatch}) => {
+    addConsideration: (state, {payload}) => {
       const currentConsiderations = selectConsiderationsFromAlgorithm(state);
       const newConsiderations = [...currentConsiderations, payload];
 
@@ -39,6 +39,8 @@ const algorithmSlice = createSlice({
       return setIn(state, ["algorithm"], payload);
     },
     setVariables: (state, {payload}) => {
+      console.log(payload)
+
       return setIn(state, ["variables"], payload);
     },
     mergeVariables: (state, {payload}) => {
