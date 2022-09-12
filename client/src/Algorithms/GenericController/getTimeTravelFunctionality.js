@@ -7,5 +7,5 @@ export default function getTimeTravelFunctionality({consider, outsideControls}) 
         indexOfCurrentConsideration=considerations.length-1;
     }
 
-    return {addConsideration};
+    return {addConsideration, outsideControls};
 };

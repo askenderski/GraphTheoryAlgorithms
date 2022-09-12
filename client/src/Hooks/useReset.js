@@ -2,7 +2,8 @@ import { useDispatch, useSelector } from "react-redux";
 import {
     selectVariables,
     setPointerLine as setPointerLineAction, setVariables as setVariablesAction,
-    changeNodesRecord as changeNodesRecordAction
+    changeNodesRecord as changeNodesRecordAction,
+    setConsiderations as setConsiderationsAction
 } from "../Store/algorithm/algorithmSlice";
 import { defaultNodeStyle } from "../Data/Algorithms/graph";
 import { defaultValueByType } from "../Algorithms/GenericController/getConsiderator";
@@ -14,6 +15,8 @@ export function useReset() {
     const setVariables = variables => dispatch(setVariablesAction(variables));
 
     const setPointerLine = pointerLine => dispatch(setPointerLineAction(pointerLine));
+
+    const setConsiderations = considerations => dispatch(setConsiderationsAction(considerations));
 
     function resetNodesStyleFunc(nodesRecord) {
         const newNodes = nodesRecord.get("nodes").map(node=>node.set("style", defaultNodeStyle));
@@ -36,10 +39,15 @@ export function useReset() {
         setVariables(newVariables);
     }
 
+    function resetConsiderations() {
+        setConsiderations([]);
+    }
+
     const reset = () => {
         resetNodesStyle();
         resetPointerLine();
         resetVariables();
+        resetConsiderations();
     };
 
     return reset;
