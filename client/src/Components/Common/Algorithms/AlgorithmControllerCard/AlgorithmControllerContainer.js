@@ -4,9 +4,6 @@ import useStateWithShallowMerge from "../../../../Hooks/useStateWithShallowMerge
 import useSettingController from "../../../../Hooks/useSettingController";
 import useStartAlgorithmWithNewController from "./useStartAlgorithmWithNewController";
 import useAlgorithmHandlers from "../../../../Hooks/useAlgorithmHandlers";
-import { useDispatch, useSelector } from "react-redux";
-import { selectAlgorithmObject, selectGetController } from "../../../../Store/algorithm/algorithmSlice";
-import { setInvalidateAlgorithm as setInvalidateAlgorithmAction } from "../../../../Store/algorithm/algorithmSlice";
 
 export default function AlgorithmControllerContainer() {
     const handlers = useAlgorithmHandlers();
@@ -59,9 +56,10 @@ export default function AlgorithmControllerContainer() {
 
     const stopAlgorithm = algorithmController.invalidate;
     const pushForward = algorithmController.pushForward;
+    const goTo = algorithmController.goTo;
 
     return <AlgorithmController
-            algorithmHandlers={{startAlgorithm, toggleAlgorithmPause, stopAlgorithm, pushForward}}
+            algorithmHandlers={{startAlgorithm, toggleAlgorithmPause, stopAlgorithm, pushForward, goTo}}
             algorithmState={algorithmState}
             />;
 }

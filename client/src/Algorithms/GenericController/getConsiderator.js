@@ -107,9 +107,7 @@ const defaultWaitTimes = {graphTime: 4000, pointerTime: 700};
 export default function getConsiderator({setters, waitTimes = defaultWaitTimes, waitToConsider, addConsideration }) {
     const variableConsiderator = getVariableConsiderator({ setVariable: setters.setVariable });
 
-    async function consider(type, ...args) {
-        addConsideration([type, ...args]);
-
+    async function considerOriginal(type, ...args) {
         switch (type) {
             case "graph":
                 return getGraphConsiderator({
@@ -124,6 +122,12 @@ export default function getConsiderator({setters, waitTimes = defaultWaitTimes, 
         }
     }
 
+    async function consider(...rest) {
+        addConsideration(rest);
+
+        return considerOriginal(...rest);
+    }
+
     const considerGraph = consider.bind(undefined, "graph");
     const considerPointerLine = consider.bind(undefined, "pointerLine");
     const considerVariable = consider.bind(undefined, "variable");
@@ -132,7 +136,7 @@ export default function getConsiderator({setters, waitTimes = defaultWaitTimes, 
     const considerArray = considerVariable.bind(undefined, "array");
     const considerObjectArray = considerVariable.bind(undefined, "objectArray");
     
-    const considerators = {consider, considerGraph, considerInteger, considerPointerLine, considerArray, considerObjectArray};
+    const considerators = {consider, considerOriginal, considerGraph, considerInteger, considerPointerLine, considerArray, considerObjectArray};
 
     return considerators;
 }

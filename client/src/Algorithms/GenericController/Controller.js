@@ -8,17 +8,17 @@ export default function getController(args) {
     const {outsideControls: outsideControlsDef, waitToConsider, setIsDone} =
         getAlgorithmRunningFunctionality({setIsDoneOutsideController, setAlgorithmState});
 
-    const addConsideration = (...args) => {
+    const addConsideration = (args) => {
         const id = uuidv4();
 
-        addConsiderationArgs(...args, id);
+        addConsiderationArgs([...args, id]);
         addConsiderationTimeTravel(...args, id);
     };
     
     const {waitTimes, styleSetters, algorithm} = args;
     const considers = getConsiderator({waitToConsider, setters: styleSetters, waitTimes, addConsideration});
     const {addConsideration: addConsiderationTimeTravel, outsideControls} = getTimeTravelFunctionality({
-        consider: considers.consider, outsideControls: outsideControlsDef
+        consider: considers.considerOriginal, outsideControls: outsideControlsDef
     });
 
     const run = function (...args) {

@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import useAlgorithmVisualHandlers from "../../../../Hooks/useAlgorithmVisualHandlers";
 
 export default function AlgorithmVisualControllerContainer() {
-    const {considerations} = useAlgorithmVisualHandlers();
+    const {considerations, controller} = useAlgorithmVisualHandlers();
 
     const ref = useRef();
 
@@ -11,7 +11,13 @@ export default function AlgorithmVisualControllerContainer() {
     }, [considerations]);
 
     return <ul style={{overflow: "scroll"}}>
-        {considerations.map(consideration=><li>{consideration.join(" ")}</li>)}
+        {considerations.map(consideration=>
+            <li onClick={()=>{
+                console.log(consideration[consideration.length-1])
+                console.log(controller.goTo)
+                controller.goTo(consideration[consideration.length-1])
+            }}
+            >{consideration.join(" ")}</li>)}
         <li ref={ref}/>
     </ul>;
 }
