@@ -34,7 +34,7 @@ export default function AlgorithmControllerContainer() {
 
     function startAlgorithm() {
         setAlgorithmController(getController({
-            setIsDone: () => {},
+            setIsDone: () => setAlgorithmState({isRunning: false}),
             styleSetters: {
                 setNodeStyle: handlers.setNodeStyle,
                 setVariable: handlers.setVariable,

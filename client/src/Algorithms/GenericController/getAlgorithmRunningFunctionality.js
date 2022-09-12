@@ -14,8 +14,7 @@ export function getAlgorithmRunningFunctionality({ setIsDoneOutsideController, s
             doStopAlgorithm = reject;
 
             timeout = setTimeout(() => {
-                if (isPaused)
-                    return;
+                if (isPaused) return;
 
                 doAlgorithmUnpause();
             }, time);
@@ -40,8 +39,10 @@ export function getAlgorithmRunningFunctionality({ setIsDoneOutsideController, s
     let doStopAlgorithm;
 
     function unpause() {
+        console.log(isPaused)
         if (!isPaused)
             return;
+        console.log("unpausing")
 
         doAlgorithmUnpause();
         isPaused = false;

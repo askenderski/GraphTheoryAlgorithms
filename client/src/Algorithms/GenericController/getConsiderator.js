@@ -15,19 +15,19 @@ const defaultNodeTypes = {
         color: "pink"
     }
 };
-function getGraphConsiderator({ nodeTypes = defaultNodeTypes, setNodeStyle, waitToConsider }) {
+function getGraphConsiderator({ nodeTypes = defaultNodeTypes, setNodeStyle }) {
     async function considerGraph(node, type) {
         setNodeStyle(node, nodeTypes[type]);
 
-        return waitToConsider();
+        return;
     }
 
     return considerGraph;
 }
-function getPointerConsiderator({ setPointerLine, pointerTime, waitToConsider }) {
+function getPointerConsiderator({ setPointerLine }) {
     async function considerPointerLine(pointerLine) {
         setPointerLine(pointerLine);
-        return waitToConsider(pointerTime);
+        return;
     }
 
     return considerPointerLine;
@@ -102,7 +102,7 @@ function getVariableConsiderator({ setVariable }) {
     return considerVariable;
 }
 
-const defaultWaitTimes = {graphTime: 4000, pointerTime: 700};
+const defaultWaitTimes = {graph: 0, pointerLine: 0, variable: 0};
 
 export default function getConsiderator({setters, waitTimes = defaultWaitTimes, waitToConsider, addConsideration }) {
     const variableConsiderator = getVariableConsiderator({ setVariable: setters.setVariable });
@@ -122,10 +122,12 @@ export default function getConsiderator({setters, waitTimes = defaultWaitTimes, 
         }
     }
 
-    async function consider(...rest) {
-        addConsideration(rest);
+    async function consider(type, ...rest) {
+        addConsideration([type, ...rest]);
 
-        return considerOriginal(...rest);
+        considerOriginal(type, ...rest);
+
+        return waitToConsider(waitTimes[type]);
     }
 
     const considerGraph = consider.bind(undefined, "graph");
