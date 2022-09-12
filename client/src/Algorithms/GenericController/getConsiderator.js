@@ -132,7 +132,7 @@ export default function getConsiderator({setters, waitTimes = defaultWaitTimes, 
     const considerArray = considerVariable.bind(undefined, "array");
     const considerObjectArray = considerVariable.bind(undefined, "objectArray");
     
-    const considerators = {considerGraph, considerInteger, considerPointerLine, considerArray, considerObjectArray};
+    const considerators = {consider, considerGraph, considerInteger, considerPointerLine, considerArray, considerObjectArray};
 
     return considerators;
 }
