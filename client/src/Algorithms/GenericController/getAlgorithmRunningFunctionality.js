@@ -60,5 +60,10 @@ export function getAlgorithmRunningFunctionality({ setIsDoneOutsideController, s
         return setIsDoneOutsideController(...args);
     }
 
-    return { setIsDone, outsideControls: { pause, unpause, invalidate }, waitToConsider };
+    function pushForward() {
+        doAlgorithmUnpause();
+        pause();
+    }
+
+    return { setIsDone, outsideControls: { pause, unpause, invalidate, pushForward }, waitToConsider };
 }

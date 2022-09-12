@@ -1,5 +1,5 @@
 export default function AlgorithmController({algorithmHandlers, algorithmState}) {
-    const {startAlgorithm, toggleAlgorithmPause, stopAlgorithm} = algorithmHandlers;
+    const {startAlgorithm, toggleAlgorithmPause, stopAlgorithm, pushForward} = algorithmHandlers;
     const {isRunning, isPaused} = algorithmState;
 
     return (
@@ -9,6 +9,7 @@ export default function AlgorithmController({algorithmHandlers, algorithmState})
                 {isPaused ? "Unpause" : "Pause"}
             </button>
             <button onClick={stopAlgorithm} disabled={!isRunning}>Stop</button>
+            <button onClick={pushForward} disabled={!isRunning||!isPaused}>{">"}</button>
         </>
     );
 }

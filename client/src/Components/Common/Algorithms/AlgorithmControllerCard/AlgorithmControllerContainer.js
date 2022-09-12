@@ -58,9 +58,10 @@ export default function AlgorithmControllerContainer() {
     }
 
     const stopAlgorithm = algorithmController.invalidate;
+    const pushForward = algorithmController.pushForward;
 
     return <AlgorithmController
-            algorithmHandlers={{startAlgorithm, toggleAlgorithmPause, stopAlgorithm}}
+            algorithmHandlers={{startAlgorithm, toggleAlgorithmPause, stopAlgorithm, pushForward}}
             algorithmState={algorithmState}
             />;
 }
