@@ -1,7 +1,7 @@
 import {mount} from "enzyme";
 import App from "../App";
 import Header from "../Components/Header/Header";
-import Content from "../Components/Content/Content";
+import Content from "../Components/Content/Content.tsx";
 
 test("App contains Header", async () => {
     const wrapper = mount(<App/>);

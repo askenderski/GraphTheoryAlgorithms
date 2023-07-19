@@ -1,11 +1,11 @@
 import {render, fireEvent, waitFor, screen, getByText, cleanup, act} from '@testing-library/react';
-import Content from "../../../Components/Content/Content";
+import Content from "../../../Components/Content/Content.tsx";
 import {withRouter} from "react-router-dom";
 import {mount} from "enzyme";
 import {MemoryRouter} from "react-router";
 import {addFullPaths, addFullRedirects, addSubRoutes} from "../../../Utilities/routes";
 import * as _ from "lodash";
-import {RoutesData} from "../../../Data/Routes/routesData";
+import {RoutesData} from "../../../Data/Routes/routesData.tsx";
 
 afterEach(()=>{
     curLocation = undefined;
